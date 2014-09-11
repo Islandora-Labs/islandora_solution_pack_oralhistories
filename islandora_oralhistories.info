@@ -1,0 +1,12 @@
+name = "Islandora Oral Histories Solution Pack"
+description = "A default Islandora module for Oral Histories"
+dependencies[] = islandora
+package = Islandora Solution Packs
+version = 7.x-dev
+core = 7.x
+configure = admin/islandora/solution_pack_config/oralhistories
+stylesheets[all][] = css/islandora_oralhistories.theme.css
+files[] = tests/islandora_oralhistories_ingest_purge.test
+files[] = tests/islandora_oralhistories_and_derivatives_ingest_purge.test
+; files[] = tests/islandora_oralhistories_load_test.test
+
