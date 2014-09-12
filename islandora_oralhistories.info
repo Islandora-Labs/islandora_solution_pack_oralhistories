@@ -1,6 +1,8 @@
 name = "Islandora Oral Histories Solution Pack"
 description = "A default Islandora module for Oral Histories"
 dependencies[] = islandora
+dependencies[] = islandora_video
+dependencies[] = islandora_audio
 package = Islandora Solution Packs
 version = 7.x-dev
 core = 7.x

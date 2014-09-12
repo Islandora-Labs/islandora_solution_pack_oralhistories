@@ -33,15 +33,3 @@ function islandora_oralhistories_uninstall() {
   islandora_install_solution_pack('islandora_oralhistories', 'uninstall');
 }
 
-/**
- * Implements hook_update_N().
- *
- * Informs the user that the OGG derivative is no longer needed and can be
- * removed from existing objects if desired.
- */
-function islandora_oralhistories_update_7100(&$sandbox) {
-  drupal_set_message(t('The Islandora oralhistories Solution Pack no longer needs the OGG datastream.
-  It previously existed as an access derivative for viewing in certain browsers. MP4 appears to be the standard now. As such,
-  the OGG datastream is now an optional derivative. If you would like to remove the OGG derivatives from existing
-  oralhistories objects you can run the associated command in the Drush script with the module.'), 'warning');
-}
