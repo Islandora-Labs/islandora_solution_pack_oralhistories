@@ -13,6 +13,8 @@
 function islandora_oralhistories_install() {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   islandora_install_solution_pack('islandora_oralhistories');
+  // Set variable for media type uploaded
+  variable_set('islandora_oralhistories_media_uploaded_type', '');
 }
 
 /**
