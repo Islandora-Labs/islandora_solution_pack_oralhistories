@@ -48,7 +48,7 @@ function islandora_oralhistories_upload_form(array $form, array &$form_state) {
         'file_validate_size' => array($upload_size * 1024 * 1024),
       ),
     ),
-
+/*
     'transcript_xslt_file' => array(
       '#title' => t('Transcript XSLT file'),
       '#type' => 'managed_file',
@@ -62,6 +62,7 @@ function islandora_oralhistories_upload_form(array $form, array &$form_state) {
         'file_validate_size' => array($upload_size * 1024 * 1024),
       ),
     ),
+*/
 
   );
 }
@@ -78,7 +79,6 @@ function islandora_oralhistories_upload_form(array $form, array &$form_state) {
  */
 function islandora_oralhistories_upload_form_submit(array $form, array &$form_state) {
   $object = $form_state['islandora']['objects'][0];
-  dpm($object, 'Islandora object');
 
   // Create OJB datastream
   if (empty($object['OBJ'])) {
@@ -103,7 +103,6 @@ function islandora_oralhistories_upload_form_submit(array $form, array &$form_st
     $ds = $object['TRANSCRIPT'];
   }
   $transcript_file = file_load($form_state['values']['transcript_file']);
-  dpm($transcript_file, 'transcript_file');
   $transcript_file_path = drupal_realpath($transcript_file->uri);
   $ds->setContentFromFile($transcript_file_path, FALSE);
   $ds->label = $transcript_file->filename;

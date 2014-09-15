@@ -139,50 +139,20 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_ingest_
  */
 function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivative() {
   $derivatives = array();
-  if (variable_get('islandora_oralhistories_video_make_thumbnail_locally', TRUE)) {
-    $derivatives[] = array(
-      'source_dsid' => 'OBJ',
-      'destination_dsid' => 'TN',
-      'weight' => '0',
-      'function' => array(
-        'islandora_oralhistories_video_create_thumbnail',
-      ),
-      'file' => drupal_get_path('module', 'islandora_oralhistories') . '/includes/derivatives.inc',
-    );
+
+  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'video') {
+    if (module_exists('islandora_video') && function_exists('islandora_video_islandora_sp_videoCModel_islandora_derivative')) {
+      $derivatives = islandora_video_islandora_sp_videoCModel_islandora_derivative();
+    }
   }
-  if (variable_get('islandora_oralhistories_video_ake_mp4_locally', TRUE)) {
-    $derivatives[] = array(
-      'source_dsid' => 'OBJ',
-      'destination_dsid' => 'MP4',
-      'weight' => '1',
-      'function' => array(
-        'islandora_oralhistories_video_create_mp4',
-      ),
-      'file' => drupal_get_path('module', 'islandora_oralhistories') . '/includes/derivatives.inc',
-    );
+
+
+  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'audio') {
+    if (module_exists('islandora_video') && function_exists('islandora_video_islandora_sp_videoCModel_islandora_derivative')) {
+      $derivatives = islandora_audio_islandora_sp_audiocmodel_islandora_derivative();
+    }
   }
-  if (variable_get('islandora_oralhistories_video_make_ogg_locally', TRUE)) {
-    $derivatives[] = array(
-      'source_dsid' => 'OBJ',
-      'destination_dsid' => 'OGG',
-      'weight' => '2',
-      'function' => array(
-        'islandora_oralhistories_video_create_ogg',
-      ),
-      'file' => drupal_get_path('module', 'islandora_oralhistories') . '/includes/derivatives.inc',
-    );
-  }
-  if (variable_get('islandora_oralhistories_video_make_archive', TRUE)) {
-    $derivatives[] = array(
-      'source_dsid' => 'OBJ',
-      'destination_dsid' => 'MKV',
-      'weight' => '3',
-      'function' => array(
-        'islandora_oralhistories_video_create_mkv',
-      ),
-      'file' => drupal_get_path('module', 'islandora_oralhistories') . '/includes/derivatives.inc',
-    );
-  }
+
   return $derivatives;
 }
 
