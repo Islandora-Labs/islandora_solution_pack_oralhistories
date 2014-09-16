@@ -37,34 +37,130 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   $variables['metadata'] = islandora_retrieve_metadata_markup($object);
   $variables['description'] = islandora_retrieve_description_markup($object);
 
-  $viewer_dsid = 'MP4';
-  $mime = 'oralhistories/mp4';
 
-  $oralhistories_params = array(
-    'pid' => $object->id,
-  );
-  // Video player.
-  if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
-    $oralhistories_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
-    $oralhistories_params += array(
-      'mime' => $mime,
-      'url' => $oralhistories_url,
+/*
+  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'video') {
+    $viewer_dsid = 'MP4';
+    $mime = 'video/mp4';
+
+    $media_params = array(
+      'pid' => $object->id,
     );
+    // Video player.
+    if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
+      $media_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
+      $media_params += array(
+        'mime' => $mime,
+        'url' => $media_url,
+      );
+    }
+
+
   }
+
+  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'audio') {
+    $viewer_dsid = 'PROXY_MP3';
+    $mime = 'audio/mpeg';
+
+    $media_params = array(
+      'pid' => $object->id,
+    );
+    // Audio player.
+    if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
+      $media_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
+      $media_params += array(
+        'mime' => $mime,
+        'url' => $media_url,
+      );
+    }
+
+
+  }
+
+
+
   // Thumbnail.
   if (isset($object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN'])) {
-    $oralhistories_params += array(
+    $media_params += array(
       'tn' => url("islandora/object/{$object->id}/datastream/TN/view", array('absolute' => TRUE)),
     );
   }
 
-  $viewer = islandora_get_viewer($oralhistories_params, 'islandora_oralhistories_viewers', $object);
+
+*/
+
+  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'video') {
+    $viewer_dsid = 'MP4';
+    $mime = 'video/mp4';
+
+    $media_params = array(
+      'pid' => $object->id,
+    );
+    $media_params += array(
+      'media_tag' => 'video',
+    );
+    // Video player.
+    if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
+      $media_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
+      $media_params += array(
+        'mime' => $mime,
+        'url' => $media_url,
+      );
+    }
+    $media_viewer_type = 'islandora_video_viewers';
+  }
+
+  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'audio') {
+    $viewer_dsid = 'PROXY_MP3';
+    $mime = 'audio/mpeg';
+
+    $media_params = array(
+      'pid' => $object->id,
+    );
+    $media_params += array(
+      'media_tag' => 'audio',
+    );
+    // Audio player.
+    if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
+      $media_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
+      $media_params += array(
+        'mime' => $mime,
+        'url' => $media_url,
+      );
+    }
+    $media_viewer_type = 'islandora_audio_viewers';
+  }
+
+
+
+  // Thumbnail.
+  if (isset($object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN'])) {
+    $media_params += array(
+      'tn' => url("islandora/object/{$object->id}/datastream/TN/view", array('absolute' => TRUE)),
+    );
+  }
+
+  // TRANSCRIPT url.
+  if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TRANSCRIPT'])) {
+    $media_params += array(
+      'transcript_url' => url("islandora/object/{$object->id}/datastream/TRANSCRIPT/view", array('absolute' => TRUE)),
+    );
+  }
+
+  $viewer = islandora_get_viewer($media_params, $media_viewer_type , $object);
   $variables['islandora_content'] = '';
   if ($viewer) {
     $variables['islandora_content'] = $viewer;
   }
   else {
-    $variables['islandora_content'] = NULL;
-  }
+    $variables['islandora_content'] = <<<EOT
+<{$media_params['media_tag']} id="media_box" class="video-js vjs-default-skin"
+               controls preload="auto" width="50%" height="25%"
+               poster="{$media_params['tn']}">
+          <source src="{$media_params['url']}" type="{$media_params['mime']}" />
+          <track kind="captions" src="{$media_params['transcript_url']}" srclang="en" label="English" default>
+    </{$media_params['media_tag']}>
+EOT;
+}
   return array('' => $viewer);
 }
