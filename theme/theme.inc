@@ -154,7 +154,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   }
   else {
     $variables['islandora_content'] = <<<EOT
-<{$media_params['media_tag']} id="media_box" class="media-default-skin"
+<{$media_params['media_tag']} id="islandora-oralhistories-media-player" class="media-default-skin"
                controls preload="auto" width="50%" height="25%"
                poster="{$media_params['tn']}">
           <source src="{$media_params['url']}" type="{$media_params['mime']}" />
