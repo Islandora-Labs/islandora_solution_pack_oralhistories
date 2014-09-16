@@ -37,48 +37,59 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   $variables['metadata'] = islandora_retrieve_metadata_markup($object);
   $variables['description'] = islandora_retrieve_description_markup($object);
 
-dpm(variable_get('islandora_oralhistories_media_uploaded_type'));
-  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'video') {
-    $viewer_dsid = 'MP4';
-    $mime = 'video/mp4';
 
-    $media_params = array(
-      'pid' => $object->id,
-    );
-    $media_params += array(
-      'media_tag' => 'video',
-    );
-    // Video player.
-    if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
-      $media_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
-      $media_params += array(
-        'mime' => $mime,
-        'url' => $media_url,
+  try {
+    if (isset($object['MP4']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['MP4'])) {
+      $viewer_dsid = 'MP4';
+      $mime = 'video/mp4';
+      $media_params = array(
+        'pid' => $object->id,
       );
+      $media_params += array(
+        'media_tag' => 'video',
+      );
+
+      // Video player.
+      if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
+        $media_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
+        $media_params += array(
+          'mime' => $mime,
+          'url' => $media_url,
+        );
+      }
+      $media_viewer_type = 'islandora_video_viewers';
     }
-    $media_viewer_type = 'islandora_video_viewers';
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('Error retrieving datastream %s %t', array('%s' => $viewer_dsid, '%t' => $e->getMessage())), 'error', FALSE);
   }
 
-  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'audio') {
-    $viewer_dsid = 'PROXY_MP3';
-    $mime = 'audio/mpeg';
+  try {
+    if (isset($object['PROXY_MP3']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['PROXY_MP3'])) {
+      $viewer_dsid = 'PROXY_MP3';
+      $mime = 'audio/mpeg';
 
-    $media_params = array(
-      'pid' => $object->id,
-    );
-    $media_params += array(
-      'media_tag' => 'audio',
-    );
-    // Audio player.
-    if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
-      $media_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
-      $media_params += array(
-        'mime' => $mime,
-        'url' => $media_url,
+      $media_params = array(
+        'pid' => $object->id,
       );
+      $media_params += array(
+        'media_tag' => 'audio',
+      );
+      // Audio player.
+      if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
+        $media_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
+        $media_params += array(
+          'mime' => $mime,
+          'url' => $media_url,
+        );
+      }
+      $media_viewer_type = 'islandora_audio_viewers';
     }
-    $media_viewer_type = 'islandora_audio_viewers';
   }
+  catch (Exception $e) {
+    drupal_set_message(t('Error retrieving datastream %s %t', array('%s' => $viewer_dsid, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+
 
   // Thumbnail.
   if (isset($object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN'])) {
@@ -93,7 +104,6 @@ dpm(variable_get('islandora_oralhistories_media_uploaded_type'));
       'transcript_url' => url("islandora/object/{$object->id}/datastream/TRANSCRIPT/view", array('absolute' => TRUE)),
     );
   }
-  dpm($media_params);
   $viewer = islandora_get_viewer($media_params, $media_viewer_type , $object);
   $variables['islandora_content'] = '';
   if ($viewer) {
