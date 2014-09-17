@@ -43,7 +43,7 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Enable transcript display'),
     '#description' => t('Display transcript synchronously with the video or audio.'),
-    '#default_value' => variable_get('islandora_oralhistories_enbable_transcript_display', TRUE),
+    '#default_value' => variable_get('islandora_oralhistories_enbable_transcript_display', FALSE),
   );
 
   return system_settings_form($form);

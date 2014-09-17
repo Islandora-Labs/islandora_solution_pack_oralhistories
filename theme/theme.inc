@@ -37,7 +37,9 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   $variables['metadata'] = islandora_retrieve_metadata_markup($object);
   $variables['description'] = islandora_retrieve_description_markup($object);
 
-
+  // construct $variables['islandora_content'] dynamically.
+  $variables['islandora_content'] = '';
+  // get viewer for media file.
   try {
     if (isset($object['MP4']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['MP4'])) {
       $viewer_dsid = 'MP4';
@@ -90,7 +92,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     drupal_set_message(t('Error retrieving datastream %s %t', array('%s' => $viewer_dsid, '%t' => $e->getMessage())), 'error', FALSE);
   }
 
-
   // Thumbnail.
   if (isset($object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN'])) {
     $media_params += array(
@@ -105,19 +106,32 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     );
   }
   $viewer = islandora_get_viewer($media_params, $media_viewer_type , $object);
-  $variables['islandora_content'] = '';
+
   if ($viewer) {
     $variables['islandora_content'] = $viewer;
   }
   else {
     $variables['islandora_content'] = <<<EOT
 <{$media_params['media_tag']} id="islandora-oralhistories-media-player" class="media-default-skin"
-               controls preload="auto" width="50%" height="25%"
+               controls preload="auto" width="640px" height="264px"
                poster="{$media_params['tn']}">
           <source src="{$media_params['url']}" type="{$media_params['mime']}" />
           <track kind="captions" src="{$media_params['transcript_url']}" srclang="en" label="English" default>
     </{$media_params['media_tag']}>
 EOT;
 }
+  //dpm($object['TRANSCRIPT']->content, 'TRANSCRIPT datastream');
+  //dpm($object['TRANSCRIPT']->label, 'TRANSCRIPT label');
+  //dpm($viewer, 'viewer');
+  $js_settings = array(
+    'enbableTranscriptDisplay' => variable_get('islandora_oralhistories_enbable_transcript_display'),
+    'enableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
+    'transcriptContent' => $object['TRANSCRIPT']->content
+  );
+  if (variable_get('islandora_oralhistories_enbable_transcript_display') && $object->models[0] == 'islandora:oralhistoriesCModel' ) {
+    drupal_add_js(array('islandora_oralhistories' => $js_settings), 'setting');
+    drupal_add_js(drupal_get_path('module', 'islandora_oralhistories') . '/js/oralhistories.js');
+  }
+
   return array('' => $viewer);
 }
