@@ -7,12 +7,7 @@
     Drupal.behaviors.islandoraOralHistories = {
         attach: function (context, settings) {
            if (Drupal.settings.islandora_oralhistories.enbableTranscriptDisplay) {
-               $('.islandora-oralhistories-content', context).append('<div id="transcript-display"><h2>Transcript</h2><div id="transcript-content"></div></div>');
-               /*$('#transcript-content', context).once(function(){
-                   var t = Drupal.settings.islandora_oralhistories.transcriptContent.split("\n\n");
-                   console.log(t);
-                   loadTranscripts();
-               });*/
+               $('.islandora-oralhistories-content', context).append('<fieldset id="transcript-display" class="collapsible collapsed"><legend><span class="fieldset-legend"><a href="#" class="fieldset-title"><span class="fieldset-legend-prefix element-invisible">Show</span> Transcript</a><span class="summary"></span></span></legend><div id="transcript-content" class="fieldset-wrapper"></div></div></fieldset>');
                var t = Drupal.settings.islandora_oralhistories.transcriptContent.split("\n\n");
                console.log(t);
                loadTranscripts();
