@@ -42,19 +42,19 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   // get viewer for media file.
   try {
     if (isset($object['MP4']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['MP4'])) {
-      $viewer_dsid = 'MP4';
+      $media_dsid = 'MP4';
       $mime = 'video/mp4';
-      $media_params = array(
+      $viewer_params = array(
         'pid' => $object->id,
       );
-      $media_params += array(
+      $viewer_params += array(
         'media_tag' => 'video',
       );
 
       // Video player.
-      if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
-        $media_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
-        $media_params += array(
+      if (isset($object[$media_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$media_dsid])) {
+        $media_url = url("islandora/object/{$object->id}/datastream/$media_dsid/view");
+        $viewer_params += array(
           'mime' => $mime,
           'url' => $media_url,
         );
@@ -63,24 +63,24 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     }
   }
   catch (Exception $e) {
-    drupal_set_message(t('Error retrieving datastream %s %t', array('%s' => $viewer_dsid, '%t' => $e->getMessage())), 'error', FALSE);
+    drupal_set_message(t('Error retrieving datastream %s %t', array('%s' => $media_dsid, '%t' => $e->getMessage())), 'error', FALSE);
   }
 
   try {
     if (isset($object['PROXY_MP3']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['PROXY_MP3'])) {
-      $viewer_dsid = 'PROXY_MP3';
+      $media_dsid = 'PROXY_MP3';
       $mime = 'audio/mpeg';
 
-      $media_params = array(
+      $viewer_params = array(
         'pid' => $object->id,
       );
-      $media_params += array(
+      $viewer_params += array(
         'media_tag' => 'audio',
       );
       // Audio player.
-      if (isset($object[$viewer_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$viewer_dsid])) {
-        $media_url = url("islandora/object/{$object->id}/datastream/$viewer_dsid/view");
-        $media_params += array(
+      if (isset($object[$media_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$media_dsid])) {
+        $media_url = url("islandora/object/{$object->id}/datastream/$media_dsid/view");
+        $viewer_params += array(
           'mime' => $mime,
           'url' => $media_url,
         );
@@ -89,45 +89,58 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     }
   }
   catch (Exception $e) {
-    drupal_set_message(t('Error retrieving datastream %s %t', array('%s' => $viewer_dsid, '%t' => $e->getMessage())), 'error', FALSE);
+    drupal_set_message(t('Error retrieving datastream %s %t', array('%s' => $media_dsid, '%t' => $e->getMessage())), 'error', FALSE);
   }
 
   // Thumbnail.
   if (isset($object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN'])) {
-    $media_params += array(
+    $viewer_params += array(
       'tn' => url("islandora/object/{$object->id}/datastream/TN/view", array('absolute' => TRUE)),
     );
   }
 
   // TRANSCRIPT url.
   if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TRANSCRIPT'])) {
-    $media_params += array(
+    $viewer_params += array(
       'transcript_url' => url("islandora/object/{$object->id}/datastream/TRANSCRIPT/view", array('absolute' => TRUE)),
     );
   }
-  $viewer = islandora_get_viewer($media_params, $media_viewer_type , $object);
+  $viewer = islandora_get_viewer($viewer_params, $media_viewer_type , $object);
 
   if ($viewer) {
     $variables['islandora_content'] = $viewer;
   }
   else {
     $variables['islandora_content'] = <<<EOT
-<{$media_params['media_tag']} id="islandora-oralhistories-media-player" class="media-default-skin"
+<{$viewer_params['media_tag']} id="islandora-oralhistories-media-player" class="media-default-skin"
                controls preload="auto" width="640px" height="264px"
-               poster="{$media_params['tn']}">
-          <source src="{$media_params['url']}" type="{$media_params['mime']}" />
-          <track kind="captions" src="{$media_params['transcript_url']}" srclang="en" label="English" default>
-    </{$media_params['media_tag']}>
+               poster="{$viewer_params['tn']}">
+          <source src="{$viewer_params['url']}" type="{$viewer_params['mime']}" />
+          <track kind="captions" src="{$viewer_params['transcript_url']}" srclang="en" label="English" default>
+    </{$viewer_params['media_tag']}>
 EOT;
 }
-  //dpm($object['TRANSCRIPT']->content, 'TRANSCRIPT datastream');
-  //dpm($object['TRANSCRIPT']->label, 'TRANSCRIPT label');
-  //dpm($viewer, 'viewer');
+  $tracks= array();
+  foreach ($object as $datastream) {
+    if (preg_match('/TRANSCRIPT/', $datastream->id)) {
+      $tracks[] = array(
+        'dsid' => $datastream->id,
+        'file_name' => $datastream->label,
+        'content' => $datastream->content,
+        'source_url' => url("islandora/object/{$object->id}/datastream/$datastream->id/view", array('absolute' => TRUE)),
+      );
+    }
+  }
+  dpm($tracks, 'Track list');
+  dpm($object['TRANSCRIPT']->content, 'TRANSCRIPT datastream');
+  dpm($object['TRANSCRIPT']->label, 'TRANSCRIPT label');
+  dpm($viewer, 'viewer');
   $js_settings = array(
     'enbableTranscriptDisplay' => variable_get('islandora_oralhistories_enbable_transcript_display'),
     'enableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
-    'transcriptContent' => $object['TRANSCRIPT']->content
+    'tracks' => $tracks,
   );
+  dpm(variable_get('islandora_oralhistories_enable_caption_display'), 'caption display');
   if (variable_get('islandora_oralhistories_enbable_transcript_display') && $object->models[0] == 'islandora:oralhistoriesCModel' ) {
     drupal_add_js(array('islandora_oralhistories' => $js_settings), 'setting');
     drupal_add_js(drupal_get_path('module', 'islandora_oralhistories') . '/js/oralhistories.js');

@@ -39,7 +39,7 @@ function islandora_oralhistories_upload_form(array $form, array &$form_state) {
       '#title' => t('Transcript file'),
       '#type' => 'managed_file',
       '#required' => TRUE,
-      '#description' => t('Select transcript file to upload.<br/>Files must be less than <b>@size MB.</b><br/>Allowed file types: <b>@ext.</b>', array('@size' => $upload_size, '@ext' => $transcript_extensions[0])),
+      '#description' => t('Select transcript file to upload.<br/>File name must end with two-letter language code (valid BCP 47 language tag), like "en" for English.<br/>Files must be less than <b>@size MB.</b><br/>Allowed file types: <b>@ext.</b>', array('@size' => $upload_size, '@ext' => $transcript_extensions[0])),
       '#default_value' => isset($form_state['values']['transcript_file']) ? $form_state['values']['transcript_file'] : NULL,
       '#upload_location' => 'temporary://',
       '#upload_validators' => array(

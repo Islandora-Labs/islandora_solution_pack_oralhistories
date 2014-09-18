@@ -6,34 +6,109 @@
     //var myPlayer = videojs('islandora_videojs');
     Drupal.behaviors.islandoraOralHistories = {
         attach: function (context, settings) {
-           if (Drupal.settings.islandora_oralhistories.enbableTranscriptDisplay) {
-               $('.islandora-oralhistories-content', context).append('<fieldset id="transcript-display" class="collapsible collapsed"><legend><span class="fieldset-legend"><a href="#" class="fieldset-title"><span class="fieldset-legend-prefix element-invisible">Show</span> Transcript</a><span class="summary"></span></span></legend><div id="transcript-content" class="fieldset-wrapper"></div></div></fieldset>');
-               var t = Drupal.settings.islandora_oralhistories.transcriptContent.split("\n\n");
-               console.log(t);
-               loadTranscripts();
+            // add transcript collapsible panel on the page
+            var transcriptDispHtml = '<fieldset id="transcript-display" class="collapsible collapsed">' +
+                '<legend><span class="fieldset-legend">Transcript</span></legend>' +
+                '<div class="fieldset-wrapper"><div id="transcript-content"></div></div></fieldset>';
+            $('.islandora-oralhistories-content', context).once(function (){
+                $(this).append(transcriptDispHtml);
+            });
 
-           }
-        }
+            $('.islandora-oralhistories-content video', context).once('islandora_oralhistories').on('load', function(){
+
+                if (Drupal.settings.islandora_oralhistories.enbableTranscriptDisplay) {
+                    var enableCaption = Drupal.settings.islandora_oralhistories.enableCaptionDisplay;
+                    var tracksUploaded = Drupal.settings.islandora_oralhistories.tracks;
+                    var oVideo = $('.islandora-oralhistories-content video', context);
+                    var newTrackHtml = '';
+                    var langLabels = {
+                        en: 'English',
+                        fr: 'French',
+                        de: 'German'
+                    };
+                    if (enableCaption) {
+                        var trackType = 'captions';
+                    } else {
+                        var trackType = 'metadata';
+                    }
+
+                    for (i = 0; i<tracksUploaded.length; i++) {
+                        var fileName = tracksUploaded[i]['file_name'];
+                        var fnPart = fileName.split('.').shift();
+                        var langCode = fnPart.substr(fnPart.length-2);
+                        var srcUrl = tracksUploaded[i]['source_url'];
+                        newTrackHtml += '<track id="track' + i + '" kind="' + trackType + '" ';
+                        newTrackHtml += 'src="' + srcUrl + '" srclang="' + langCode + '" label="' + langLabels[langCode] + '" ';
+                        if (i == 0) {
+                            newTrackHtml += 'default>';
+                        } else {
+                            newTrackHtml += '>';
+                        }
+                    }
+
+                    oVideo.append(newTrackHtml);
+
+
+                    var myTextTracks = oVideo[0].textTracks;
+                    for (i = 0; i<myTextTracks.length; i++) {
+                        switch (myTextTracks[i].mode) {
+                            case 0:
+                                myTextTracks[i].mode = 1;
+                                break;
+                            case 'disabled':
+                                myTextTracks[i].mode = 'showing';
+                                break;
+                        }
+                    }
+
+
+
+                    setTimeout(loadTranscripts(), 1000);
+
+
+                } //end if (enbableTranscriptDisplay)
+
+            });
+
+
+
+        } // end attach function
 
     };
+
 
 
     // Helper functions.
     function loadTranscripts(){
-        var t = Drupal.settings.islandora_oralhistories.transcriptContent.split("\n\n");
-        t.shift();
-        var h = "<div>";
-        for(var i=0; i<t.length; i++) {
-            var c = parseLine(t[i]);
-
-            h += "<p><span id='transcript"+i+"'>"+c.text+"</span></p>";
-            transcripts.push(c);
+        var tTrack = $('#track0');
+        for (var i=0; i < tTrack.length; i++) {
+            var oTextTrack = tTrack[i].track;
+            switch (oTextTrack.mode) {
+                case 0:
+                    oTextTrack.mode = 1;
+                    break;
+                case 'disabled':
+                    oTextTrack.mode = 'showing';
+                    break;
+            }
         }
-        h += "</div>";
-        $('#transcript-content').html(h);
 
 
+            var oCueList = tTrack[0].track.cues;
+        var transHtml = '';
+        for (i = 0; i < oCueList.length; i++) {
+            var sText = oCueList[i].text;        // get text from first cue
+            var sTime = oCueList[i].startTime;   // get start time from first cue
+            var eTime = oCueList[i].endTime;
+            transHtml += '<p><span id="transcript-line' + i + '" data-start-time="' + sTime + '" ';
+            transHtml += 'data-end-time="' + eTime + '">' + sText + '</span></p>';
+        }
+
+        $('#transcript-content').html(transHtml);
     };
+
+
+
 
     function parseLine(l) {
         var lines = l.split("\n");
