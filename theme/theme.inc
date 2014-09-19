@@ -102,7 +102,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     );
   }
 
-  // get all transcript datastreams information if more than one.
+  // get all transcript datastreams if more than one.
   $tracks= array();
   foreach ($object as $datastream) {
     if (preg_match('/TRANSCRIPT/', $datastream->id)) {
@@ -127,28 +127,26 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   $viewer_params += array(
     'enable_caption_display' => variable_get('islandora_oralhistories_enable_caption_display'),
   );
-  $variables['islandora_content']['transcript_display'] = variable_get('islandora_oralhistories_enbable_transcript_display');
+
   $viewer = islandora_get_viewer($viewer_params, $media_viewer_type , $object);
   if ($viewer) {
     $variables['islandora_content']['viewer'] = $viewer;
   }
   else {
-    $variables['islandora_content']['viewer'] = <<<EOT
-    <{$viewer_params['media_tag']} id="islandora-oralhistories-media-player" class="media-default-skin"
-               controls preload="auto" width="640px" height="264px"
-               poster="{$viewer_params['tn']}">
-          <source src="{$viewer_params['url']}" type="{$viewer_params['mime']}" />
-          <track kind="captions" src="{$viewer_params['transcript_url']}" srclang="en" label="English" default>
-    </{$viewer_params['media_tag']}>
-EOT;
-}
+    $viewer = theme('islandora_native_html5', array('params' => $viewer_params));
+    $variables['islandora_content']['viewer'] = $viewer;
+  }
+
+
+  // Add $transcript_display variable for transcript display.
+  $variables['islandora_content']['transcript_display'] = variable_get('islandora_oralhistories_enbable_transcript_display');
 
   $js_settings = array(
     'enbableTranscriptDisplay' => variable_get('islandora_oralhistories_enbable_transcript_display'),
     'enableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
     'tracks' => $tracks,
   );
-  dpm(variable_get('islandora_oralhistories_enable_caption_display'), 'caption display');
+
   if (variable_get('islandora_oralhistories_enbable_transcript_display') && $object->models[0] == 'islandora:oralhistoriesCModel' ) {
     drupal_add_js(array('islandora_oralhistories' => $js_settings), 'setting');
     drupal_add_js(drupal_get_path('module', 'islandora_oralhistories') . '/js/oralhistories.js');
@@ -157,6 +155,16 @@ EOT;
   return array('' => $viewer);
 }
 
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function islandora_oralhistories_preprocess_islandora_native_html5(array &$variables) {
+  $params = $variables['params'];
+  $variables['tn'] = $params['tn'];
+  $variables['sources'][] = array('url' => $params['url'], 'mime' => $params['mime']);
+  $variables['tracks'] = $params['tracks'];
+  $variables['enable_caption_display'] = $params['enable_caption_display'];
+}
 
 
 /**
@@ -176,7 +184,6 @@ function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
  */
 function islandora_oralhistories_process_islandora_videojs(array &$variables) {
   $params = $variables['params'];
-
   $variables['tracks'] = $params['tracks'];
   $variables['enable_caption_display'] = $params['enable_caption_display'];
 }

@@ -108,6 +108,11 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
       'pattern' => 'islandora_oralhistories__',
       'variables' => array('object' => NULL),
     ),
+    'islandora_native_html5' => array(
+      'template' => 'theme/islandora-native-html5',
+      'file' => 'theme/theme.inc',
+      'variables' => array('object' => NULL, 'params' => NULL),
+    ),
   );
 }
 
