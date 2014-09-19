@@ -6,13 +6,7 @@
     //var myPlayer = videojs('islandora_videojs');
     Drupal.behaviors.islandoraOralHistories = {
         attach: function (context, settings) {
-            // add transcript collapsible panel on the page
-            var transcriptDispHtml = '<fieldset id="transcript-display" class="collapsible collapsed">' +
-                '<legend><span class="fieldset-legend">Transcript</span></legend>' +
-                '<div class="fieldset-wrapper"><div id="transcript-content"></div></div></fieldset>';
-            $('.islandora-oralhistories-content', context).once(function (){
-                $(this).append(transcriptDispHtml);
-            });
+
 
             $('.islandora-oralhistories-content video', context).once('islandora_oralhistories').on('load', function(){
 
@@ -46,7 +40,7 @@
                         }
                     }
 
-                    oVideo.append(newTrackHtml);
+                    //oVideo.append(newTrackHtml);
 
 
                     var myTextTracks = oVideo[0].textTracks;

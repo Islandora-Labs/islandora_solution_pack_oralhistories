@@ -20,10 +20,18 @@
 
 <div class="islandora-oralhistories-object islandora" vocab="http://schema.org/" prefix="dcterms: http://purl.org/dc/terms/" typeof="VideoObject">
   <div class="islandora-oralhistories-content-wrapper clearfix">
-    <?php if ($islandora_content): ?>
+    <?php if ($islandora_content['viewer']): ?>
       <div class="islandora-oralhistories-content">
-        <?php print $islandora_content; ?>
+        <?php print $islandora_content['viewer']; ?>
       </div>
+    <?php endif; ?>
+    <?php if ($islandora_content['transcript_display']): ?>
+      <fieldset id="transcript-display" class="collapsible collapsed">
+        <legend><span class="fieldset-legend">Transcript</span></legend>
+        <div class="fieldset-wrapper">
+          <div id="transcript-content"></div>
+        </div>
+      </fieldset>
     <?php endif; ?>
   </div>
   <div class="islandora-oralhistories-metadata">
