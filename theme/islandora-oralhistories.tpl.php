@@ -29,7 +29,8 @@
       <fieldset id="transcript-display" class="collapsible collapsed">
         <legend><span class="fieldset-legend">Transcript</span></legend>
         <div class="fieldset-wrapper">
-          <div id="transcript-content"></div>
+          <div id="transcript-content">
+          </div>
         </div>
       </fieldset>
     <?php endif; ?>

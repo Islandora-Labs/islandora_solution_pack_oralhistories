@@ -141,9 +141,11 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   // Add $transcript_display variable for transcript display.
   $variables['islandora_content']['transcript_display'] = variable_get('islandora_oralhistories_enbable_transcript_display');
 
+
+  // pass settings to javascript.
   $js_settings = array(
     'enbableTranscriptDisplay' => variable_get('islandora_oralhistories_enbable_transcript_display'),
-    'enableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
+    'enbableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
     'tracks' => $tracks,
   );
 
@@ -187,3 +189,4 @@ function islandora_oralhistories_process_islandora_videojs(array &$variables) {
   $variables['tracks'] = $params['tracks'];
   $variables['enable_caption_display'] = $params['enable_caption_display'];
 }
+
