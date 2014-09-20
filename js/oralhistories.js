@@ -31,7 +31,7 @@
 
                      */
 
-                    setTimeout(loadTranscripts(), 1000);
+                    //loadTranscripts();
 
                 } //end if (enbableTranscriptDisp)
             });

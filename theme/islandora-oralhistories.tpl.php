@@ -30,6 +30,7 @@
         <legend><span class="fieldset-legend">Transcript</span></legend>
         <div class="fieldset-wrapper">
           <div id="transcript-content">
+            <?php print $islandora_content['transcript_content']; ?>
           </div>
         </div>
       </fieldset>
