@@ -56,7 +56,7 @@ function parse_vtt($data = '') {
   } // end foreach
   $i = 0;
   foreach ($cues as $cue) {
-    $output .= '<p><span id="transcript' . $i . '" ';
+    $output .= '<p><span class="transcript" id="transcript' . $i . '" ';
     $output .= 'data-start-time="' . $cue['start_time'] . '" ';
     $output .= 'data-end-time="' . $cue['end_time'] . '">';
     $output .= $cue['text'] . '</span></p>';
