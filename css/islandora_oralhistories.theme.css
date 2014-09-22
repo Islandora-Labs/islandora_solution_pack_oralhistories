@@ -1,4 +1,4 @@
-.islandora-video-content {
+.islandora-oralhistories-content {
   background-color: #F2F2F2;
   border: 1px solid #ddd;
   -webkit-border-radius: 5px;
@@ -10,18 +10,18 @@
   float: left;
 }
 
-.islandora-video-content img {
+.islandora-oralhistories-content img {
   margin: 0;
   display: block;
 }
 
-.islandora-video-metadata {
+.islandora-oralhistories-metadata {
   display: block;
   clear: both;
 }
 
 /* This is kept for legacy reasons. */
-dl.islandora-video-fields {
+dl.islandora-oralhistories-fields {
   width: 100%;
 }
 
@@ -29,43 +29,65 @@ dl.islandora-metadata-fields {
     width:100%;
 }
 
-.islandora-video-metadata dt {
+.islandora-oralhistories-metadata dt {
   font-weight: normal;
   text-align: right;
   font-weight: bold;
   padding-right: 0;
 }
 
-.islandora-video-metadata dd {
+.islandora-oralhistories-metadata dd {
   padding-left: 40px;
 }
 
 
-.islandora-video-metadata dt,
-.islandora-video-metadata dd {
+.islandora-oralhistories-metadata dt,
+.islandora-oralhistories-metadata dd {
   border-top: 1px solid #e5e5e5;
 }
 
-.islandora-video-metadata dt.first,
-.islandora-video-metadata dd.first {
+.islandora-oralhistories-metadata dt.first,
+.islandora-oralhistories-metadata dd.first {
   border-top: 0;
 }
 
-body.two-sidebars .islandora-video-sidebar {
+body.two-sidebars .islandora-oralhistories-sidebar {
     clear: both;
     width: 100%;
 }
 
 @media all and (min-width: 768px) {
 
-  body.no-sidebars .islandora-video-sidebar {
+  body.no-sidebars .islandora-oralhistories-sidebar {
     padding-left: 20px;
   }
 
-  body.no-sidebars .islandora-video-sidebar {
+  body.no-sidebars .islandora-oralhistories-sidebar {
     float: right; /* LTR */
     width: 35%;
     clear: none;
   }
 
+}
+
+/* Styles for #transcript-content */
+#transcript-content span {
+    display: inline;
+    padding: 4px 2px;
+    line-height: 20px;
+    cursor: pointer;
+    color: #333;
+}
+#transcript-content span.current {
+    background: #92DFE5;
+    color: #000;
+}
+#transcript-content span:hover {
+    color: #E41;
+    text-decoration: underline;
+}
+#transcript-content span em {
+    font-style: normal;
+    background: #666;
+    color: #FFF;
 }
