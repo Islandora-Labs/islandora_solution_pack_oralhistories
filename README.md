@@ -5,6 +5,26 @@
 Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT datastream through the Islandora interface.
 Displays transcript content along with video or audio file.
 
+## Requirements
+
+This module requires the following modules/libraries:
+
+* [Islandora](https://github.com/islandora/islandora)
+* [Tuque](https://github.com/islandora/tuque)
+* [Islandora Video Solution Pack](https://github.com/Islandora/islandora_solution_pack_video)
+* [Islandora Audio Solution Pack](https://github.com/Islandora/islandora_solution_pack_audio)
+
+## Installation
+
+Install as usual, see [this](https://drupal.org/documentation/install/modules-themes/modules-7) for further information.
+
+## Configuration
+
+Select a viewer in Administration » Islandora » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories) and enable transcript or caption display.
+The module currently doesn't support JW Player as viewer.
+
+## Notes
+
 **Caution:** This Solution Pack is currently in early development stage. It only supports transcript file in [WebVTT](http://dev.w3.org/html5/webvtt/) format.
 You can use [Microsoft builder](http://ie.microsoft.com/testdrive/Graphics/CaptionMaker/) to produce vtt files quickly or use your text editor to produce
 vtt files according to WebVTT standard.
@@ -22,28 +42,7 @@ WEBVTT
 00:07.474 --> 00:10.577
 <Curry> a tubelike structure that launches from the Earth.
 ```
-
-**NOTE**: When naming the vtt file, the last three characters should be a "_" followed by valid BCP 47 two-letter language tag, e.g. mytransctript_en.vtt is an English transcript file.
-
-## Requirements
-
-This module requires the following modules/libraries:
-
-* [Islandora](https://github.com/islandora/islandora)
-* [Tuque](https://github.com/islandora/tuque)
-* [Islandora Video Solution Pack](https://github.com/Islandora/islandora_solution_pack_video)
-* [Islandora Audio Solution Pack](https://github.com/Islandora/islandora_solution_pack_audio)
-
-
-## Installation
-
-Install as usual, see [this](https://drupal.org/documentation/install/modules-themes/modules-7) for further information.
-
-## Configuration
-
-Select a viewer in Administration » Islandora » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories) and enable transcript or caption display.
-The module currently doesn't support JW Player as viewer.
-
+When naming the vtt file, the last three characters should be a "_" followed by valid BCP 47 two-letter language tag, e.g. mytransctript_en.vtt is an English transcript file.
 
 ## Troubleshooting/Issues
 
