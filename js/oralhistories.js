@@ -5,15 +5,13 @@
     var transcripts = [];
     Drupal.behaviors.islandoraOralHistories = {
         attach: function (context, settings) {
-            var enableCaption = Drupal.settings.islandora_oralhistories.enbableTranscriptDisplay;
-            var racksUploaded = Drupal.settings.islandora_oralhistories.tracks;
+            var enableCaptionDisp = Drupal.settings.islandora_oralhistories.enbableCaptionDisplay;
+            var tracksUploaded = Drupal.settings.islandora_oralhistories.tracks;
             var enableTranscriptDisp = Drupal.settings.islandora_oralhistories.enbableTranscriptDisplay;
             var oVideo = $('.islandora-oralhistories-content', context).find('video');
             var oTrackList = oVideo[0].textTracks;
             var transcripts = [];
-            var prevTrans = -1;
             var myPlayer = oVideo[0];
-            var query = "";
 
 
             oVideo.on('loadedmetadata', function(){

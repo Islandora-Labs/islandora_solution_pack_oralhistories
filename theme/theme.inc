@@ -41,7 +41,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   // construct $variables['islandora_content'] dynamically.
   $variables['islandora_content'] = array();
   $viewer_params = array();
-  $media_viewer_type = '';
 
   // get viewer for media file.
   try {
@@ -156,7 +155,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     drupal_add_js(array('islandora_oralhistories' => $js_settings), 'setting');
     drupal_add_js(drupal_get_path('module', 'islandora_oralhistories') . '/js/oralhistories.js');
   }
-
   return array('' => $viewer);
 }
 
