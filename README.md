@@ -2,9 +2,26 @@
 
 ## Introduction
 
-Adds all required Fedora objects to allow users to ingest and retrieve Oral Histories (video/audio) files through the Islandora interface
+Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT datastream through the Islandora interface.
+Displays transcript content along with video or audio file.
 
-**This module requires libfaac. Libfaac is not free for commercial use.**
+_Caution: This Solution Pack is currently in early development. It only supports transcript file in in [WebVTT](http://dev.w3.org/html5/webvtt/) format.
+You can use [Microsoft builder](http://ie.microsoft.com/testdrive/Graphics/CaptionMaker/) to produce vtt files quickly or use your text editor to produce
+vtt files as long as they are valid.
+
+Here is a simple example of vtt file:
+'''javascript
+WEBVTT
+
+00:00.040 --> 00:02.503
+<Curry>A rocket is a launch vehicle.
+
+00:02.503 --> 00:07.474
+<Alice>It can also be a space capsule, usually in the form of a cylinder or
+
+00:07.474 --> 00:10.577
+<Curry>a tubelike structure that launches from the Earth.
+'''
 
 ## Requirements
 
@@ -12,13 +29,8 @@ This module requires the following modules/libraries:
 
 * [Islandora](https://github.com/islandora/islandora)
 * [Tuque](https://github.com/islandora/tuque)
-* FFmpeg - Compliation guides: [Ubuntu](http://ffmpeg.org/trac/ffmpeg/wiki/CentosCompilationGuide
-), [CentOS](https://ffmpeg.org/trac/ffmpeg/wiki/UbuntuCompilationGuide).
-* ffmpeg2theora (optional) - [Instructions](https://wiki.duraspace.org/display/ISLANDORA6122/Chapter+12+-+Installing+Solution+Pack+Dependencies)
-
-FFmpeg version 1.1.1 has been tested. It can be downloaded [here](http://www.ffmpeg.org/releases/ffmpeg-1.1.1.tar.gz)
-
-**NOTE**: remove the `--enable-x11grab` flag on the ffmpeg configure.
+* [Islandora Video Solution Pack](https://github.com/Islandora/islandora_solution_pack_video)
+* [Islandora Audio Solution Pack](https://github.com/Islandora/islandora_solution_pack_audio)
 
 
 ## Installation
@@ -27,9 +39,14 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 
 ## Configuration
 
+Select a viewer in Administration » Islandora » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories) and enable transcript or caption display.
+The module currently doesn't support JW Player as viewer.
 
 
 ## Troubleshooting/Issues
+
+When Caption display is true, video.js doesn't behave the same on Firefox and Chrome. On Firefox, it requires to click the caption menu once to start showing.
+On Chrome, it displays automatically.
 
 Having problems or solved a problem? Check out the Islandora google groups for a solution.
 
