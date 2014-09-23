@@ -71,6 +71,11 @@ body.two-sidebars .islandora-oralhistories-sidebar {
 }
 
 /* Styles for #transcript-content */
+#transcript-content {
+    overflow: auto;
+    height: 300px;
+    position: relative;
+}
 #transcript-content span {
     display: inline;
     padding: 4px 2px;

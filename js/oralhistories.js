@@ -3,7 +3,6 @@
  */
 (function($){
     var transcripts = [];
-    //var myPlayer = videojs('islandora_videojs');
     Drupal.behaviors.islandoraOralHistories = {
         attach: function (context, settings) {
             var enableCaption = Drupal.settings.islandora_oralhistories.enbableTranscriptDisplay;
@@ -11,11 +10,10 @@
             var enableTranscriptDisp = Drupal.settings.islandora_oralhistories.enbableTranscriptDisplay;
             var oVideo = $('.islandora-oralhistories-content', context).find('video');
             var oTrackList = oVideo[0].textTracks;
-            var oCues = oTrackList[0].cues;
-            var transcriptContent = $('#transcript-content');
             var transcripts = [];
-            console.log(oVideo[0]);
-
+            var prevTrans = -1;
+            var myPlayer = oVideo[0];
+            var query = "";
 
 
             oVideo.on('loadedmetadata', function(){
@@ -34,22 +32,44 @@
                         }
                     }
                 } //end if (enbableTranscriptDisp)
+
             });
 
 
-
             // Sync transcript display with media.
-            transcriptContent.on("click",function(e) {
+            $('#transcript-content').on("click",function(e) {
                 if(e.target.id.indexOf("transcript") == 0) {
                     var i = Number(e.target.id.replace("transcript",""));
-                    oVideo[0].currentTime = $('#transcript' + i).attr('data-start-time');
-                    oVideo[0].play();
+                    myPlayer.currentTime = $('#transcript' + i).attr('data-start-time');
+                    myPlayer.play();
                 }
             });
 
 
 
+            myPlayer.addEventListener('timeupdate', function(){
+                transcripts = $('#transcript-content').find('span[id^="transcript"]');
+                var curTime = myPlayer.currentTime;
+                for (i = 0; i<transcripts.length; i++) {
+                    var begin = $('#transcript'+i).attr('data-start-time');
+                    var end = $('#transcript'+i).attr('data-end-time');
+                    if (curTime > begin && curTime < end) {
+                        if (!($('#transcript'+i).hasClass('current'))) {
+                            $('#transcript'+i).addClass('current');
+                            var height = document.getElementById('transcript-content').offsetHeight;
+                            var curTop = document.getElementById('transcript' + i).offsetTop;
+                            if (curTop > height / 2) {
+                                document.getElementById('transcript-content').scrollTop = curTop - height / 2;
+                            }
 
+                        }
+                        break;
+                    } else {
+                        $('#transcript'+i).removeClass('current');
+                    }
+                }
+
+            });
 
         } // end attach function
 
