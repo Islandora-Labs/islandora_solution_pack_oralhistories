@@ -5,23 +5,25 @@
 Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT datastream through the Islandora interface.
 Displays transcript content along with video or audio file.
 
-_Caution: This Solution Pack is currently in early development. It only supports transcript file in in [WebVTT](http://dev.w3.org/html5/webvtt/) format.
+**Caution:** This Solution Pack is currently in early development. It only supports transcript file in in [WebVTT](http://dev.w3.org/html5/webvtt/) format.
 You can use [Microsoft builder](http://ie.microsoft.com/testdrive/Graphics/CaptionMaker/) to produce vtt files quickly or use your text editor to produce
 vtt files as long as they are valid.
 
 Here is a simple example of vtt file:
-'''javascript
+```
 WEBVTT
 
 00:00.040 --> 00:02.503
-<Curry>A rocket is a launch vehicle.
+<Curry> A rocket is a launch vehicle.
 
 00:02.503 --> 00:07.474
-<Alice>It can also be a space capsule, usually in the form of a cylinder or
+<Alice> It can also be a space capsule, usually in the form of a cylinder or
 
 00:07.474 --> 00:10.577
-<Curry>a tubelike structure that launches from the Earth.
-'''
+<Curry> a tubelike structure that launches from the Earth.
+```
+
+When naming the vtt file, the last three characters should be a "_" followed by valid BCP 47 language tag, e.g. mytransctript_en.vtt for an English transcript file.
 
 ## Requirements
 
