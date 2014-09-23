@@ -63,7 +63,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
           'url' => $media_url,
         );
       }
-      $media_viewer_type = 'islandora_video_viewers';
     }
   }
   catch (Exception $e) {
@@ -89,7 +88,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
           'url' => $media_url,
         );
       }
-      $media_viewer_type = 'islandora_audio_viewers';
     }
   }
   catch (Exception $e) {
@@ -130,7 +128,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'enable_caption_display' => variable_get('islandora_oralhistories_enable_caption_display'),
   );
 
-  $viewer = islandora_get_viewer($viewer_params, $media_viewer_type , $object);
+  $viewer = islandora_get_viewer($viewer_params, 'islandora_oralhistories_viewers' , $object);
   if ($viewer) {
     $variables['islandora_content']['viewer'] = $viewer;
   }
