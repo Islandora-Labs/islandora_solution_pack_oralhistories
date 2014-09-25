@@ -5,6 +5,7 @@
     <source src="<?php print $source['url']; ?>" type='<?php print $source['mime']; ?>'>
   <?php endforeach; ?>
 
+<?php if (isset($tracks)): ?>
   <?php foreach ($tracks as $key => $track): ?>
     <?php if ($key == 0): ?>
       <?php if ($enable_caption_display): ?>
@@ -19,5 +20,6 @@
         kind="subtitles" label="<?php print $track['lang_code']; ?>">
     <?php endif; ?>
   <?php endforeach; ?>
+<?php endif; ?>
   <p> HTML5 Video/Audio is not supported by this browser.</p>
 </video>
