@@ -8,6 +8,7 @@
   width: auto;
   max-width: 100%;
   float: left;
+  width: 100%;
 }
 
 .islandora-oralhistories-content img {
@@ -70,16 +71,35 @@ body.two-sidebars .islandora-oralhistories-sidebar {
 
 }
 
+
+/* Styles for HTML5 video/audio */
+.islandora-oralhistories-content .media-default-skin {
+    background-color: #000;
+    font-size: 10px;
+    padding: 0;
+    position: relative;
+    vertical-align: middle;
+    width: 100%;
+}
+
 /* Styles for #transcript-content */
+#transcript-display * {
+    box-sizing: content-box;
+}
+
 #transcript-content {
     overflow: auto;
-    height: 300px;
+    height: 260px;
     position: relative;
+}
+
+#transcript-content p {
+    margin: 0 0 0.4em;
 }
 #transcript-content span {
     display: inline;
     padding: 4px 2px;
-    line-height: 20px;
+    line-height: 1em;
     cursor: pointer;
     color: #333;
 }
