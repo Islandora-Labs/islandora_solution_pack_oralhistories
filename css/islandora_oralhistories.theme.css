@@ -83,6 +83,10 @@ body.two-sidebars .islandora-oralhistories-sidebar {
 }
 
 /* Styles for #transcript-content */
+#transcript-display {
+    margin-top: 15px;
+}
+
 #transcript-display * {
     box-sizing: content-box;
 }
