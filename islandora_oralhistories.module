@@ -148,6 +148,9 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
   if (variable_get('islandora_oralhistories_media_uploaded_type') == 'video') {
     if (module_exists('islandora_video') && function_exists('islandora_video_islandora_sp_videoCModel_islandora_derivative')) {
       $derivatives = islandora_video_islandora_sp_videoCModel_islandora_derivative();
+    } else {
+      drupal_set_message(t('Error in creating video derivatives. Cannot find required functions.'), 'error', FALSE);
+      exit;
     }
   }
 
@@ -155,6 +158,9 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
   if (variable_get('islandora_oralhistories_media_uploaded_type') == 'audio') {
     if (module_exists('islandora_video') && function_exists('islandora_video_islandora_sp_videoCModel_islandora_derivative')) {
       $derivatives = islandora_audio_islandora_sp_audiocmodel_islandora_derivative();
+    } else {
+      drupal_set_message(t('Error in creating audio derivatives. Cannot find required functions.'), 'error', FALSE);
+      exit;
     }
   }
 
