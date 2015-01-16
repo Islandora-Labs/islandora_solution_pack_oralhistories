@@ -26,12 +26,9 @@ function islandora_oralhistories_uninstall() {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   $variables = array(
     'islandora_oralhistories_viewers',
-    'islandora_oralhistories_ffmpeg_path',
-    'islandora_oralhistories_retain_original',
-    'islandora_oralhistories_make_archive',
-    'islandora_oralhistories_make_mp4_locally',
-    'islandora_oralhistories_make_ogg_locally',
-    'islandora_oralhistories_ffmpeg2theora_path',
+    'islandora_oralhistories_media_uploaded_type',
+    'islandora_oralhistories_enable_caption_display',
+    'islandora_oralhistories_enbable_transcript_display'
   );
   array_map('variable_del', $variables);
   islandora_install_solution_pack('islandora_oralhistories', 'uninstall');
