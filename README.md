@@ -25,22 +25,32 @@ The module currently doesn't support JW Player as viewer.
 
 ## Notes
 
-**Caution:** This Solution Pack is currently in early development stage. It only supports transcript file in [WebVTT](http://dev.w3.org/html5/webvtt/) format.
-You can use [Microsoft builder](http://ie.microsoft.com/testdrive/Graphics/CaptionMaker/) to produce vtt files quickly or use your text editor to produce
-vtt files according to WebVTT standard.
+**Caution:** This Solution Pack is currently in early development stage. It only supports transcript file in a flat xml format like below:
 
-Here is a simple example of vtt file:
+Here is a simple xml file for transcript:
 ```
-WEBVTT
+<?xml version="1.0" encoding="UTF-8"?>
+<cues>
+    <!-- If the entire transcript has one speaker only, use 'solespeaker' element.
+         Then skip 'speaker' element in 'cue' element level. But DO NOT use them in both places. If 'solespeaker' element
+         presents in the document, following 'speaker' elements will be skipped. -->
+    <solespeaker>One Speaker</solespeaker>
+    <!-- At least one 'transcript' or 'annotation' emlement must present in a 'cue' element. -->
+    <cue>
+        <speaker>Different Speaker</speaker>
+        <!-- 'start' and 'end' elements are start time and end time in seconds for the cue. -->
+        <start>0.000</start>
+        <end>12.124</end>
+        <!-- By default the content in 'transcript' or 'annotation' is in English. For non-english content,
+             an attribute 'xml:lang' should present with two-letter valid BCP 47 language tag. Examples:
+             xml:lang="fr" indicting content in French, xml:lang="de" indicating content in German. -->
+        <transcript>This is the transcript text content.</transcript>
+        <annotation>This is the annotation content.</annotation>
+    </cue>
 
-00:00.040 --> 00:02.503
-<Curry> A rocket is a launch vehicle.
+    <!-- add more cues with above structure.-->
 
-00:02.503 --> 00:07.474
-<Alice> It can also be a space capsule, usually in the form of a cylinder or
-
-00:07.474 --> 00:10.577
-<Curry> a tubelike structure that launches from the Earth.
+</cues>
 ```
 When naming the vtt file, the last three characters should be a "_" followed by valid BCP 47 two-letter language tag, e.g. mytransctript_en.vtt is an English transcript file.
 
