@@ -19,7 +19,7 @@
 function islandora_oralhistories_upload_form(array $form, array &$form_state) {
   $upload_size = min((int) ini_get('post_max_size'), (int) ini_get('upload_max_filesize'));
   $media_extensions = array('ogg mp4 mov qt m4v avi mkv wav mp3');
-  $transcript_extensions = array('vtt xml');
+  $transcript_extensions = array('xml');
   return array(
     'media_file' => array(
       '#title' => t('Video or Audio'),
@@ -39,7 +39,7 @@ function islandora_oralhistories_upload_form(array $form, array &$form_state) {
       '#title' => t('Transcript file'),
       '#type' => 'managed_file',
       '#required' => TRUE,
-      '#description' => t('Select transcript file to upload.<br/>File name must end with two-letter language code (valid BCP 47 language tag), like "en" for English.<br/>Files must be less than <b>@size MB.</b><br/>Allowed file types: <b>@ext.</b>', array('@size' => $upload_size, '@ext' => $transcript_extensions[0])),
+      '#description' => t('Select transcript file to upload.<br/>Files must be less than <b>@size MB.</b><br/>Allowed file types: <b>@ext.</b>', array('@size' => $upload_size, '@ext' => $transcript_extensions[0])),
       '#default_value' => isset($form_state['values']['transcript_file']) ? $form_state['values']['transcript_file'] : NULL,
       '#upload_location' => 'temporary://',
       '#upload_validators' => array(
