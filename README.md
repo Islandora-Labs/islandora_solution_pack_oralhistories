@@ -1,5 +1,7 @@
 # Oral Histories Solution Pack
 
+**In Development, will not work**
+
 ## Introduction
 
 Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT datastream through the Islandora interface.
@@ -52,7 +54,7 @@ Here is a simple xml file for transcript:
 
 </cues>
 ```
-When naming the vtt file, the last three characters should be a "_" followed by valid BCP 47 two-letter language tag, e.g. mytransctript_en.vtt is an English transcript file.
+
 
 ## Troubleshooting/Issues
 
