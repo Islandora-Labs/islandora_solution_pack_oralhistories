@@ -150,7 +150,7 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
       $derivatives = islandora_video_islandora_sp_videoCModel_islandora_derivative();
     } else {
       drupal_set_message(t('Error in creating video derivatives. Cannot find required functions.'), 'error', FALSE);
-      exit;
+      drupal_exit();
     }
   }
 
@@ -160,7 +160,7 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
       $derivatives = islandora_audio_islandora_sp_audiocmodel_islandora_derivative();
     } else {
       drupal_set_message(t('Error in creating audio derivatives. Cannot find required functions.'), 'error', FALSE);
-      exit;
+      drupal_exit();
     }
   }
 
