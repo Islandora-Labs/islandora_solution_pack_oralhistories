@@ -123,26 +123,21 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     );
   }
 
-  $viewer_params += array(
-    'enable_caption_display' => variable_get('islandora_oralhistories_enable_caption_display'),
-  );
-
-  $viewer = islandora_get_viewer($viewer_params, 'islandora_oralhistories_viewers' , $object);
-  if ($viewer) {
-    $variables['islandora_content']['viewer'] = $viewer;
-  }
-  else {
-    $viewer = theme('islandora_native_html5', array('params' => $viewer_params));
-    $variables['islandora_content']['viewer'] = $viewer;
-  }
-
-
   // Add $transcript_display variable for transcript display.
   $variables['islandora_content']['transcript_display'] = variable_get('islandora_oralhistories_enbable_transcript_display');
 
   if (variable_get('islandora_oralhistories_enbable_transcript_display') && !empty($tracks)) {
-    $variables['islandora_content']['transcript_content'] = build_transcript_content($tracks);
+    $viewer_params += array(
+      'transcript_content' => build_transcript_content($tracks),
+    );
   }
+
+  $viewer_params += array(
+    'enable_caption_display' => variable_get('islandora_oralhistories_enable_caption_display'),
+  );
+  $viewer = theme('islandora_native_html5', array('params' => $viewer_params));
+  $variables['islandora_content']['viewer'] = $viewer;
+
 
   // pass settings to javascript.
   $js_settings = array(
@@ -167,6 +162,8 @@ function islandora_oralhistories_preprocess_islandora_native_html5(array &$varia
   $variables['sources'][] = array('url' => $params['url'], 'mime' => $params['mime']);
   $variables['tracks'] = $params['tracks'];
   $variables['enable_caption_display'] = $params['enable_caption_display'];
+  $variables['transcript_content'] = $params['transcript_content'];
+
 }
 
 

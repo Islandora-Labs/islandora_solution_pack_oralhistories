@@ -26,16 +26,16 @@
       </div>
     <?php endif; ?>
   </div>
-  <?php if ($islandora_content['transcript_display']): ?>
-    <fieldset id="transcript-display" class="collapsible collapsed clearfix">
-      <legend><span class="fieldset-legend">Transcript</span></legend>
-      <div class="fieldset-wrapper">
-        <div id="transcript-content">
-          <?php print $islandora_content['transcript_content']; ?>
-        </div>
-      </div>
-    </fieldset>
-  <?php endif; ?>
+<!--  --><?php //if ($islandora_content['transcript_display']): ?>
+<!--    <fieldset id="transcript-display" class="collapsible collapsed clearfix">-->
+<!--      <legend><span class="fieldset-legend">Transcript</span></legend>-->
+<!--      <div class="fieldset-wrapper">-->
+<!--        <div id="transcript-content">-->
+<!--          --><?php //print $islandora_content['transcript_content']; ?>
+<!--        </div>-->
+<!--      </div>-->
+<!--    </fieldset>-->
+<!--  --><?php //endif; ?>
   <div class="islandora-oralhistories-metadata">
     <?php print $description; ?>
     <?php if ($parent_collections): ?>

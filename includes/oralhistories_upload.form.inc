@@ -19,7 +19,7 @@
 function islandora_oralhistories_upload_form(array $form, array &$form_state) {
   $upload_size = min((int) ini_get('post_max_size'), (int) ini_get('upload_max_filesize'));
   $media_extensions = array('ogg mp4 mov qt m4v avi mkv wav mp3');
-  $transcript_extensions = array('xml');
+  $transcript_extensions = array('vtt xml');
   return array(
     'media_file' => array(
       '#title' => t('Video or Audio'),

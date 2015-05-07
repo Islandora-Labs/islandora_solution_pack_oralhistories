@@ -20,17 +20,17 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   $form = array();
   // Get viewer table.
-  $viewer_table = islandora_viewers_form('islandora_oralhistories_viewers', 'video/mp4');
-  $form += $viewer_table;
-
-  // Viewer stuff.
-  $form['actions'] = array('#type' => 'actions');
-  $form['actions']['reset'] = array(
-    '#type' => 'submit',
-    '#value' => t('Reset to defaults'),
-    '#weight' => 1,
-    '#submit' => array('islandora_oralhistories_admin_submit'),
-  );
+//  $viewer_table = islandora_viewers_form('islandora_oralhistories_viewers', 'video/mp4');
+//  $form += $viewer_table;
+//
+//  // Viewer stuff.
+//  $form['actions'] = array('#type' => 'actions');
+//  $form['actions']['reset'] = array(
+//    '#type' => 'submit',
+//    '#value' => t('Reset to defaults'),
+//    '#weight' => 1,
+//    '#submit' => array('islandora_oralhistories_admin_submit'),
+//  );
 
 
   $form['islandora_oralhistories_enable_caption_display'] = array(
