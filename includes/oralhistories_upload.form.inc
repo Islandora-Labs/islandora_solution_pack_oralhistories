@@ -80,7 +80,7 @@ function islandora_oralhistories_upload_form(array $form, array &$form_state) {
 function islandora_oralhistories_upload_form_submit(array $form, array &$form_state) {
   $object = $form_state['islandora']['objects'][0];
 
-  // Create OJB datastream
+  // Create OBJ datastream
   if (empty($object['OBJ'])) {
     $ds = $object->constructDatastream('OBJ', 'M');
     $object->ingestDatastream($ds);
