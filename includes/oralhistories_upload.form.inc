@@ -67,7 +67,24 @@ function islandora_oralhistories_upload_form(array $form, array &$form_state) {
   );
 }
 
-
+/**
+ * Validate transcript xml file.
+ *
+ * @param array $form
+ *   The drupal form.
+ * @param array $form_state
+ *   The drupal form state.
+ */
+function islandora_oralhistories_upload_form_validate(array $form, array &$form_state) {
+  // Simple validation on transcript xml file.
+  $transcript_file = file_load($form_state['values']['transcript_file']);
+  if ($transcript_file->filemime == 'application/xml') {
+    $cues = simplexml_load_file(drupal_realpath($transcript_file->uri));
+    if ($cues->solespeaker && $cues->cue[0]->speaker) {
+      form_set_error('transcript_file', t('solespeaker and speaker element cannot be used together.'));
+    }
+  }
+}
 
 /**
  * Submit handler, adds uploaded file to the Oral Histories object.
