@@ -49,7 +49,7 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#title' => t('Tiers'),
     '#type' => 'textarea',
     '#rows' => 10,
-    '#default_value' => list_allowed_values_string(variable_get('transcripts_viewer_tiers', $default_tiers)),
+    '#default_value' => list_allowed_values_string(variable_get('islandora_oralhistories_transcripts_viewer_tiers', $default_tiers)),
     '#description' => t('Enter a list of tiers, one per line, each in the form TIER_ID|TIER_NAME. TIER_ID is the element name in the transcript xml file.'),
     '#required' => TRUE,
   );
@@ -76,6 +76,7 @@ function islandora_oralhistories_admin_submit($form, &$form_state) {
     case 'edit-reset':
       variable_del('islandora_oralhistories_enable_caption_display');
       variable_del('islandora_oralhistories_enbable_transcript_display');
+      variable_del('islandora_oralhistories_transcripts_viewer_tiers');
       break;
   }
 
