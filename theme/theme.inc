@@ -19,6 +19,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   drupal_add_js('misc/collapse.js');
   $object = $variables['object'];
   $repository = $object->repository;
+  $pid = $object->id;
   // We should eventually remove the DC object and dc_array code as it only
   // exists to not break legacy implementations.
   try {
@@ -100,20 +101,26 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     );
   }
 
-  // get all transcript datastreams if more than one.
+  // get all transcript datastreams if more than one?
   $tracks= array();
   foreach ($object as $datastream) {
     if (preg_match('/TRANSCRIPT/', $datastream->id)) {
-      $fn = pathinfo($datastream->label, PATHINFO_FILENAME);
-      $lang_code = substr($fn, -2);
+      $track = array();
+
+      $source_url = url("islandora/object/{$object->id}/datastream/$datastream->id/view", array('absolute' => TRUE));
+
+      // @todo: how to determine language code? default to 'en'.
+      $lang_code = 'en';
+
+      $track['pid'] = $pid;
+      $track['dsid'] = $datastream->id;
+      $track['file_name'] = $datastream->label;
+      $track['lang_code'] = $lang_code;
+      $track['source_url'] =  $source_url;
+
+
       if (isset($object[$datastream->id]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$datastream->id])) {
-        $tracks[] = array(
-          'dsid' => $datastream->id,
-          'lang_code' => $lang_code,
-          'file_name' => $datastream->label,
-          'content' => $datastream->content,
-          'source_url' => url("islandora/object/{$object->id}/datastream/$datastream->id/view", array('absolute' => TRUE)),
-        );
+        $tracks[] = $track;
       }
     }
   }
@@ -123,18 +130,31 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     );
   }
 
-  // Add $transcript_display variable for transcript display.
-  $variables['islandora_content']['transcript_display'] = variable_get('islandora_oralhistories_enbable_transcript_display');
-
   if (variable_get('islandora_oralhistories_enbable_transcript_display') && !empty($tracks)) {
-    $viewer_params += array(
-      'transcript_content' => build_transcript_content($tracks),
-    );
+    foreach ($tracks as $track) {
+      $ext = strtolower(pathinfo($track['file_name'], PATHINFO_EXTENSION));
+      switch ($ext) {
+        case 'vtt':
+          $viewer_params += array(
+            'transcript_content' => vtt_transcript_content($track['source_url']),
+          );
+          break;
+
+        case 'xml':
+          $viewer_params += array(
+            'transcript_content' => xml_transcript_content($track['source_url']),
+          );
+          break;
+      }
+    }
+
   }
 
   $viewer_params += array(
     'enable_caption_display' => variable_get('islandora_oralhistories_enable_caption_display'),
+    'enable_transcript_display' => variable_get('islandora_oralhistories_enbable_transcript_display'),
   );
+
   $viewer = theme('islandora_native_html5', array('params' => $viewer_params));
   $variables['islandora_content']['viewer'] = $viewer;
 
@@ -162,6 +182,7 @@ function islandora_oralhistories_preprocess_islandora_native_html5(array &$varia
   $variables['sources'][] = array('url' => $params['url'], 'mime' => $params['mime']);
   $variables['tracks'] = $params['tracks'];
   $variables['enable_caption_display'] = $params['enable_caption_display'];
+  $variables['enable_transcript_display'] = $params['enable_transcript_display'];
   $variables['transcript_content'] = $params['transcript_content'];
 
 }

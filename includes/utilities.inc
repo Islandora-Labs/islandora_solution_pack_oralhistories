@@ -8,22 +8,16 @@
 /**
  * Helper function to build transcript content.
  *
- * @param array $params
- *   Array with tracks information.
+ * @param string $url
+ *   string with file url.
  *
  * @return string
- *   All cues
+ *   All cues in vtt file.
  */
-function build_transcript_content($params = array()) {
-  $output = '';
-  if ($params[0]['dsid'] == 'TRANSCRIPT') {
-    $exts = strtolower(pathinfo($params[0]['file_name'], PATHINFO_EXTENSION));
-    switch ($exts) {
-      case 'vtt':
-        $output = parse_vtt($params[0]['content']);
-        break;
-    }
-  }
+function vtt_transcript_content($url) {
+  $content = file_get_contents($url);
+  $output = parse_vtt($content);
+
   return $output;
 }
 
@@ -77,4 +71,15 @@ function time_seconds($time = '') {
     $sec += (int)($t[count($t)-3]) * 3600;
   }
   return $sec;
+}
+
+
+/**
+ * Helper function to prepare transcript content display.
+ *
+ */
+function xml_transcript_content($data = '') {
+  $output = '';
+
+  return $output;
 }
