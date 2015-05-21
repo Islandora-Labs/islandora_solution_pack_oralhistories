@@ -17,9 +17,13 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   module_load_include('inc', 'islandora_oralhistories', 'includes/utilities');
   drupal_add_js('misc/form.js');
   drupal_add_js('misc/collapse.js');
+
+  // Add required css and js files.
+  drupal_add_css('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.4/css/bootstrap-select.min.css', 'external');
+  drupal_add_js('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.4/js/bootstrap-select.min.js', 'external');
+
   $object = $variables['object'];
   $repository = $object->repository;
-  $pid = $object->id;
   // We should eventually remove the DC object and dc_array code as it only
   // exists to not break legacy implementations.
   try {
@@ -43,7 +47,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   $variables['islandora_content'] = array();
   $viewer_params = array();
 
-  // get viewer for media file.
+  // prepare viewer params for media file.
   try {
     if (isset($object['MP4']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['MP4'])) {
       $media_dsid = 'MP4';
@@ -112,7 +116,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       // @todo: how to determine language code? default to 'en'.
       $lang_code = 'en';
 
-      $track['pid'] = $pid;
       $track['dsid'] = $datastream->id;
       $track['file_name'] = $datastream->label;
       $track['lang_code'] = $lang_code;
@@ -141,8 +144,10 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
           break;
 
         case 'xml':
+          $trid = 'or-99000'; //PID replace : with -
+          $tiers = variable_get('islandora_oralhistories_transcripts_viewer_tiers');
           $viewer_params += array(
-            'transcript_content' => xml_transcript_content($track['source_url']),
+            'transcript_content' => xml_transcript_content($trid, $tiers),
           );
           break;
       }
@@ -155,9 +160,10 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'enable_transcript_display' => variable_get('islandora_oralhistories_enbable_transcript_display'),
   );
 
-  $viewer = theme('islandora_native_html5', array('params' => $viewer_params));
-  $variables['islandora_content']['viewer'] = $viewer;
+//  $viewer = theme('islandora_native_html5', array('params' => $viewer_params));
 
+  $viewer = theme('islandora_html5_video', array('params' => $viewer_params));
+  $variables['islandora_content']['viewer'] = $viewer;
 
   // pass settings to javascript.
   $js_settings = array(
@@ -209,3 +215,33 @@ function islandora_oralhistories_process_islandora_videojs(array &$variables) {
   $variables['enable_caption_display'] = $params['enable_caption_display'];
 }
 
+function theme_islandora_html5_video($vars){
+  dpm($vars, 'vars');
+  $trid = "trid-or-99000"; // trid-PID with : being replaced by -
+  $url = $vars['params']['url'];
+  $out = "<div data-transcripts-role='video' data-transcripts-id='{$trid}'>";
+  $out .= "<div align='center' class='embed-responsive embed-responsive-4by3'>";
+  $out .= "<video class='embed-responsive-item' controls>";
+  $out .= "<source src='$url' />";
+  $out .= "</video>";
+  $out .= "</div>";
+  $out .= "</div>";
+  $out .= $vars['params']['transcript_content'];
+  return $out;
+}
+
+function theme_islandora_link_tcu($vars) {
+  $minutes = floor ($vars['element']['#time'] / 60);
+  $secs = $vars['element']['#time'] % 60;
+  $time = sprintf ("%d:%02d", $minutes, $secs);
+  $classes = 'btn btn-default';
+  $classes .= $vars['element']['#timecoded'] ? ' timed' : ' untimed';
+  $out = "<a href='" . $vars['element']['#linkurl'] . "' class='" . $classes ."' role='button'>";
+  $out .= "<span class='glyphicon glyphicon-play'></span> ";
+  $out .= $time;
+  if (isset($vars['element']['#text'])) {
+    $out .= " " . $vars['element']['#text'];
+  }
+  $out .= "</a>";
+  return $out;
+}

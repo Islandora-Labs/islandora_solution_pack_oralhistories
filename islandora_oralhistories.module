@@ -106,12 +106,34 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
       'template' => 'theme/islandora-oralhistories',
       'file' => 'theme/theme.inc',
       'pattern' => 'islandora_oralhistories__',
-      'variables' => array('object' => NULL),
+      'variables' => array(
+        'object' => NULL
+      ),
     ),
     'islandora_native_html5' => array(
       'template' => 'theme/islandora-native-html5',
       'file' => 'theme/theme.inc',
-      'variables' => array('object' => NULL, 'params' => NULL),
+      'variables' => array(
+        'object' => NULL,
+        'params' => NULL
+      ),
+    ),
+    'islandora_transcript_scroller' => array(
+      'template' => 'theme/islandora-transcript-scroller',
+      'file' => 'theme/theme.inc',
+    ),
+    'islandora_html5_video' => array(
+      'path' => drupal_get_path('module', 'islandora_oralhistories') . '/theme',
+      'file' => 'theme.inc',
+      'variables' => array(
+        'object' => NULL,
+        'params' => NULL
+      ),
+    ),
+    'islandora_link_tcu' => array(
+      'path' => drupal_get_path('module', 'islandora_oralhistories') . '/theme',
+      'file' => 'theme.inc',
+      'render element' => 'element',
     ),
   );
 }
@@ -166,4 +188,5 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
 
   return $derivatives;
 }
+
 

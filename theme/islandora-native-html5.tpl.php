@@ -1,4 +1,4 @@
-<div class="col-sm-6 col-md-6">
+<div class="col-sm-12 col-md-12">
   <video id="islandora-oralhistories-media-player" class="media-default-skin" controls
        preload="auto"  width="640" height="264" poster="<?php print $tn; ?>" data-setup="{}">
   <?php foreach ($sources as $source): ?>
@@ -24,15 +24,20 @@
   <p> HTML5 Video/Audio is not supported by this browser.</p>
   </video>
 </div>
-<div class="col-sm-6 col-md-6">
+<!--<div class="col-sm-12 col-md-12">-->
+<!--  --><?php //if ($transcript_content): ?>
+<!--    <fieldset id="transcript-display" class="collapsible clearfix">-->
+<!--      <legend><span class="fieldset-legend">Transcript</span></legend>-->
+<!--      <div class="fieldset-wrapper">-->
+<!--        <div id="transcript-content">-->
+<!--          --><?php //print $transcript_content; ?>
+<!--        </div>-->
+<!--      </div>-->
+<!--    </fieldset>-->
+<!--  --><?php //endif; ?>
+<!--</div>-->
+<div class="col-sm-12 col-md-12" id="transcript-content">
   <?php if ($transcript_content): ?>
-    <fieldset id="transcript-display" class="collapsible clearfix">
-      <legend><span class="fieldset-legend">Transcript</span></legend>
-      <div class="fieldset-wrapper">
-        <div id="transcript-content">
           <?php print $transcript_content; ?>
-        </div>
-      </div>
-    </fieldset>
   <?php endif; ?>
 </div>

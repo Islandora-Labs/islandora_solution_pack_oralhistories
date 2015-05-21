@@ -78,8 +78,53 @@ function time_seconds($time = '') {
  * Helper function to prepare transcript content display.
  *
  */
-function xml_transcript_content($data = '') {
-  $output = '';
+function xml_transcript_content($trid, $tiers) {
+  // how will options get through when function is not called as part of page request?
+  $options = array(
+    'term' => isset($_GET['term']) ? '"' . $_GET['term'] . '"' : '',
+  );
 
-  return $output;
+  // prefix 'or_' to match our solr fields.
+  $solr_tiers = array();
+  foreach ($tiers as $key => $value) {
+    $solr_key = 'or_' . $key;
+    $solr_tiers[$solr_key] = trim($value);
+  }
+
+  variable_set('transcripts_ui_tiers',$solr_tiers);
+
+  $ui = transcripts_ui_ui('islandora_oralhistories', $trid, $options);
+
+
+  if ($ui->tcuCount > 0) {
+    return theme('islandora_transcript_scroller', transcripts_ui_render($ui));
+  } else {
+    return t("This transcript is still being processed for display.");
+  }
+}
+
+function islandora_oralhistories_transcripts_ui_transcript($ui) {
+  $highlights = NULL;
+
+  $tcus = array();
+
+  $tcus[0] = new stdClass();
+  $tcus[0]->id = 'or-99000-1'; // tcu id
+  $tcus[0]->speaker = 'Anna';
+  $tcus[0]->start = 0.2;
+  $tcus[0]->end = 22.2;
+  $tcus[0]->or_transcript = 'How is everything going?';
+  $tcus[0]->or_annotation = 'smiling...';
+  $tcus[0]->trid = 'or-99000'; //PID replace : with -
+
+  $tcus[1] = new stdClass();
+  $tcus[1]->id = 'or-99000-2'; // tcu id
+  $tcus[1]->speaker = 'Peter';
+  $tcus[1]->start = 21;
+  $tcus[1]->end = 35.2;
+  $tcus[1]->or_transcript = 'Hey I am fine! How about you?';
+  $tcus[1]->or_annotation = 'Bang noise... stop reading...';
+  $tcus[1]->trid = 'or-99000'; //PID replace : with -
+
+  return array($tcus, $highlights);
 }
