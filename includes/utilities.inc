@@ -108,23 +108,47 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
 
   $tcus = array();
 
-  $tcus[0] = new stdClass();
-  $tcus[0]->id = 'or-99000-1'; // tcu id
-  $tcus[0]->speaker = 'Anna';
-  $tcus[0]->start = 0.2;
-  $tcus[0]->end = 22.2;
-  $tcus[0]->or_transcript = 'How is everything going?';
-  $tcus[0]->or_annotation = 'smiling...';
-  $tcus[0]->trid = 'or-99000'; //PID replace : with -
+  // Now we query solr fields to buid $tcus
+  $pid = str_replace('-', ':', $ui->shorttrid);
 
-  $tcus[1] = new stdClass();
-  $tcus[1]->id = 'or-99000-2'; // tcu id
-  $tcus[1]->speaker = 'Peter';
-  $tcus[1]->start = 21;
-  $tcus[1]->end = 35.2;
-  $tcus[1]->or_transcript = 'Hey I am fine! How about you?';
-  $tcus[1]->or_annotation = 'Bang noise... stop reading...';
-  $tcus[1]->trid = 'or-99000'; //PID replace : with -
+  $qualifier = 'PID:' . '"' . $pid . '"';
+  // solr fields to be returned.
+  $fields = array('PID', 'or_cue_id', 'or_speaker', 'or_start', 'or_end');
+  foreach ($ui->tiers as $key => $value) {
+    $tier[] = $key;
+  }
+  $fields = array_merge($fields, $tier);
+  $params = array(
+    'fl' => $fields,
+  );
 
+  // Build solr query.
+  $query = "$qualifier AND " . 'RELS_EXT_hasModel_uri_mt:"islandora:oralhistoriesCModel"';
+
+  $url = parse_url(variable_get('islandora_solr_url', 'localhost:8080/solr'));
+  $solr = new Apache_Solr_Service($url['host'], $url['port'], $url['path'] . '/');
+  $solr->setCreateDocuments(FALSE);
+  try {
+    $results = $solr->search($query, 0, 1000, $params);
+    $json = json_decode($results->getRawResponse(), TRUE);
+  }
+  catch (Exception $e) {
+    watchdog_exception('Islandora Oralhistories', $e, 'Got an exception while searching transcripts for callback.', array(), WATCHDOG_ERROR);
+  }
+
+  $doc = $json['response']['docs'][0] ? $json['response']['docs'][0] : NULL;
+  $counter = count($doc['or_cue_id']);
+
+  for ($i = 0; $i < $counter; $i++) {
+    $tcus[$i] = new stdClass();
+    $tcus[$i]->trid = str_replace(':', '-', $doc['PID']);
+    $tcus[$i]->id = $doc['or_cue_id'][$i];
+    $tcus[$i]->speaker = $doc['or_speaker'][$i];
+    $tcus[$i]->start = (float)$doc['or_start'][$i];
+    $tcus[$i]->end = (float)$doc['or_end'][$i];
+    foreach ($tier as $t) {
+      $tcus[$i]->$t = $doc[$t][$i];
+    }
+  }
   return array($tcus, $highlights);
 }

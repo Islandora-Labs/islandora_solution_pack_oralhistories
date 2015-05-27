@@ -144,7 +144,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
           break;
 
         case 'xml':
-          $trid = 'or-99000'; //PID replace : with -
+          $trid = str_replace(':', '-', $object->id);
           $tiers = variable_get('islandora_oralhistories_transcripts_viewer_tiers');
           $viewer_params += array(
             'transcript_content' => xml_transcript_content($trid, $tiers),
@@ -216,8 +216,7 @@ function islandora_oralhistories_process_islandora_videojs(array &$variables) {
 }
 
 function theme_islandora_html5_video($vars){
-  dpm($vars, 'vars');
-  $trid = "trid-or-99000"; // trid-PID with : being replaced by -
+  $trid ='trid-' . str_replace(':', '-', $vars['params']['pid']); // trid-PID with : being replaced by -
   $url = $vars['params']['url'];
   $out = "<div data-transcripts-role='video' data-transcripts-id='{$trid}'>";
   $out .= "<div align='center' class='embed-responsive embed-responsive-4by3'>";
