@@ -228,19 +228,3 @@ function theme_islandora_html5_video($vars){
   $out .= $vars['params']['transcript_content'];
   return $out;
 }
-
-function theme_islandora_link_tcu($vars) {
-  $minutes = floor ($vars['element']['#time'] / 60);
-  $secs = $vars['element']['#time'] % 60;
-  $time = sprintf ("%d:%02d", $minutes, $secs);
-  $classes = 'btn btn-default';
-  $classes .= $vars['element']['#timecoded'] ? ' timed' : ' untimed';
-  $out = "<a href='" . $vars['element']['#linkurl'] . "' class='" . $classes ."' role='button'>";
-  $out .= "<span class='glyphicon glyphicon-play'></span> ";
-  $out .= $time;
-  if (isset($vars['element']['#text'])) {
-    $out .= " " . $vars['element']['#text'];
-  }
-  $out .= "</a>";
-  return $out;
-}
