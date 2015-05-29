@@ -185,7 +185,16 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
       drupal_exit();
     }
   }
-
+  if (variable_get('islandora_oralhistories_make_vtt', TRUE)) {
+    $derivatives[] = array(
+      'source_dsid' => 'TRANSCRIPT',
+      'destination_dsid' => 'MEDIATRACK',
+      'function' => array(
+        'islandora_oralhistories_create_vtt',
+      ),
+      'file' => drupal_get_path('module', 'islandora_oralhistories') . '/includes/derivatives.inc',
+    );
+  }
   return $derivatives;
 }
 

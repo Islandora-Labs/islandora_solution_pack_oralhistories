@@ -73,6 +73,15 @@ function time_seconds($time = '') {
   return $sec;
 }
 
+/**
+ * Helper function to convert seconds to mm:ss.ttt.
+ *
+ */
+function time_mm_ss($seconds) {
+  $t = round((float)$seconds, 3);
+  return sprintf('%02d:%02d.%03d', ($t/60), ($t%60), (fmod($t, 1.0) * 1000));
+}
+
 
 /**
  * Helper function to prepare transcript content display.

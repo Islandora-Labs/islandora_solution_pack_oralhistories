@@ -216,7 +216,6 @@ function islandora_oralhistories_process_islandora_videojs(array &$variables) {
 }
 
 function theme_islandora_html5_video($vars){
-  dpm($vars, 'vars from theme_islandora_html5_video');
   $trid ='trid-' . str_replace(':', '-', $vars['params']['pid']); // trid-PID with : being replaced by -
   $url = $vars['params']['url'];
   $out = "<div data-transcripts-role='video' data-transcripts-id='{$trid}'>";
