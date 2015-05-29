@@ -27,7 +27,6 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
     elseif ($object['TRANSCRIPT']->mimetype == 'application/xml') {
       $transcript = $object['TRANSCRIPT']->content;
       $cues = simplexml_load_string($transcript);
-      dpm($cues, '$cues');
       $vtt = "WEBVTT" . PHP_EOL;
       // A blank line, which is equivalent to two consecutive newlines.
       $vtt .= PHP_EOL;
@@ -38,12 +37,7 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
         $vtt .= (string)$cue->transcript . PHP_EOL;
         $vtt .= PHP_EOL;
       }
-      if ($cues->cue->transcript['xml:lang']) {
-        $dsid = 'MEDIATRACK-' . strtoupper((string)$cues->cue->transcript['xml:lang']);
-      }
-      else {
-        $dsid = 'MEDIATRACK';
-      }
+      $dsid = 'MEDIATRACK';
       $filename = $dsid . '.vtt';
       $dest = file_build_uri($filename);
       $file = file_save_data($vtt, $dest, FILE_EXISTS_REPLACE);
