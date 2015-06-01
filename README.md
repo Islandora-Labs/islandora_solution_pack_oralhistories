@@ -13,6 +13,7 @@ This module requires the following modules/libraries:
 
 * [Islandora](https://github.com/islandora/islandora)
 * [Tuque](https://github.com/islandora/tuque)
+* [Islandora Solr Search](https://github.com/Islandora/islandora_solr_search)
 * [Islandora Video Solution Pack](https://github.com/Islandora/islandora_solution_pack_video)
 * [Islandora Audio Solution Pack](https://github.com/Islandora/islandora_solution_pack_audio)
 * [Transcript UI](https://github.com/pinedrop/transcripts_ui)
