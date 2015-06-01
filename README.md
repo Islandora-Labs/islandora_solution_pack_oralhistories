@@ -1,6 +1,6 @@
 # Oral Histories Solution Pack
 
-**In Development, will not work**
+**Still in active development, may break sometimes**
 
 ## Introduction
 
@@ -15,6 +15,7 @@ This module requires the following modules/libraries:
 * [Tuque](https://github.com/islandora/tuque)
 * [Islandora Video Solution Pack](https://github.com/Islandora/islandora_solution_pack_video)
 * [Islandora Audio Solution Pack](https://github.com/Islandora/islandora_solution_pack_audio)
+* [Transcript UI](https://github.com/pinedrop/transcripts_ui)
 
 ## Installation
 
