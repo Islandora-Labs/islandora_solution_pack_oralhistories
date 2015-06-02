@@ -225,12 +225,20 @@ function islandora_oralhistories_process_islandora_videojs(array &$variables) {
 function theme_islandora_html5_video_stack($vars){
   $trid ='trid-' . str_replace(':', '-', $vars['params']['pid']); // trid-PID with : being replaced by -
   $url = $vars['params']['url'];
+  $enable_transcript_display = $vars['params']['enable_caption_display'];
   $tracks = $vars['params']['tracks'];
-  dpm($tracks);
   $out = "<div data-transcripts-role='video' data-transcripts-id='{$trid}'>";
   $out .= "<div align='center' class='embed-responsive embed-responsive-4by3'>";
   $out .= "<video class='embed-responsive-item' controls>";
   $out .= "<source src='$url' />";
+  if (isset($tracks)) {
+    foreach ($tracks as $key => $track) {
+      if ($enable_transcript_display) {
+        $out .= '<track id="track' . key($track) . '" src="' . $track['source_url'] . '" srclang="' . $track['lang_code'] . '"
+             kind="captions" label="' . $track['lang_code']. '" default>';
+      }
+    }
+  }
   $out .= "</video>";
   $out .= "</div>";
   $out .= "</div>";
