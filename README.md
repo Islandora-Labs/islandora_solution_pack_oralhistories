@@ -45,9 +45,8 @@ Here is a simple xml file for transcript:
         <!-- 'start' and 'end' elements are start time and end time in seconds for the cue. -->
         <start>0.000</start>
         <end>12.124</end>
-        <!-- By default the content in 'transcript' or 'annotation' is in English. For non-english content,
-             an attribute 'xml:lang' should present with two-letter valid BCP 47 language tag. Examples:
-             xml:lang="fr" indicting content in French, xml:lang="de" indicating content in German. -->
+        <!-- 'transcript' and/or 'annotation' are default content tiers of the cue. Extra tier(s) can be added as long as they are listed in the configuration page. 
+         'transcript' element is required if 'Enable captions/subtitles display' is configured to be true. -->
         <transcript>This is the transcript text content.</transcript>
         <annotation>This is the annotation content.</annotation>
     </cue>
@@ -55,6 +54,7 @@ Here is a simple xml file for transcript:
     <!-- add more cues with above structure.-->
 
 </cues>
+
 ```
 
 
