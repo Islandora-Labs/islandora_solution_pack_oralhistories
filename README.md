@@ -36,17 +36,17 @@ Here is a simple xml file for transcript:
 <?xml version="1.0" encoding="UTF-8"?>
 <cues>
     <!-- If the entire transcript has one speaker only, use 'solespeaker' element.
-         Then skip 'speaker' element in 'cue' element level. But DO NOT use them in both places. If 'solespeaker' element
-         presents in the document, following 'speaker' elements will be skipped. -->
+         Then skip 'speaker' element in 'cue' element level. But DO NOT use them in both places. 
+         If 'solespeaker' element presents in the document, following 'speaker' elements will be ignored. -->
     <solespeaker>One Speaker</solespeaker>
-    <!-- At least one 'transcript' or 'annotation' emlement must present in a 'cue' element. -->
     <cue>
         <speaker>Different Speaker</speaker>
         <!-- 'start' and 'end' elements are start time and end time in seconds for the cue. -->
         <start>0.000</start>
         <end>12.124</end>
-        <!-- 'transcript' and/or 'annotation' are default content tiers of the cue. Extra tier(s) can be added as long as they are listed in the configuration page. 
-         'transcript' element is required if 'Enable captions/subtitles display' is configured to be true. -->
+        <!-- 'transcript' and/or 'annotation' are default content tiers of the cue. 
+              Extra tier(s) can be added as long as they are listed in the configuration page. 
+             'transcript' element is required if 'Enable captions/subtitles display' is configured to be true. -->
         <transcript>This is the transcript text content.</transcript>
         <annotation>This is the annotation content.</annotation>
     </cue>
@@ -54,7 +54,6 @@ Here is a simple xml file for transcript:
     <!-- add more cues with above structure.-->
 
 </cues>
-
 ```
 
 
