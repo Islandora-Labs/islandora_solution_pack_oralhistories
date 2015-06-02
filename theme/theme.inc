@@ -107,8 +107,17 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
   // get all transcript datastreams if more than one?
   $tracks= array();
+  $transcript_mimetype = '';
   foreach ($object as $datastream) {
     if (preg_match('/TRANSCRIPT/', $datastream->id)) {
+      if (strpos($datastream->mimetype,'xml') !== false) {
+        $transcript_mimetype = 'xml';
+      }
+      else {
+        $transcript_mimetype = 'vtt';
+      }
+    }
+    if (preg_match('/MEDIATRACK/', $datastream->id)) {
       $track = array();
 
       $source_url = url("islandora/object/{$object->id}/datastream/$datastream->id/view", array('absolute' => TRUE));
@@ -117,7 +126,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       $lang_code = 'en';
 
       $track['dsid'] = $datastream->id;
-      $track['file_name'] = $datastream->label;
       $track['lang_code'] = $lang_code;
       $track['source_url'] =  $source_url;
 
@@ -135,8 +143,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
   if (variable_get('islandora_oralhistories_enbable_transcript_display') && !empty($tracks)) {
     foreach ($tracks as $track) {
-      $ext = strtolower(pathinfo($track['file_name'], PATHINFO_EXTENSION));
-      switch ($ext) {
+      switch ($transcript_mimetype) {
         case 'vtt':
           $viewer_params += array(
             'transcript_content' => vtt_transcript_content($track['source_url']),
@@ -162,7 +169,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
 //  $viewer = theme('islandora_native_html5', array('params' => $viewer_params));
 
-  $viewer = theme('islandora_html5_video', array('params' => $viewer_params));
+  $viewer = theme('islandora_html5_video_stack', array('params' => $viewer_params));
   $variables['islandora_content']['viewer'] = $viewer;
 
   // pass settings to javascript.
@@ -215,9 +222,11 @@ function islandora_oralhistories_process_islandora_videojs(array &$variables) {
   $variables['enable_caption_display'] = $params['enable_caption_display'];
 }
 
-function theme_islandora_html5_video($vars){
+function theme_islandora_html5_video_stack($vars){
   $trid ='trid-' . str_replace(':', '-', $vars['params']['pid']); // trid-PID with : being replaced by -
   $url = $vars['params']['url'];
+  $tracks = $vars['params']['tracks'];
+  dpm($tracks);
   $out = "<div data-transcripts-role='video' data-transcripts-id='{$trid}'>";
   $out .= "<div align='center' class='embed-responsive embed-responsive-4by3'>";
   $out .= "<video class='embed-responsive-item' controls>";

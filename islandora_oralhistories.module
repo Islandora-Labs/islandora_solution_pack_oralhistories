@@ -122,7 +122,7 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
       'template' => 'theme/islandora-transcript-scroller',
       'file' => 'theme/theme.inc',
     ),
-    'islandora_html5_video' => array(
+    'islandora_html5_video_stack' => array(
       'path' => drupal_get_path('module', 'islandora_oralhistories') . '/theme',
       'file' => 'theme.inc',
       'variables' => array(
