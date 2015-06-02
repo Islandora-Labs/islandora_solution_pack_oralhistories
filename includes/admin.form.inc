@@ -26,14 +26,14 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
   $form['islandora_oralhistories_make_vtt'] = array(
     '#type' => 'checkbox',
     '#title' => t('Create WEBVTT file for captions or subtitles.'),
-    '#description' => t('Will create WEBVTT file from transcript xml file.'),
+    '#description' => t('Will create WEBVTT file from transcript xml file based on "transcript" tier.'),
     '#default_value' => variable_get('islandora_oralhistories_make_vtt', FALSE),
   );
 
   $form['islandora_oralhistories_enable_caption_display'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable captions/subtitles display'),
-    '#description' => t('Display captions or subtitles on video player when .vtt file exists.'),
+    '#description' => t('Display captions or subtitles on video player when WEBVTT file exists.'),
     '#default_value' => variable_get('islandora_oralhistories_enable_caption_display', FALSE),
   );
   $form['islandora_oralhistories_enbable_transcript_display'] = array(
