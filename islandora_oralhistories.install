@@ -17,7 +17,7 @@ function islandora_oralhistories_install() {
   variable_set('islandora_oralhistories_media_uploaded_type', '');
   variable_set('islandora_oralhistories_make_vtt', FALSE);
   variable_set('islandora_oralhistories_enable_caption_display', FALSE);
-  variable_get('islandora_oralhistories_enbable_transcript_display', TRUE);
+  variable_set('islandora_oralhistories_enbable_transcript_display', FALSE);
 }
 
 /**
