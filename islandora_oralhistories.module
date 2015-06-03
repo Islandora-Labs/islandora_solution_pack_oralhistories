@@ -130,6 +130,14 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
         'params' => NULL
       ),
     ),
+    'islandora_html5_video_side' => array(
+      'path' => drupal_get_path('module', 'islandora_oralhistories') . '/theme',
+      'file' => 'theme.inc',
+      'variables' => array(
+        'object' => NULL,
+        'params' => NULL
+      ),
+    ),
     'islandora_link_tcu' => array(
       'path' => drupal_get_path('module', 'islandora_oralhistories') . '/theme',
       'file' => 'theme.inc',

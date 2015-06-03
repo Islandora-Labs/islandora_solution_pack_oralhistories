@@ -222,26 +222,29 @@ function islandora_oralhistories_process_islandora_videojs(array &$variables) {
   $variables['enable_caption_display'] = $params['enable_caption_display'];
 }
 
+/**
+ * Implements hook_theme().
+ */
 function theme_islandora_html5_video_stack($vars){
   $trid ='trid-' . str_replace(':', '-', $vars['params']['pid']); // trid-PID with : being replaced by -
   $url = $vars['params']['url'];
   $enable_transcript_display = $vars['params']['enable_caption_display'];
-  $tracks = $vars['params']['tracks'];
+  $tracks = array_key_exists('tracks', $vars['params']) ? $vars['params']['tracks'] : NULL;
   $out = "<div data-transcripts-role='video' data-transcripts-id='{$trid}'>";
   $out .= "<div align='center' class='embed-responsive embed-responsive-4by3'>";
   $out .= "<video class='embed-responsive-item' controls>";
   $out .= "<source src='$url' />";
-  if (isset($tracks)) {
+  if ($tracks && $enable_transcript_display) {
     foreach ($tracks as $key => $track) {
-      if ($enable_transcript_display) {
-        $out .= '<track id="track' . key($track) . '" src="' . $track['source_url'] . '" srclang="' . $track['lang_code'] . '"
-             kind="captions" label="' . $track['lang_code']. '" default>';
-      }
+      $out .= '<track id="track' . $key . '" src="' . $track['source_url'] . '" srclang="' . $track['lang_code'] . '"
+           kind="captions" label="' . $track['lang_code']. '" default>';
     }
   }
   $out .= "</video>";
   $out .= "</div>";
   $out .= "</div>";
-  $out .= $vars['params']['transcript_content'];
+  if  (array_key_exists('transcript_content', $vars['params'])) {
+    $out .= $vars['params']['transcript_content'];
+  }
   return $out;
 }
