@@ -83,6 +83,7 @@ function islandora_oralhistories_admin_reset($form, &$form_state) {
   $op = $form_state['clicked_button']['#id'];
   switch ($op) {
     case 'edit-reset':
+      variable_del('islandora_oralhistories_make_vtt');
       variable_del('islandora_oralhistories_enable_caption_display');
       variable_del('islandora_oralhistories_enbable_transcript_display');
       variable_del('islandora_oralhistories_transcripts_viewer_tiers');
