@@ -43,6 +43,14 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#default_value' => variable_get('islandora_oralhistories_enbable_transcript_display', FALSE),
   );
 
+
+  $form['islandora_oralhistories_transcript_layout_side'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Display media and transcript side-by-side'),
+    '#description' => t('By default, the trascript will be displayed beneath the media object.'),
+    '#default_value' => variable_get('islandora_oralhistories_transcript_layout_side', FALSE),
+  );
+
   $form['transcripts_viewer_tier_settings'] = array(
     '#title' => t('Transcript tiers'),
     '#type' => 'fieldset',
@@ -60,6 +68,8 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#description' => t('Enter a list of tiers, one per line, each in the form TIER_ID|TIER_NAME. TIER_ID is the element name in the transcript xml file.'),
     '#required' => TRUE,
   );
+
+
 
 
   $form['actions'] = array('#type' => 'actions');
@@ -87,6 +97,7 @@ function islandora_oralhistories_admin_reset($form, &$form_state) {
       variable_del('islandora_oralhistories_enable_caption_display');
       variable_del('islandora_oralhistories_enbable_transcript_display');
       variable_del('islandora_oralhistories_transcripts_viewer_tiers');
+      variable_del('islandora_oralhistories_transcript_layout_side');
       break;
   }
 
