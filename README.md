@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT datastream through the Islandora interface.
+Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT and MEDIATRACK datastream through the Islandora interface.
 Displays transcript content along with video or audio file.
 
 ## Requirements
@@ -16,7 +16,7 @@ This module requires the following modules/libraries:
 * [Islandora Solr Search](https://github.com/Islandora/islandora_solr_search)
 * [Islandora Video Solution Pack](https://github.com/Islandora/islandora_solution_pack_video)
 * [Islandora Audio Solution Pack](https://github.com/Islandora/islandora_solution_pack_audio)
-* [Transcript UI](https://github.com/pinedrop/transcripts_ui)
+* [Transcript UI](https://github.com/sprklinginfo/transcripts_ui)
 
 ## Installation
 
@@ -29,7 +29,7 @@ The module currently doesn't support JW Player as viewer.
 
 ## Notes
 
-**Caution:** This Solution Pack is currently in early development stage. It only supports transcript file in a flat xml format like below:
+**Caution:** This Solution Pack is currently in development stage. It only supports transcript file in a flat xml format like below:
 
 Here is a simple xml file for transcript:
 ```
@@ -56,11 +56,11 @@ Here is a simple xml file for transcript:
 </cues>
 ```
 
+## Configuration
+
+Select configuration options in Administration » Solution pack configuration » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories).
 
 ## Troubleshooting/Issues
-
-When Caption display is true, video.js doesn't behave the same on Firefox and Chrome. On Firefox, it requires to click the caption menu once to start showing.
-On Chrome, it displays automatically.
 
 Having problems or solved a problem? Check out the Islandora google groups for a solution.
 
