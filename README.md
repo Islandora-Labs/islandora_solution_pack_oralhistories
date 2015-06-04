@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT and MEDIATRACK datastream through the Islandora interface.
+Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT / MEDIATRACK datastream through the Islandora interface.
 Displays transcript content along with video or audio file.
 
 ## Requirements
@@ -25,7 +25,6 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 ## Configuration
 
 Select a viewer in Administration » Islandora » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories) and enable transcript or caption display.
-The module currently doesn't support JW Player as viewer.
 
 ## Notes
 
