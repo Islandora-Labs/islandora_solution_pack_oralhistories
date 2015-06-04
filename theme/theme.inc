@@ -18,9 +18,14 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   drupal_add_js('misc/form.js');
   drupal_add_js('misc/collapse.js');
 
-  // Add required css and js files.
+  // Add required bootstrap-select css and js files.
   drupal_add_css('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.4/css/bootstrap-select.min.css', 'external');
   drupal_add_js('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.4/js/bootstrap-select.min.js', 'external');
+
+  // Add required videojs css and js files.
+  drupal_add_css('//vjs.zencdn.net/4.12/video-js.css', 'external');
+  drupal_add_js('//vjs.zencdn.net/4.12/video.js', 'external');
+
 
   $object = $variables['object'];
   $repository = $object->repository;
@@ -61,7 +66,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
       // Video player.
       if (isset($object[$media_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$media_dsid])) {
-        $media_url = url("islandora/object/{$object->id}/datastream/$media_dsid/view");
+        $media_url = url("islandora/object/{$object->id}/datastream/$media_dsid/view", array('absolute' => TRUE));
         $viewer_params += array(
           'mime' => $mime,
           'url' => $media_url,
@@ -86,7 +91,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       );
       // Audio player.
       if (isset($object[$media_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$media_dsid])) {
-        $media_url = url("islandora/object/{$object->id}/datastream/$media_dsid/view");
+        $media_url = url("islandora/object/{$object->id}/datastream/$media_dsid/view", array('absolute' => TRUE));
         $viewer_params += array(
           'mime' => $mime,
           'url' => $media_url,
@@ -200,27 +205,27 @@ function islandora_oralhistories_preprocess_islandora_native_html5(array &$varia
 
 }
 
-
-/**
- * Implements hook_theme_registry_alter().
- */
-function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
-  // Override the default islandora-videojs.tpl.php.
-  if (isset($theme_registry['islandora_videojs'])) {
-    $module_path = drupal_get_path('module', 'islandora_oralhistories');
-    $theme_registry['islandora_videojs']['theme path'] = $module_path;
-    $theme_registry['islandora_videojs']['template'] = $module_path . '/theme/islandora-videojs';
-  }
-}
-
-/**
- * Implements hook_process_HOOK().
- */
-function islandora_oralhistories_process_islandora_videojs(array &$variables) {
-  $params = $variables['params'];
-  $variables['tracks'] = $params['tracks'];
-  $variables['enable_caption_display'] = $params['enable_caption_display'];
-}
+//
+///**
+// * Implements hook_theme_registry_alter().
+// */
+//function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
+//  // Override the default islandora-videojs.tpl.php.
+//  if (isset($theme_registry['islandora_videojs'])) {
+//    $module_path = drupal_get_path('module', 'islandora_oralhistories');
+//    $theme_registry['islandora_videojs']['theme path'] = $module_path;
+//    $theme_registry['islandora_videojs']['template'] = $module_path . '/theme/islandora-videojs';
+//  }
+//}
+//
+///**
+// * Implements hook_process_HOOK().
+// */
+//function islandora_oralhistories_process_islandora_videojs(array &$variables) {
+//  $params = $variables['params'];
+//  $variables['tracks'] = $params['tracks'];
+//  $variables['enable_caption_display'] = $params['enable_caption_display'];
+//}
 
 /**
  * Implements hook_theme().
@@ -255,6 +260,7 @@ function theme_islandora_html5_video_stack($vars){
 function theme_islandora_html5_video_side($vars){
   $trid ='trid-' . str_replace(':', '-', $vars['params']['pid']); // trid-PID with : being replaced by -
   $url = $vars['params']['url'];
+  $mime = $vars['params']['mime'];
   $enable_transcript_display = $vars['params']['enable_caption_display'];
   $tracks = array_key_exists('tracks', $vars['params']) ? $vars['params']['tracks'] : NULL;
 
@@ -262,8 +268,8 @@ function theme_islandora_html5_video_side($vars){
   $out .= "<div class='col-sm-6 col-md-6'>";
   $out .= "<div data-transcripts-role='video' data-transcripts-id='{$trid}'>";
   $out .= "<div align='center' class='embed-responsive embed-responsive-4by3'>";
-  $out .= "<video class='embed-responsive-item' controls preload='auto'  width='100%' height='264'>";
-  $out .= "<source src='$url' />";
+  $out .= '<video class="video-js vjs-default-skin embed-responsive-item" controls preload="auto"  width="100%" height="360" data-setup="{}">';
+  $out .= "<source src='{$url}' type='{$mime}'/>";
   if ($tracks && $enable_transcript_display) {
     foreach ($tracks as $key => $track) {
       $out .= '<track id="track' . $key . '" src="' . $track['source_url'] . '" srclang="' . $track['lang_code'] . '"
