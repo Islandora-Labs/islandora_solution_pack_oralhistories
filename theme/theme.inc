@@ -169,7 +169,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
 //  $viewer = theme('islandora_native_html5', array('params' => $viewer_params));
 
-  $viewer = theme('islandora_html5_video_stack', array('params' => $viewer_params));
+  $viewer = theme('islandora_html5_video_side', array('params' => $viewer_params));
   $variables['islandora_content']['viewer'] = $viewer;
 
   // pass settings to javascript.
@@ -246,5 +246,39 @@ function theme_islandora_html5_video_stack($vars){
   if  (array_key_exists('transcript_content', $vars['params'])) {
     $out .= $vars['params']['transcript_content'];
   }
+  return $out;
+}
+
+/**
+* Implements hook_theme().
+ */
+function theme_islandora_html5_video_side($vars){
+  $trid ='trid-' . str_replace(':', '-', $vars['params']['pid']); // trid-PID with : being replaced by -
+  $url = $vars['params']['url'];
+  $enable_transcript_display = $vars['params']['enable_caption_display'];
+  $tracks = array_key_exists('tracks', $vars['params']) ? $vars['params']['tracks'] : NULL;
+
+  $out = "<div class='row'>";
+  $out .= "<div class='col-sm-6 col-md-6'>";
+  $out .= "<div data-transcripts-role='video' data-transcripts-id='{$trid}'>";
+  $out .= "<div align='center' class='embed-responsive embed-responsive-4by3'>";
+  $out .= "<video class='embed-responsive-item' controls preload='auto'  width='100%' height='264'>";
+  $out .= "<source src='$url' />";
+  if ($tracks && $enable_transcript_display) {
+    foreach ($tracks as $key => $track) {
+      $out .= '<track id="track' . $key . '" src="' . $track['source_url'] . '" srclang="' . $track['lang_code'] . '"
+           kind="captions" label="' . $track['lang_code']. '" default>';
+    }
+  }
+  $out .= "</video>";
+  $out .= "</div>";
+  $out .= "</div>";
+  $out .= "</div>";
+  $out .= "<div class='col-sm-6 col-md-6'>";
+  if  (array_key_exists('transcript_content', $vars['params'])) {
+    $out .= $vars['params']['transcript_content'];
+  }
+  $out .= "</div>";
+  $out .= "</div>";
   return $out;
 }
