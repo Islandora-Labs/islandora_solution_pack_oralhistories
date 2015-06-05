@@ -1,6 +1,6 @@
 # Oral Histories Solution Pack
 
-**Still in active development, may break sometimes**
+**Still in active development, expecting changes or errors from time to time**
 
 ## Introduction
 
@@ -16,7 +16,7 @@ This module requires the following modules/libraries:
 * [Islandora Solr Search](https://github.com/Islandora/islandora_solr_search)
 * [Islandora Video Solution Pack](https://github.com/Islandora/islandora_solution_pack_video)
 * [Islandora Audio Solution Pack](https://github.com/Islandora/islandora_solution_pack_audio)
-* [Transcript UI](https://github.com/sprklinginfo/transcripts_ui)
+* [Transcripts UI](https://github.com/sprklinginfo/transcripts_ui)
 
 ## Installation
 
