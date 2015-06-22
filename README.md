@@ -64,11 +64,12 @@ Select configuration options in Administration » Solution pack configuration »
 A or_transcript_solr.xslt file (xsl/or_transcript_solr.xslt) is included in the module in order to index transcript.xml fields in Solr.
 
 * Please drop this file to 'islandora_transforms' folder and update the foxmlToSolr.xslt file to include new xslt file.
-* Modify solr schema.xml file to add dwc.* and dcterms.* fields
+* Modify solr schema.xml file to add or.* fields created from transcript.xml file.
 
 ```xml
 <dynamicField name="or_*" type="text" indexed="true" stored="true" multiValued="true"/>
 ```
+Please restart the solr application with new schema. 
 
 ## Troubleshooting/Issues
 
