@@ -59,6 +59,17 @@ Here is a simple xml file for transcript:
 
 Select configuration options in Administration » Solution pack configuration » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories).
 
+## Index transcript fields in Solr
+
+A or_transcript_solr.xslt file (xsl/or_transcript_solr.xslt) is included in the module in order to index transcript.xml fields in Solr.
+
+* Please drop this file to 'islandora_transforms' folder and update the foxmlToSolr.xslt file to include new xslt file.
+* Modify solr schema.xml file to add dwc.* and dcterms.* fields
+
+```xml
+<dynamicField name="or_*" type="text" indexed="true" stored="true" multiValued="true"/>
+```
+
 ## Troubleshooting/Issues
 
 Having problems or solved a problem? Check out the Islandora google groups for a solution.
