@@ -51,27 +51,6 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#default_value' => variable_get('islandora_oralhistories_transcript_layout_side', FALSE),
   );
 
-  $form['transcripts_viewer_tier_settings'] = array(
-    '#title' => t('Transcript tiers'),
-    '#type' => 'fieldset',
-    '#collapsed' => FALSE,
-  );
-  $default_tiers = array(
-    'transcript' => 'Transcript',
-    'annotation' => 'Annotation',
-  );
-  $form['transcripts_viewer_tier_settings']['islandora_oralhistories_transcripts_viewer_tiers'] = array(
-    '#title' => t('Tiers'),
-    '#type' => 'textarea',
-    '#rows' => 10,
-    '#default_value' => list_allowed_values_string(variable_get('islandora_oralhistories_transcripts_viewer_tiers', $default_tiers)),
-    '#description' => t('Enter a list of tiers, one per line, each in the form TIER_ID|TIER_NAME. TIER_ID is the element name in the transcript xml file.'),
-    '#required' => TRUE,
-  );
-
-
-
-
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['reset'] = array(
     '#type' => 'submit',
@@ -81,7 +60,6 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
   );
 
   $form = system_settings_form($form);
-  array_unshift($form['#submit'], 'islandora_oralhistories_admin_submit');
   return $form;
 
 }
@@ -101,12 +79,4 @@ function islandora_oralhistories_admin_reset($form, &$form_state) {
       break;
   }
 
-}
-
-/**
- * Form reset for allowing the deletion of the viewer variable.
- */
-function islandora_oralhistories_admin_submit($form, &$form_state) {
-  $tiers = list_extract_allowed_values($form_state['values']['islandora_oralhistories_transcripts_viewer_tiers'], 'list_text', FALSE);
-  $form_state['values']['islandora_oralhistories_transcripts_viewer_tiers '] = $tiers;
 }
