@@ -157,9 +157,8 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
         case 'xml':
           $trid = str_replace(':', '-', $object->id);
-          $tiers = variable_get('islandora_oralhistories_transcripts_viewer_tiers');
           $viewer_params += array(
-            'transcript_content' => xml_transcript_content($trid, $tiers),
+            'transcript_content' => xml_transcript_content($trid),
           );
           break;
       }

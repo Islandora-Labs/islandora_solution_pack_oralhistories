@@ -87,23 +87,13 @@ function time_mm_ss($seconds) {
  * Helper function to prepare transcript content display.
  *
  */
-function xml_transcript_content($trid, $tiers) {
+function xml_transcript_content($trid) {
   // how will options get through when function is not called as part of page request?
   $options = array(
     'term' => isset($_GET['term']) ? '"' . $_GET['term'] . '"' : '',
   );
 
-  // prefix 'or_' to match our solr fields.
-  $solr_tiers = array();
-  foreach ($tiers as $key => $value) {
-    $solr_key = 'or_' . $key;
-    $solr_tiers[$solr_key] = trim($value);
-  }
-
-  variable_set('transcripts_ui_tiers',$solr_tiers);
-
   $ui = transcripts_ui_ui('islandora_oralhistories', $trid, $options);
-
 
   if ($ui->tcuCount > 0) {
     return theme('islandora_transcript_scroller', transcripts_ui_render($ui));
@@ -116,17 +106,23 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
   $highlights = NULL;
 
   $tcus = array();
+  $tier = array();
+  $speaker = array();
 
   // Now we query solr fields to buid $tcus
   $pid = str_replace('-', ':', $ui->shorttrid);
 
   $qualifier = 'PID:' . '"' . $pid . '"';
   // solr fields to be returned.
-  $fields = array('PID', 'or_cue_id', 'or_speaker', 'or_start', 'or_end');
+  $fields = array('PID', 'or_cue_id', 'or_start', 'or_end');
   foreach ($ui->tiers as $key => $value) {
     $tier[] = $key;
   }
+  foreach ($ui->speakernames as $key => $value) {
+    $speaker[] = $key;
+  }
   $fields = array_merge($fields, $tier);
+  $fields = array_merge($fields, $speaker);
   $params = array(
     'fl' => $fields,
   );
@@ -152,11 +148,19 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
     $tcus[$i] = new stdClass();
     $tcus[$i]->trid = str_replace(':', '-', $doc['PID']);
     $tcus[$i]->id = $doc['or_cue_id'][$i];
-    $tcus[$i]->speaker = $doc['or_speaker'][$i];
     $tcus[$i]->start = (float)$doc['or_start'][$i];
     $tcus[$i]->end = (float)$doc['or_end'][$i];
+
+    // Muti tiers and speakernames are parsed.
     foreach ($tier as $t) {
-      $tcus[$i]->$t = $doc[$t][$i];
+      if (isset($doc[$t])) {
+        $tcus[$i]->$t = $doc[$t][$i];
+      }
+    }
+    foreach ($speaker as $s) {
+      if (isset($doc[$s])) {
+        $tcus[$i]->$s = $doc[$s][$i];
+      }
     }
   }
   return array($tcus, $highlights);
