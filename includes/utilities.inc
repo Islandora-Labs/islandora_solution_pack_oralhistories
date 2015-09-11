@@ -106,8 +106,8 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
   $highlights = NULL;
 
   $tcus = array();
-  $tier = array();
-  $speaker = array();
+  $tier = array_keys($ui->tiers);
+  $speaker = array_keys($ui->speakernames);
 
   // Now we query solr fields to buid $tcus
   $pid = str_replace('-', ':', $ui->shorttrid);
@@ -115,14 +115,10 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
   $qualifier = 'PID:' . '"' . $pid . '"';
   // solr fields to be returned.
   $fields = array('PID', 'or_cue_id', 'or_start', 'or_end');
-  foreach ($ui->tiers as $key => $value) {
-    $tier[] = $key;
-  }
-  foreach ($ui->speakernames as $key => $value) {
-    $speaker[] = $key;
-  }
+
   $fields = array_merge($fields, $tier);
   $fields = array_merge($fields, $speaker);
+
   $params = array(
     'fl' => $fields,
   );
