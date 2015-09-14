@@ -36,7 +36,6 @@ function parse_vtt($data = '') {
     if (!empty($line)) {
       $parts = preg_split('/\n/', $line);
       $time = explode(' --> ', $parts[0]);
-      //dpm($time, 'time');
       $start_time = time_seconds($time[0]);
       $end_time = time_seconds($time[1]);
       $text = preg_replace('/</', '&lt;', $parts[1]);
@@ -102,12 +101,14 @@ function xml_transcript_content($trid) {
   }
 }
 
+/**
+ * Implements hook_transcripts_ui_transcript().
+ */
 function islandora_oralhistories_transcripts_ui_transcript($ui) {
-  $highlights = NULL;
-
   $tcus = array();
-  $tier = array_keys($ui->tiers);
+  $tiers = array_keys($ui->tiers);
   $speaker = array_keys($ui->speakernames);
+  $options = $ui->options;
 
   // Now we query solr fields to buid $tcus
   $pid = str_replace('-', ':', $ui->shorttrid);
@@ -116,15 +117,37 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
   // solr fields to be returned.
   $fields = array('PID', 'or_cue_id', 'or_start', 'or_end');
 
-  $fields = array_merge($fields, $tier);
+  $fields = array_merge($fields, $tiers);
   $fields = array_merge($fields, $speaker);
-
-  $params = array(
-    'fl' => $fields,
-  );
 
   // Build solr query.
   $query = "$qualifier AND " . 'RELS_EXT_hasModel_uri_mt:"islandora:oralhistoriesCModel"';
+
+  if ($options['term'] == '') {
+    $params = array(
+      'fl' => $fields,
+      'qt' => 'standard',
+    );
+  } else { //highlighting
+    $arr = array();
+    foreach ($tiers as $tier) {
+      $arr[] = "$tier:" . $options['term'];
+    }
+    $query .= ' AND (' . implode(" OR ", $arr) . ')';
+    if (isset($options['hits_only']) && !$options['hits_only']) {
+      $query .= " OR *:*";
+    }
+
+    $params = array(
+      'fl' => $fields,
+      'qt' => 'standard',
+      'hl' => 'true',
+      'hl.fl' => implode(' ', $tiers),
+      'hl.fragsize' => 0,
+      'hl.simple.pre' => "<em>",
+      'hl.simple.post' => "</em>",
+    );
+  }
 
   $url = parse_url(variable_get('islandora_solr_url', 'localhost:8080/solr'));
   $solr = new Apache_Solr_Service($url['host'], $url['port'], $url['path'] . '/');
@@ -148,7 +171,7 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
     $tcus[$i]->end = (float)$doc['or_end'][$i];
 
     // Muti tiers and speakernames are parsed.
-    foreach ($tier as $t) {
+    foreach ($tiers as $t) {
       if (isset($doc[$t])) {
         $tcus[$i]->$t = $doc[$t][$i];
       }
@@ -159,5 +182,7 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
       }
     }
   }
+
+  $highlights = isset($json['highlighting']) ? $json['highlighting'] : NULL;
   return array($tcus, $highlights);
 }
