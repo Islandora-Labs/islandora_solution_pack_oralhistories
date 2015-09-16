@@ -82,6 +82,13 @@ body.two-sidebars .islandora-oralhistories-sidebar {
     width: 100%;
 }
 
+/* Styles for .transcript-container: it fixes the scrolling issues with transcript_ui.js*/
+.transcript-container {
+    height: 350px;
+    overflow-x: auto;
+    transition: all 100ms ease 0s;
+}
+
 /* Styles for #transcript-content */
 #transcript-display {
     margin-top: 15px;

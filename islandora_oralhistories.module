@@ -206,4 +206,10 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
   return $derivatives;
 }
 
+/**
+ * Implements hook_transcripts_ui_js_alter().
+ */
+function islandora_oralhistories_transcripts_ui_js_alter(&$scripts) {
+  $scripts['ui'] = drupal_get_path('module', 'islandora_oralhistories') . '/js/transcripts_ui.js';
+}
 
