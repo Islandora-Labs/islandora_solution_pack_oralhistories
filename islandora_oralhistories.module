@@ -101,6 +101,7 @@ function islandora_oralhistories_islandora_xml_form_builder_form_associations() 
  * Implements hook_theme().
  */
 function islandora_oralhistories_theme($existing, $type, $theme, $path) {
+  $module_path = drupal_get_path('module', 'islandora_oralhistories') . '/theme';
   return array(
     'islandora_oralhistories' => array(
       'template' => 'theme/islandora-oralhistories',
@@ -123,23 +124,25 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
       'file' => 'theme/theme.inc',
     ),
     'islandora_html5_video_stack' => array(
-      'path' => drupal_get_path('module', 'islandora_oralhistories') . '/theme',
-      'file' => 'theme.inc',
+      'template' => 'theme/islandora-html5-video-stack',
+      'file' => 'theme/theme.inc',
+      'pattern' => 'islandora-html5-video-stack__',
       'variables' => array(
         'object' => NULL,
         'params' => NULL
       ),
     ),
     'islandora_html5_video_side' => array(
-      'path' => drupal_get_path('module', 'islandora_oralhistories') . '/theme',
-      'file' => 'theme.inc',
+      'template' => 'theme/islandora-html5-video-side',
+      'file' => 'theme/theme.inc',
+      'pattern' => 'islandora-html5-video-side__',
       'variables' => array(
         'object' => NULL,
         'params' => NULL
       ),
     ),
     'islandora_link_tcu' => array(
-      'path' => drupal_get_path('module', 'islandora_oralhistories') . '/theme',
+      'path' => $module_path,
       'file' => 'theme.inc',
       'render element' => 'element',
     ),
