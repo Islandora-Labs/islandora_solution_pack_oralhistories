@@ -122,6 +122,7 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
 
   // Build solr query.
   $query = "$qualifier AND " . 'RELS_EXT_hasModel_uri_mt:"islandora:oralhistoriesCModel"';
+  $query .= "&sort=or_start asc";
 
   if ($options['term'] == '') {
     $params = array(
@@ -148,7 +149,6 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
       'hl.simple.post' => "</em>",
     );
   }
-
   $url = parse_url(variable_get('islandora_solr_url', 'localhost:8080/solr'));
   $solr = new Apache_Solr_Service($url['host'], $url['port'], $url['path'] . '/');
   $solr->setCreateDocuments(FALSE);
