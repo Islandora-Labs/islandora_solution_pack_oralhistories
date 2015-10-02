@@ -14,7 +14,12 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-6 col-md-6">
-    <?php if (array_key_exists('transcript_content', $params)) { print $params['transcript_content']; } ?>
+  <div id="tabs" class="col-sm-6 col-md-6">
+    <ul id="tabs-list">
+      <li><a href="#transcript-tab">Transcript</a></li>
+    </ul>
+    <div id="transcript-tab">
+      <?php if (array_key_exists('transcript_content', $params)) { print $params['transcript_content']; } ?>
+    </div>
   </div>
 </div>

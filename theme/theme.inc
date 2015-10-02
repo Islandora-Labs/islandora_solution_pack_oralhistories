@@ -26,6 +26,17 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   drupal_add_css('//vjs.zencdn.net/4.12/video-js.css', 'external');
   drupal_add_js('//vjs.zencdn.net/4.12/video.js', 'external');
 
+  // Use jquery.ui tabs.
+  module_load_include('inc', 'islandora_oralhistories', 'includes/utilities');
+  $module_path = drupal_get_path('module', 'islandora_oralhistories');
+  drupal_add_library('system', 'ui.tabs');
+//  drupal_add_js("$module_path/js/islandora_image_annotation_tabs.js");
+  drupal_add_js ( 'jQuery(document).ready(function(){
+jQuery("#tabs").tabs();
+});
+' , 'inline' );
+
+
 
   $object = $variables['object'];
   $repository = $object->repository;

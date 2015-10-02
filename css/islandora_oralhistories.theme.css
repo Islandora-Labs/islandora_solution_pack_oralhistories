@@ -127,3 +127,9 @@ body.two-sidebars .islandora-oralhistories-sidebar {
     background: #666;
     color: #FFF;
 }
+
+/* Styles for jquery-ui tabs */
+#tabs-list {
+    border-radius: 0 !important;
+    padding: 0;
+}
