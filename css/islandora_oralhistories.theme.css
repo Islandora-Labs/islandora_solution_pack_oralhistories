@@ -133,3 +133,8 @@ body.two-sidebars .islandora-oralhistories-sidebar {
     border-radius: 0 !important;
     padding: 0;
 }
+
+/* Styles for transcript-edit-dialog */
+#transcript-edit-dialog {
+    display: none;
+}

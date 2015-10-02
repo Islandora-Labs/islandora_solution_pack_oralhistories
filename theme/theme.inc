@@ -29,6 +29,9 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   // Use jquery.ui tabs.
   drupal_add_library('system', 'ui.tabs');
 
+  // Use jquery.ui dialog.
+  drupal_add_library('system', 'ui.dialog');
+
   $object = $variables['object'];
   $repository = $object->repository;
   // We should eventually remove the DC object and dc_array code as it only
