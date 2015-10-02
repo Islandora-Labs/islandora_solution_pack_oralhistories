@@ -141,11 +141,6 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
         'params' => NULL
       ),
     ),
-    'islandora_link_tcu' => array(
-      'path' => $module_path,
-      'file' => 'theme.inc',
-      'render element' => 'element',
-    ),
   );
 }
 
@@ -216,3 +211,34 @@ function islandora_oralhistories_transcripts_ui_js_alter(&$scripts) {
   $scripts['ui'] = drupal_get_path('module', 'islandora_oralhistories') . '/js/transcripts_ui.js';
 }
 
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
+  $module_path = drupal_get_path('module', 'islandora_oralhistories');
+  if ($theme_registry['transcripts_ui_transcript_navigation']['function'] == 'theme_transcripts_ui_transcript_navigation') {
+    $theme_registry['transcripts_ui_transcript_navigation']['theme path'] = $module_path;
+    $theme_registry['transcripts_ui_transcript_navigation']['function'] = 'islandora_transcripts_ui_transcript_navigation';
+  }
+}
+
+/**
+ * Overrides theme_transcripts_ui_transcript_navigation() to have 'edit' button.
+ *
+ * @param $vars
+ * @return string
+ */
+function islandora_transcripts_ui_transcript_navigation ($vars) {
+  $path = current_path();
+  $part_parts = explode('/', $path);
+  $object = islandora_object_load($part_parts[2]);
+  $out = "<div class='btn-group' role='group'>";
+  $out .= "<button type='button' class='btn btn-default previous' title='Previous line'><span class='glyphicon glyphicon-arrow-left'></span> " . t('Prev') . "</button>";
+  $out .= "<button type='button' class='btn btn-default sameagain' title='Same line'><span class='glyphicon glyphicon-repeat'></span>" . t('Same') . "</button>";
+  $out .= "<button type='button' class='btn btn-default next' title='Next line'><span class='glyphicon glyphicon-arrow-right'></span>" . t('Next') . "</button>";
+  if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_REPLACE_DATASTREAM_CONTENT, $object['TRANSCRIPT'])) {
+    $out .= "<button type='button' class='btn btn-default edit' title='Edit'><span class='glyphicon glyphicon-edit'></span>" . t('Edit') . "</button>";
+  }
+  $out .= "</div>";
+  return $out;
+}
