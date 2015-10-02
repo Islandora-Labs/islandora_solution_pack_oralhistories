@@ -213,12 +213,15 @@ function islandora_oralhistories_transcripts_ui_js_alter(&$scripts) {
 
 /**
  * Implements hook_theme_registry_alter().
+ *
+ * So we can have theme_transcripts_ui_transcript_navigation().
  */
 function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
+
   $module_path = drupal_get_path('module', 'islandora_oralhistories');
   if ($theme_registry['transcripts_ui_transcript_navigation']['function'] == 'theme_transcripts_ui_transcript_navigation') {
     $theme_registry['transcripts_ui_transcript_navigation']['theme path'] = $module_path;
-    $theme_registry['transcripts_ui_transcript_navigation']['function'] = 'islandora_transcripts_ui_transcript_navigation';
+    $theme_registry['transcripts_ui_transcript_navigation']['function'] = 'islandora_transcript_navigation';
   }
 }
 
@@ -228,10 +231,11 @@ function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
  * @param $vars
  * @return string
  */
-function islandora_transcripts_ui_transcript_navigation ($vars) {
+function islandora_transcript_navigation(array &$variables) {
   $path = current_path();
   $part_parts = explode('/', $path);
   $object = islandora_object_load($part_parts[2]);
+
   $out = "<div class='btn-group' role='group'>";
   $out .= "<button type='button' class='btn btn-default previous' title='Previous line'><span class='glyphicon glyphicon-arrow-left'></span> " . t('Prev') . "</button>";
   $out .= "<button type='button' class='btn btn-default sameagain' title='Same line'><span class='glyphicon glyphicon-repeat'></span>" . t('Same') . "</button>";

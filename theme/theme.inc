@@ -19,24 +19,15 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   drupal_add_js('misc/collapse.js');
 
   // Add required bootstrap-select css and js files.
-  drupal_add_css('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.4/css/bootstrap-select.min.css', 'external');
-  drupal_add_js('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.4/js/bootstrap-select.min.js', 'external');
+  drupal_add_css('//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.4/css/bootstrap-select.min.css', 'external');
+  drupal_add_js('//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.4/js/bootstrap-select.min.js', 'external');
 
   // Add required videojs css and js files.
   drupal_add_css('//vjs.zencdn.net/4.12/video-js.css', 'external');
   drupal_add_js('//vjs.zencdn.net/4.12/video.js', 'external');
 
   // Use jquery.ui tabs.
-  module_load_include('inc', 'islandora_oralhistories', 'includes/utilities');
-  $module_path = drupal_get_path('module', 'islandora_oralhistories');
   drupal_add_library('system', 'ui.tabs');
-//  drupal_add_js("$module_path/js/islandora_image_annotation_tabs.js");
-  drupal_add_js ( 'jQuery(document).ready(function(){
-jQuery("#tabs").tabs();
-});
-' , 'inline' );
-
-
 
   $object = $variables['object'];
   $repository = $object->repository;
@@ -193,17 +184,17 @@ jQuery("#tabs").tabs();
 
   $variables['islandora_content']['viewer'] = $viewer;
 
-  // pass settings to javascript.
-//  $js_settings = array(
-//    'enbableTranscriptDisplay' => variable_get('islandora_oralhistories_enbable_transcript_display'),
-//    'enbableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
-//    'tracks' => $tracks,
-//  );
-//
-//  if (variable_get('islandora_oralhistories_enbable_transcript_display') && $object->models[0] == 'islandora:oralhistoriesCModel' ) {
-//    drupal_add_js(array('islandora_oralhistories' => $js_settings), 'setting');
-//    drupal_add_js(drupal_get_path('module', 'islandora_oralhistories') . '/js/oralhistories.js');
-//  }
+  // Pass settings to javascript.
+  $js_settings = array(
+    'enbableTranscriptDisplay' => variable_get('islandora_oralhistories_enbable_transcript_display'),
+    'enbableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
+    'tracks' => $tracks
+  );
+
+  if (variable_get('islandora_oralhistories_enbable_transcript_display') && $object->models[0] == 'islandora:oralhistoriesCModel' ) {
+    drupal_add_js(array('islandoraOralhistories' => $js_settings), 'setting');
+    drupal_add_js(drupal_get_path('module', 'islandora_oralhistories') . '/js/oralhistories.js');
+  }
   return array('' => $viewer);
 }
 

@@ -14,7 +14,7 @@
       </div>
     </div>
   </div>
-  <div id="tabs" class="col-sm-6 col-md-6">
+  <div id="transcript-tabs" class="col-sm-6 col-md-6">
     <ul id="tabs-list">
       <li><a href="#transcript-tab">Transcript</a></li>
     </ul>
