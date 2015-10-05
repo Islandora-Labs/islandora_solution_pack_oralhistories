@@ -12,16 +12,17 @@
                     $(this).tabs();
                 });
             // transcript edit dialog
-
             var dialog, form;
             dialog = $("#transcript-edit-dialog").css("display", "inline-block").dialog({
                 autoOpen: false,
-                height: 300,
-                width: 350,
+                height: window.innerHeight * 0.7,
+                minHeight: 300,
+                width: window.innerWidth * 0.7,
+                minWidth: 350,
                 modal: true,
                 buttons: {
                     "Save" : function(){
-                        saveTranscript();
+                        $(this).find("form").submit();
                         $(this).dialog("close");
                     },
                     Cancel: function() { $(this).dialog("close");}
