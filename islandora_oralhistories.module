@@ -19,6 +19,17 @@ function islandora_oralhistories_menu() {
     'file' => 'includes/admin.form.inc',
     'type' => MENU_NORMAL_ITEM,
   );
+  $items['islandora/object/%islandora_object/edit_form/%islandora_datastream'] = array(
+    'title' => 'Oral Histories Transcript Edit form',
+    'description' => 'Edit transcript',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('islandora_oralhistories_transcript_edit_form', 2, 4),
+    'access callback' => 'islandora_datastream_access',
+    'access arguments' => array(ISLANDORA_REPLACE_DATASTREAM_CONTENT, 4),
+    'file' => 'includes/transcript.edit.form.inc',
+    'type' => MENU_CALLBACK,
+    'load arguments' => array(2),
+  );
   return $items;
 }
 
@@ -101,7 +112,7 @@ function islandora_oralhistories_islandora_xml_form_builder_form_associations() 
  * Implements hook_theme().
  */
 function islandora_oralhistories_theme($existing, $type, $theme, $path) {
-  $module_path = drupal_get_path('module', 'islandora_oralhistories') . '/theme';
+  $module_path = drupal_get_path('module', 'islandora_oralhistories');
   return array(
     'islandora_oralhistories' => array(
       'template' => 'theme/islandora-oralhistories',
@@ -140,6 +151,11 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
         'object' => NULL,
         'params' => NULL
       ),
+    ),
+    'islandora_oralhistories_transcript_edit_form' => array(
+      'path' => $module_path . '/theme',
+      'file' => 'theme.inc',
+      'render element' => 'form',
     ),
   );
 }
@@ -217,7 +233,6 @@ function islandora_oralhistories_transcripts_ui_js_alter(&$scripts) {
  * So we can have theme_transcripts_ui_transcript_navigation().
  */
 function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
-
   $module_path = drupal_get_path('module', 'islandora_oralhistories');
   if ($theme_registry['transcripts_ui_transcript_navigation']['function'] == 'theme_transcripts_ui_transcript_navigation') {
     $theme_registry['transcripts_ui_transcript_navigation']['theme path'] = $module_path;
@@ -242,10 +257,27 @@ function islandora_transcript_navigation(array &$variables) {
   $out .= "<button type='button' class='btn btn-default next' title='Next line'><span class='glyphicon glyphicon-arrow-right'></span>" . t('Next') . "</button>";
   if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_REPLACE_DATASTREAM_CONTENT, $object['TRANSCRIPT'])) {
     $out .= "<button type='button' id='transcript-edit' class='btn btn-default edit' title='Edit'><span class='glyphicon glyphicon-edit'></span>" . t('Edit') . "</button>";
+    $out .= "<div id='transcript-edit-dialog'>";
+    $out .= theme('islandora_oralhistories_transcript_edit_form', array());
+    $out .= "<p>This is dialog text area</p>";
+    $out .= "</div>";
   }
-  $out .= "</div>";
-  $out .= "<div id='transcript-edit-dialog'>";
-  $out .= "<p>This is dialog text area</p>";
   $out .= "</div>";
   return $out;
 }
+
+
+/**
+ * Implements hook_islandora_edit_datastream_registry().
+ */
+function islandora_oralhistories_islandora_edit_datastream_registry(AbstractObject $object, AbstractDatastream $datastream) {
+  if (strtoupper($datastream->id)  == 'TRANSCRIPT') {
+    return array(
+      array(
+        'name' => t('Islandora Oralhistories Edit Transcript'),
+        'url' => "islandora/object/{$object->id}/edit_form/{$datastream->id}",
+      ),
+    );
+  }
+}
+
