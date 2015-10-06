@@ -137,4 +137,5 @@ body.two-sidebars .islandora-oralhistories-sidebar {
 /* Styles for transcript-edit-dialog */
 #transcript-edit-dialog {
     display: none;
+    width: 100% !important;
 }

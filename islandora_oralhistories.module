@@ -152,11 +152,11 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
         'params' => NULL
       ),
     ),
-    'islandora_oralhistories_transcript_edit_form' => array(
-      'path' => $module_path . '/theme',
-      'file' => 'theme.inc',
-      'render element' => 'form',
-    ),
+//    'islandora_oralhistories_transcript_edit_form' => array(
+//      'path' => $module_path . '/theme',
+//      'file' => 'theme.inc',
+//      'render element' => 'form',
+//    ),
   );
 }
 
@@ -247,6 +247,7 @@ function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
  * @return string
  */
 function islandora_transcript_navigation(array &$variables) {
+  module_load_include('inc', 'islandora_oralhistories', 'includes/transcript.edit.form');
   $path = current_path();
   $part_parts = explode('/', $path);
   $object = islandora_object_load($part_parts[2]);
@@ -258,8 +259,10 @@ function islandora_transcript_navigation(array &$variables) {
   if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_REPLACE_DATASTREAM_CONTENT, $object['TRANSCRIPT'])) {
     $out .= "<button type='button' id='transcript-edit' class='btn btn-default edit' title='Edit'><span class='glyphicon glyphicon-edit'></span>" . t('Edit') . "</button>";
     $out .= "<div id='transcript-edit-dialog'>";
-    $out .= theme('islandora_oralhistories_transcript_edit_form', array());
-    $out .= "<p>This is dialog text area</p>";
+    $form = drupal_get_form('islandora_oralhistories_transcript_edit_form', $object, $object['TRANSCRIPT']);
+    // Hide submit button.
+    hide($form['actions']);
+    $out .= drupal_render_children($form);
     $out .= "</div>";
   }
   $out .= "</div>";
@@ -280,4 +283,8 @@ function islandora_oralhistories_islandora_edit_datastream_registry(AbstractObje
     );
   }
 }
+
+//function islandora_oralhistories_form_alter(&$form, &$form_state, $form_id) {
+//  dpm($form_id, '$form_id');
+//}
 
