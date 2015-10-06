@@ -16,6 +16,10 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   module_load_include('inc', 'islandora', 'includes/datastream');
   $file_url = islandora_view_datastream_retrieve_file_uri($datastream);
+  // To remove the temp file after form is populated?
+  $files = file_load_multiple(array(), array('uri' => $file_url));
+  $file = reset($files); // If empty, $file will be false, otherwise will contain the required file
+
   $xml = simplexml_load_file($file_url);
   $form = array();
   $form['#tree'] = TRUE;
@@ -77,5 +81,6 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
     '#type' => 'submit',
     '#value' => t('Submit'),
   );
+  file_delete($file, TRUE);
   return $form;
 }
