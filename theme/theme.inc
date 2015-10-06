@@ -237,7 +237,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories_transcript_e
 /**
  * Implements theme_islandora_oralhistories_transcript_edit_form().
  */
-function islandora_oralhistories_islandora_oralhistories_transcript_edit_form($variables) {
+function theme_islandora_oralhistories_transcript_edit_form($variables) {
   // Renders all elements of a form.
   return drupal_render_children($variables['form']);
 }

@@ -32,28 +32,50 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
       );
     }
     // Loop through xml elements.
-    // @todo we need alter transcript xml structure.
-    foreach ($xml->cue as $cue) {
-      $children = $cue->children();
-      foreach ($children as $child) {
-        $string = (string) $child;
-        $form[$string] = array(
-          '#type' => 'textfield',
-          '#title' => $string,
-          '#description' => $string,
-          '#required' => FALSE,
-          '#default_value' => $string,
-          '#size' => 25,
+    // @todo we need alter transcript xml structure?
+    for ($i = 0; $i < $xml->count(); $i++) {
+      $fieldset = 'cue' . $i;
+      $textarea = 1;
+      foreach ($xml->cue as $cue) {
+        $children = $cue->children();
+        $form[$fieldset] = array(
+          '#type' => 'fieldset',
+          '#title' => t('Cue-@count', array('@count' => $i)),
+          '#collapsible' => TRUE,
+          '#collapsed' => TRUE,
         );
-      }
 
-    }
+        foreach ($children as $child) {
+          $node_name = (string) $child->getName();
+          if (preg_match('/speaker/i', $node_name) || preg_match('/start/i', $node_name) || preg_match('/end/i', $node_name)) {
+            $textarea = 0;
+          } else {
+            $textarea = 1;
+          }
+          $form[$fieldset][$node_name] = array(
+            '#type' => $textarea ? 'textarea': 'textfield',
+            '#title' => $node_name,
+            '#description' => $node_name,
+            '#required' => FALSE,
+            '#default_value' => (string) $child,
+            '#attributes' => array(
+              'class' => array('textarea' . $textarea),
+            ),
+          );
+
+
+        }
+      }
+    } // End for loop
   } else {
     drupal_set_message(t('%ds does not have a valid xml content', array('%ds' => $datastream->id)), 'status');
   }
-
-
-
   $form['#theme'] = 'islandora_oralhistories_transcript_edit_form';
+  // buttons.
+  $form['actions'] = array('#type' => 'actions');
+  $form['actions']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
   return $form;
 }
