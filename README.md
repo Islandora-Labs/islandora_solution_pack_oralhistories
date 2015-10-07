@@ -58,7 +58,9 @@ Here is a simple xml file for transcript:
 ## Configuration
 
 Select configuration options in Administration » Solution pack configuration » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories).
-
+For "Transcripts UI" module, on Configuration » User Interface » Transcripts UI (admin/config/user-interface/transcripts), "Tiers" and "Speaker names" need be configured based on the transcript xml file in the form of TIER_ID|TIER_NAME.
+For example, with above transcript xml file the TIER_ID will be or_transcript (xml tag with 'or_' prefix). TIER_NAME could be any text label for users to see: or_transcript|Transcript
+                                                                                                                                                                                                                                                                              or_annotation|Annotation
 ## Index transcript fields in Solr
 
 A or_transcript_solr.xslt file (xsl/or_transcript_solr.xslt) is included in the module in order to index transcript.xml fields in Solr.
