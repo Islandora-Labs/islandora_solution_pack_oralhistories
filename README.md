@@ -26,6 +26,9 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 
 Select a viewer in Administration » Islandora » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories) and enable transcript or caption display.
 
+For "Transcripts UI" module, on Configuration » User Interface » Transcripts UI (admin/config/user-interface/transcripts), "Tiers" and "Speaker names" need be configured based on the transcript xml file in the form of TIER_ID|TIER_NAME.
+For example, with above transcript xml file the TIER_ID will be or_transcript (xml tag with 'or_' prefix). TIER_NAME could be any text label for users to see: or_transcript|Transcript
+
 ## Notes
 
 **Caution:** This Solution Pack is currently in development stage. It only supports transcript file in a flat xml format like below:
@@ -54,13 +57,7 @@ Here is a simple xml file for transcript:
 
 </cues>
 ```
-
-## Configuration
-
-Select configuration options in Administration » Solution pack configuration » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories).
-For "Transcripts UI" module, on Configuration » User Interface » Transcripts UI (admin/config/user-interface/transcripts), "Tiers" and "Speaker names" need be configured based on the transcript xml file in the form of TIER_ID|TIER_NAME.
-For example, with above transcript xml file the TIER_ID will be or_transcript (xml tag with 'or_' prefix). TIER_NAME could be any text label for users to see: or_transcript|Transcript
-                                                                                                                                                                                                                                                                              or_annotation|Annotation
+                                                                                                                                                                        or_annotation|Annotation
 ## Index transcript fields in Solr
 
 A or_transcript_solr.xslt file (xsl/or_transcript_solr.xslt) is included in the module in order to index transcript.xml fields in Solr.
