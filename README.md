@@ -46,11 +46,11 @@ Here is a simple xml file for transcript:
         <!-- 'start' and 'end' elements are start time and end time in seconds for the cue. -->
         <start>0.000</start>
         <end>12.124</end>
-        <!-- 'transcript' and/or 'annotation' are default content tiers of the cue. 
+        <!-- 'transcript' and/or 'translation' are default content tiers of the cue. 
               Extra tier(s) can be added as long as they are listed in the configuration page. 
              'transcript' element is required if 'Enable captions/subtitles display' is configured to be true. -->
         <transcript>This is the transcript text content.</transcript>
-        <annotation>This is the annotation content.</annotation>
+        <translation>This is the annotation content.</translation>
     </cue>
 
     <!-- add more cues with above structure.-->

@@ -19,7 +19,12 @@
       <li><a href="#transcript-tab">Transcript</a></li>
     </ul>
     <div id="transcript-tab">
-      <?php if (array_key_exists('transcript_content', $params)) { print $params['transcript_content']; } ?>
+      <?php if (array_key_exists('transcript_content', $params)) {
+        print $params['transcript_content'];
+      } else {
+        print "No Content available.";
+      }
+      ?>
     </div>
   </div>
 </div>
