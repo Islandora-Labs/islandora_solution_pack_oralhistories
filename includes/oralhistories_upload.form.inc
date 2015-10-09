@@ -38,7 +38,7 @@ function islandora_oralhistories_upload_form(array $form, array &$form_state) {
     'transcript_file' => array(
       '#title' => t('Transcript file'),
       '#type' => 'managed_file',
-      '#required' => TRUE,
+//      '#required' => TRUE,
       '#description' => t('Select transcript file to upload.<br/>Files must be less than <b>@size MB.</b><br/>Allowed file types: <b>@ext.</b>', array('@size' => $upload_size, '@ext' => $transcript_extensions[0])),
       '#default_value' => isset($form_state['values']['transcript_file']) ? $form_state['values']['transcript_file'] : NULL,
       '#upload_location' => 'temporary://',
@@ -77,11 +77,13 @@ function islandora_oralhistories_upload_form(array $form, array &$form_state) {
  */
 function islandora_oralhistories_upload_form_validate(array $form, array &$form_state) {
   // Simple validation on transcript xml file.
-  $transcript_file = file_load($form_state['values']['transcript_file']);
-  if ($transcript_file->filemime == 'application/xml') {
-    $cues = simplexml_load_file(drupal_realpath($transcript_file->uri));
-    if ($cues->solespeaker && $cues->cue[0]->speaker) {
-      form_set_error('transcript_file', t('solespeaker and speaker element cannot be used together.'));
+  if (!empty($form_state['values']['transcript_file'])) {
+    $transcript_file = file_load($form_state['values']['transcript_file']);
+    if ($transcript_file->filemime == 'application/xml') {
+      $cues = simplexml_load_file(drupal_realpath($transcript_file->uri));
+      if ($cues->solespeaker && $cues->cue[0]->speaker) {
+        form_set_error('transcript_file', t('solespeaker and speaker element cannot be used together.'));
+      }
     }
   }
 }
@@ -95,7 +97,7 @@ function islandora_oralhistories_upload_form_validate(array $form, array &$form_
  *   The drupal form state.
  */
 function islandora_oralhistories_upload_form_submit(array $form, array &$form_state) {
-  $object = $form_state['islandora']['objects'][0];
+  $object = islandora_ingest_form_get_object($form_state);
 
   // Create OBJ datastream
   if (empty($object['OBJ'])) {
@@ -111,26 +113,11 @@ function islandora_oralhistories_upload_form_submit(array $form, array &$form_st
   $ds->label = $media_file->filename;
   $ds->mimetype = $media_file->filemime;
 
-  // Create TRANSCRIPT datastream
-  if (empty($object['TRANSCRIPT'])) {
-    $ds = $object->constructDatastream('TRANSCRIPT', 'M');
-    $object->ingestDatastream($ds);
+  // create TRANSCRIPT ds when transcript_file is presented.
+  if (!empty($form_state['values']['transcript_file'])) {
+    $fid = $form_state['values']['transcript_file'];
+    islandora_oralhistories_create_transcript_ds($fid, $object);
   }
-  else {
-    $ds = $object['TRANSCRIPT'];
-  }
-  $transcript_file = file_load($form_state['values']['transcript_file']);
-  $transcript_file_path = drupal_realpath($transcript_file->uri);
-  $ds->setContentFromFile($transcript_file_path, FALSE);
-  $ds->label = $transcript_file->filename;
-  // Drupal returns $transcript_file->filemime = 'application/octet-stream' incorrectly for .vtt file
-  $transcript_ext = pathinfo($transcript_file->filename, PATHINFO_EXTENSION);
-  if (strtolower($transcript_ext) == 'vtt'){
-    $ds->mimetype = 'text/vtt';
-  } else {
-    $ds->mimetype = $transcript_file->filemime;
-  }
-
 
   // record uploaded media file type
   if (preg_match('/video/', $media_file->filemime)) {
@@ -139,4 +126,39 @@ function islandora_oralhistories_upload_form_submit(array $form, array &$form_st
     $media_upload_type = 'audio';
   }
   variable_set('islandora_oralhistories_media_uploaded_type', $media_upload_type);
+}
+
+/**
+ * Helper function to create TRANSCRIPT datastream.
+ *
+ * @param $fid
+ * @param \AbstractObject $object
+ */
+function islandora_oralhistories_create_transcript_ds($fid, AbstractObject $object) {
+  // Create TRANSCRIPT datastream
+  try {
+    if (empty($object['TRANSCRIPT'])) {
+      $ds = $object->constructDatastream('TRANSCRIPT', 'M');
+      $object->ingestDatastream($ds);
+    }
+    else {
+      $ds = $object['TRANSCRIPT'];
+    }
+    $transcript_file = file_load($fid);
+    $transcript_file_path = drupal_realpath($transcript_file->uri);
+    $ds->setContentFromFile($transcript_file_path, FALSE);
+    $ds->label = $transcript_file->filename;
+    // Drupal returns $transcript_file->filemime = 'application/octet-stream' incorrectly for .vtt file
+    $transcript_ext = pathinfo($transcript_file->filename, PATHINFO_EXTENSION);
+    if (strtolower($transcript_ext) == 'vtt'){
+      $ds->mimetype = 'text/vtt';
+    } else {
+      $ds->mimetype = $transcript_file->filemime;
+    }
+
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('Error creating TRANSCRIPT datastream %s %t', array('%s' => $object->id, '%t' => $e->getMessage())), 'error', FALSE);
+  }
+
 }
