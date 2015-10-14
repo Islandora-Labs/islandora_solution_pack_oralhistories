@@ -26,7 +26,7 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
 
   if ($xml) {
     if ($xml->solespeaker) {
-      $form['sole_speaker'] = array(
+      $form['solespeaker'] = array(
         '#type' => 'textfield',
         '#title' => t('Sole Speaker'),
         '#description' => t('The sole speaker\'s name'),
@@ -39,31 +39,32 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
     // @todo we need alter transcript xml structure?
     for ($i = 0; $i < $xml->count(); $i++) {
       $fieldset = 'cue' . $i;
-      $textarea = 1;
+      $is_textarea = TRUE;
       foreach ($xml->cue as $cue) {
         $children = $cue->children();
         $form[$fieldset] = array(
           '#type' => 'fieldset',
           '#title' => t('Cue-@count', array('@count' => $i)),
           '#collapsible' => TRUE,
-          '#collapsed' => TRUE,
+          '#collapsed' => ($i == 0) ? FALSE : TRUE,
         );
 
         foreach ($children as $child) {
           $node_name = (string) $child->getName();
           if (preg_match('/speaker/i', $node_name) || preg_match('/start/i', $node_name) || preg_match('/end/i', $node_name)) {
-            $textarea = 0;
+            $is_textarea = FALSE;
           } else {
-            $textarea = 1;
+            $is_textarea = TRUE;
           }
+          $css_class = ($is_textarea) ? 'or-transcript-textarea' : 'or-transcript-textfield';
           $form[$fieldset][$node_name] = array(
-            '#type' => $textarea ? 'textarea': 'textfield',
+            '#type' => $is_textarea ? 'textarea': 'textfield',
             '#title' => $node_name,
             '#description' => $node_name,
             '#required' => FALSE,
             '#default_value' => (string) $child,
             '#attributes' => array(
-              'class' => array('textarea' . $textarea),
+              'class' => array($css_class),
             ),
           );
 
@@ -83,4 +84,42 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
   );
   file_delete($file, TRUE);
   return $form;
+}
+
+function islandora_oralhistories_transcript_edit_form_submit(array $form, array &$form_state) {
+  module_load_include('inc', 'islandora', 'includes/solution_packs');
+  module_load_include('inc', 'islandora', 'includes/datastream');
+  $object = $form_state['build_info']['args'][0];
+  $datastream = $form_state['build_info']['args'][1];
+  if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_REPLACE_DATASTREAM_CONTENT, $object['TRANSCRIPT'])) {
+
+    $dom = new DOMDocument('1.0', 'utf-8');
+    $cues = $dom->appendChild($dom->createElement('cues'));
+    $keys = array_keys($form_state['values']);
+    foreach ($keys as $key) {
+      if (preg_match('/solespeaker/', $key)) {
+        $solespeaker = $cues->appendChild($dom->createElement('solespeaker', $form_state['values'][$key]));
+      }
+      if (preg_match('/cue/', $key)) {
+        $cue = $cues->appendChild($dom->createElement('cue'));
+        foreach ($form_state['values'][$key] as $cue_name => $value) {
+          $cue_name = $cue->appendChild($dom->createElement($cue_name, $value));
+        }
+
+      }
+    }
+
+    $dom->preserveWhiteSpace = FALSE;
+    $dom->formatOutput = TRUE;
+
+    try {
+      $datastream->setContentFromString($dom->saveXML());
+      drupal_set_message(t('datastream %s is updated.', array('%s' => $datastream->id)), 'status', FALSE);
+    }
+    catch (Exception $e) {
+      drupal_set_message(t('Error updating datastream %s %t', array('%s' => $datastream->id, '%t' => $e->getMessage())), 'error', FALSE);
+    }
+
+  }
+
 }
