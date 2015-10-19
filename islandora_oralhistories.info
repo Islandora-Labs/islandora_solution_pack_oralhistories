@@ -5,6 +5,7 @@ dependencies[] = islandora_video
 dependencies[] = islandora_audio
 dependencies[] = islandora_solr
 dependencies[] = transcripts_ui
+dependencies[] = ctools
 package = Islandora Solution Packs
 version = 7.x-1.x
 core = 7.x

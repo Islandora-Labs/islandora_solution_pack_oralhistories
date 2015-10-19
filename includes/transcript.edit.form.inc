@@ -15,7 +15,12 @@
 function islandora_oralhistories_transcript_edit_form(array $form, array &$form_state, AbstractObject $object, AbstractDatastream $datastream) {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   module_load_include('inc', 'islandora', 'includes/datastream');
-  global $base_url;
+  if (!$object || !$datastream) {
+    $path = current_path();
+    $part_parts = explode('/', $path);
+    $object = islandora_object_load($part_parts[2]);
+    $datastream =  $object['TRANSCRIPT'];
+  }
   $file_url = islandora_view_datastream_retrieve_file_uri($datastream);
 
   $xml = simplexml_load_file($file_url);
@@ -74,6 +79,11 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
   return $form;
 }
 
+/**
+ * Submit handler for islandora_oralhistories_transcript_edit_form.
+ * @param array $form
+ * @param array $form_state
+ */
 function islandora_oralhistories_transcript_edit_form_submit(array $form, array &$form_state) {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   module_load_include('inc', 'islandora', 'includes/datastream');
@@ -99,7 +109,6 @@ function islandora_oralhistories_transcript_edit_form_submit(array $form, array 
 
     $dom->preserveWhiteSpace = FALSE;
     $dom->formatOutput = TRUE;
-
     try {
       $datastream->setContentFromString($dom->saveXML());
       drupal_set_message(t('datastream %s is updated.', array('%s' => $datastream->id)), 'status', FALSE);
@@ -110,4 +119,62 @@ function islandora_oralhistories_transcript_edit_form_submit(array $form, array 
 
   }
 
+}
+
+/**
+ * Callback for menu 'islandora/object/%islandora_object/edit_form/%islandora_datastream/%ctools_js'.
+ *
+ * @param \AbstractObject $object
+ * @param \AbstractDatastream $datastream
+ * @param $ajax
+ * @return array|mixed
+ */
+function edit_transcript_modal(AbstractObject $object, AbstractDatastream $datastream, $ajax) {
+  if (!$object) {
+    $path = current_path();
+    $part_parts = explode('/', $path);
+    $object = islandora_object_load($part_parts[2]);
+    $datastream =  $object['TRANSCRIPT'];
+  }
+  if ($ajax) {
+    ctools_include('ajax');
+    ctools_include('modal');
+
+    $form_state = array(
+      'ajax' => TRUE,
+      'title' => t('Edit Transcript Modal Form'),
+    );
+    // pass arguments to ctools_modal_form_wrapper().
+    $form_state['build_info']['args'][] = $object;
+    $form_state['build_info']['args'][] = $datastream;
+
+    // Use ctools to generate ajax instructions for the browser to create
+    // a form in a modal popup.
+    $output = ctools_modal_form_wrapper(
+      'islandora_oralhistories_transcript_edit_form',
+      $form_state
+    );
+
+    if (!empty($form_state['executed'])) {
+
+      // Add the responder javascript, required by ctools
+      ctools_add_js('ajax-responder');
+
+      // Create ajax command array, dismiss the modal window.
+      $output = array();
+      $output[] = ctools_modal_command_dismiss();
+    }
+
+
+    // Return the ajax instructions to the browser via ajax_render().
+    print ajax_render($output);
+    drupal_exit();
+  }
+  else {
+    return drupal_get_form(
+      'islandora_oralhistories_transcript_edit_form',
+      $object,
+      $datastream
+    );
+  }
 }

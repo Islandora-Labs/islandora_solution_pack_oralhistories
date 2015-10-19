@@ -139,3 +139,7 @@ body.two-sidebars .islandora-oralhistories-sidebar {
     display: none;
     width: 100% !important;
 }
+
+.ctools-modal-dialog #modal-content {
+    overflow-x: auto;
+}

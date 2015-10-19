@@ -30,6 +30,15 @@ function islandora_oralhistories_menu() {
     'type' => MENU_CALLBACK,
     'load arguments' => array(2),
   );
+  // try ctools ajax modal form
+  $items['islandora/object/%islandora_object/edit_form/%islandora_datastream/%ctools_js'] = array(
+    'page callback' => 'edit_transcript_modal',
+    'page arguments' => array(2, 4, 5),
+    'access callback' => 'islandora_datastream_access',
+    'access arguments' => array(ISLANDORA_REPLACE_DATASTREAM_CONTENT, 4),
+    'file' => 'includes/transcript.edit.form.inc',
+    'type' => MENU_CALLBACK,
+  );
   return $items;
 }
 
@@ -257,13 +266,20 @@ function islandora_transcript_navigation(array &$variables) {
   $out .= "<button type='button' class='btn btn-default sameagain' title='Same line'><span class='glyphicon glyphicon-repeat'></span>" . t('Same') . "</button>";
   $out .= "<button type='button' class='btn btn-default next' title='Next line'><span class='glyphicon glyphicon-arrow-right'></span>" . t('Next') . "</button>";
   if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_REPLACE_DATASTREAM_CONTENT, $object['TRANSCRIPT'])) {
-    $out .= "<button type='button' id='transcript-edit' class='btn btn-default edit' title='Edit'><span class='glyphicon glyphicon-edit'></span>" . t('Edit') . "</button>";
-    $out .= "<div id='transcript-edit-dialog'>";
-    $form = drupal_get_form('islandora_oralhistories_transcript_edit_form', $object, $object['TRANSCRIPT']);
+    ctools_include('modal');
+    ctools_modal_add_js();
+    global $base_url;
+
+//    $link = l(t('Edit'), "/$object->id/edit_form/{$object['TRANSCRIPT']->id}/nojs", array('attributes' => array('class' => 'btn btn-default edit ctools-use-modal')));
+    $out .= "<a id='transcript-edit' class='btn btn-default edit ctools-use-modal' title='Edit' href='" . $base_url . "/islandora/object/{$object->id}/edit_form/{$object['TRANSCRIPT']->id}/nojs";
+    $out .= "'><span class='glyphicon glyphicon-edit'></span>" . t('Edit') . "</a>";
+//    $out .= "<div id='transcript-edit-dialog'>";
+//    $form = drupal_get_form('islandora_oralhistories_transcript_edit_form', $object, $object['TRANSCRIPT']);
     // Hide submit button.
-    hide($form['actions']);
-    $out .= drupal_render_children($form);
-    $out .= "</div>";
+//    hide($form['actions']);
+//
+//    $out .= drupal_render($form);
+//    $out .= "</div>";
   }
   $out .= "</div>";
   return $out;
