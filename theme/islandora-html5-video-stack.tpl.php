@@ -17,10 +17,19 @@
   <div id="transcript-tabs" class="col-sm-12 col-md-12">
     <ul id="tabs-list">
       <li><a href="#transcript-tab">Transcript</a></li>
+      <li><a href="#annotation-tab">Annotation</a></li>
     </ul>
     <div id="transcript-tab">
       <?php if (array_key_exists('transcript_content', $params)) {
         print $params['transcript_content'];
+      } else {
+        print "No Content available.";
+      }
+      ?>
+    </div>
+    <div id="annotation-tab">
+      <?php if (array_key_exists('annotation_content', $params)) {
+        print $params['annotation_content'];
       } else {
         print "No Content available.";
       }
