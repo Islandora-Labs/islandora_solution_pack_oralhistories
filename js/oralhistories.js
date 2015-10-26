@@ -12,6 +12,16 @@
                     $(this).tabs();
                 });
 
+
+            // Annotator
+            var videoElement = $(".islandora-oralhistories-object").find('video, audio')[0];
+            //console.log(videoElement);
+            var vjsPlayer = videojs(videoElement);
+            console.log(vjsPlayer);
+            vjsPlayer.annotator({});
+
+
+
         } // end attach function
     };
 })(jQuery);

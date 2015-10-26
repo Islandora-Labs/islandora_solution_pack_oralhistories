@@ -17,14 +17,19 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   module_load_include('inc', 'islandora_oralhistories', 'includes/utilities');
   drupal_add_js('misc/form.js');
   drupal_add_js('misc/collapse.js');
+  $module_path = drupal_get_path('module', 'islandora_oralhistories');
 
   // Add required bootstrap-select css and js files.
   drupal_add_css('//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.4/css/bootstrap-select.min.css', 'external');
   drupal_add_js('//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.4/js/bootstrap-select.min.js', 'external');
 
   // Add required videojs css and js files.
-  drupal_add_css('//vjs.zencdn.net/4.12/video-js.css', 'external');
-  drupal_add_js('//vjs.zencdn.net/4.12/video.js', 'external');
+//  drupal_add_css('//vjs.zencdn.net/4.12/video-js.css', 'external');
+//  drupal_add_js('//vjs.zencdn.net/4.12/video.js', 'external');
+  drupal_add_css($module_path . '/lib/videojs/video-js.css');
+  drupal_add_js($module_path . '/lib/videojs/videojs.js');
+  drupal_add_css($module_path . '/lib/annotator.css');
+  drupal_add_js($module_path . '/lib/annotator.js');
 
   // Use jquery.ui tabs.
   drupal_add_library('system', 'ui.tabs');
