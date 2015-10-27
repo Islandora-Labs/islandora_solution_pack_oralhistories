@@ -5,6 +5,9 @@
  * Hooks and callbacks for this module.
  */
 
+define('ISLANDORA_WEB_ANNOTATION_VIEW', 'view web annotations');
+define('ISLANDORA_WEB_ANNOTATION_CREATE', 'create web annotations');
+
 /**
  * Implements hook_menu().
  */
@@ -37,6 +40,39 @@ function islandora_oralhistories_menu() {
     'access callback' => 'islandora_datastream_access',
     'access arguments' => array(ISLANDORA_REPLACE_DATASTREAM_CONTENT, 4),
     'file' => 'includes/transcript.edit.form.inc',
+    'type' => MENU_CALLBACK,
+  );
+//  $items['islandora/object/%islandora_object/web_annotation'] = array(
+//    'title' => 'Oral Histories Web Annotation Edit form',
+//    'description' => 'Edit Web Annotation',
+//    'page callback' => 'drupal_get_form',
+//    'page arguments' => array('islandora_oralhistories_annotation_edit_form', 2),
+//    'access callback' => 'islandora_object_manage_access_callback',
+//    'access arguments' => array(
+//      array(
+//        ISLANDORA_MANAGE_PROPERTIES,
+//        ISLANDORA_METADATA_EDIT,
+//        ISLANDORA_ADD_DS,
+//        ISLANDORA_PURGE,
+//        ISLANDORA_INGEST,
+//      ), 2),
+//    'file' => 'includes/annotation.form.inc',
+//    'type' => MENU_CALLBACK,
+//    'load arguments' => array(2),
+//  );
+  $items['islandora/object/%islandora_object/web_annotation/%ctools_js'] = array(
+    'page callback' => 'edit_annotation_modal',
+    'page arguments' => array(2, 4),
+    'access callback' => 'islandora_object_manage_access_callback',
+    'access arguments' => array(
+      array(
+        ISLANDORA_MANAGE_PROPERTIES,
+        ISLANDORA_METADATA_EDIT,
+        ISLANDORA_ADD_DS,
+        ISLANDORA_PURGE,
+        ISLANDORA_INGEST,
+      ), 2),
+    'file' => 'includes/annotation.form.inc',
     'type' => MENU_CALLBACK,
   );
   return $items;
