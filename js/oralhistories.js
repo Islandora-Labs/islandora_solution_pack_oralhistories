@@ -6,6 +6,7 @@
         attach: function (context, settings) {
             //var enableCaptionDisp = Drupal.settings.islandoraOralhistories.enbableCaptionDisplay;
             //var tracksUploaded = Drupal.settings.islandoraOralhistories.tracks;
+            var targetObjectId = Drupal.settings.islandoraOralhistories.objectId;
 
             // Show transcript display as tabs.
             $("#transcript-tabs", context).once(function() {
@@ -18,7 +19,7 @@
             //console.log(videoElement);
             var vjsPlayer = videojs(videoElement);
             console.log(vjsPlayer);
-            vjsPlayer.annotator({});
+            vjsPlayer.annotator({target: targetObjectId});
 
 
 
