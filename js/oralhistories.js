@@ -19,8 +19,7 @@
             //console.log(videoElement);
             var vjsPlayer = videojs(videoElement);
             console.log(vjsPlayer);
-            vjsPlayer.annotator({target: targetObjectId});
-
+            vjsPlayer.annotator({targetUrl: window.location.href});
 
 
         } // end attach function
