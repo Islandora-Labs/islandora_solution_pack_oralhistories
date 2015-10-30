@@ -16,6 +16,10 @@
   display: block;
 }
 
+.islandora-oralhistories-content .btn {
+    font-size: inherit;
+}
+
 .islandora-oralhistories-metadata {
   display: block;
   clear: both;
