@@ -160,28 +160,31 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
     watchdog_exception('Islandora Oralhistories', $e, 'Got an exception while searching transcripts for callback.', array(), WATCHDOG_ERROR);
   }
 
-  $doc = $json['response']['docs'][0] ? $json['response']['docs'][0] : NULL;
-  $counter = count($doc['or_cue_id']);
+  if (isset($json['response']['docs'][0])) {
+    $doc = $json['response']['docs'][0] ? $json['response']['docs'][0] : NULL;
+    $counter = count($doc['or_cue_id']);
 
-  for ($i = 0; $i < $counter; $i++) {
-    $tcus[$i] = new stdClass();
-    $tcus[$i]->trid = str_replace(':', '-', $doc['PID']);
-    $tcus[$i]->id = $doc['or_cue_id'][$i];
-    $tcus[$i]->start = (float)$doc['or_start'][$i];
-    $tcus[$i]->end = (float)$doc['or_end'][$i];
+    for ($i = 0; $i < $counter; $i++) {
+      $tcus[$i] = new stdClass();
+      $tcus[$i]->trid = str_replace(':', '-', $doc['PID']);
+      $tcus[$i]->id = $doc['or_cue_id'][$i];
+      $tcus[$i]->start = (float)$doc['or_start'][$i];
+      $tcus[$i]->end = (float)$doc['or_end'][$i];
 
-    // Muti tiers and speakernames are parsed.
-    foreach ($tiers as $t) {
-      if (isset($doc[$t])) {
-        $tcus[$i]->$t = $doc[$t][$i];
+      // Muti tiers and speakernames are parsed.
+      foreach ($tiers as $t) {
+        if (isset($doc[$t])) {
+          $tcus[$i]->$t = $doc[$t][$i];
+        }
       }
-    }
-    foreach ($speaker as $s) {
-      if (isset($doc[$s])) {
-        $tcus[$i]->$s = $doc[$s][$i];
+      foreach ($speaker as $s) {
+        if (isset($doc[$s])) {
+          $tcus[$i]->$s = $doc[$s][$i];
+        }
       }
     }
   }
+
 
   $highlights = isset($json['highlighting']) ? $json['highlighting'] : NULL;
   return array($tcus, $highlights);
