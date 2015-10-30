@@ -189,3 +189,16 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
   $highlights = isset($json['highlighting']) ? $json['highlighting'] : NULL;
   return array($tcus, $highlights);
 }
+
+/**
+ * Retrieve annotation based on the $object->id.
+ * @param string $id
+ */
+function islandora_oralhistories_get_annotation($id = '') {
+  $results = 1;
+  if ($results > 0) {
+    return theme('islandora_webannotation', array());
+  } else {
+    return t("No annotation");
+  }
+}

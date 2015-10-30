@@ -42,24 +42,23 @@ function islandora_oralhistories_menu() {
     'file' => 'includes/transcript.edit.form.inc',
     'type' => MENU_CALLBACK,
   );
-//  $items['islandora/object/%islandora_object/web_annotation'] = array(
-//    'title' => 'Oral Histories Web Annotation Edit form',
-//    'description' => 'Edit Web Annotation',
-//    'page callback' => 'drupal_get_form',
-//    'page arguments' => array('islandora_oralhistories_annotation_edit_form', 2),
-//    'access callback' => 'islandora_object_manage_access_callback',
-//    'access arguments' => array(
-//      array(
-//        ISLANDORA_MANAGE_PROPERTIES,
-//        ISLANDORA_METADATA_EDIT,
-//        ISLANDORA_ADD_DS,
-//        ISLANDORA_PURGE,
-//        ISLANDORA_INGEST,
-//      ), 2),
-//    'file' => 'includes/annotation.form.inc',
-//    'type' => MENU_CALLBACK,
-//    'load arguments' => array(2),
-//  );
+  $items['islandora/object/%islandora_object/web_annotation/add'] = array(
+    'title' => 'Oral Histories Web Annotation',
+    'description' => 'Edit Web Annotation',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('islandora_oralhistories_annotation_form', 2),
+    'access callback' => 'islandora_object_manage_access_callback',
+    'access arguments' => array(
+      array(
+        ISLANDORA_MANAGE_PROPERTIES,
+        ISLANDORA_METADATA_EDIT,
+        ISLANDORA_ADD_DS,
+        ISLANDORA_PURGE,
+        ISLANDORA_INGEST,
+      ), 2),
+    'file' => 'includes/annotation.form.inc',
+    'type' => MENU_CALLBACK,
+  );
   $items['islandora/object/%islandora_object/web_annotation/%ctools_js'] = array(
     'page callback' => 'edit_annotation_modal',
     'page arguments' => array(2, 4),
@@ -197,11 +196,11 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
         'params' => NULL
       ),
     ),
-//    'islandora_oralhistories_transcript_edit_form' => array(
-//      'path' => $module_path . '/theme',
-//      'file' => 'theme.inc',
-//      'render element' => 'form',
-//    ),
+    'islandora_webannotation' => array(
+      'path' => $module_path . '/theme',
+      'file' => 'theme.inc',
+      'render element' => 'element',
+    ),
   );
 }
 
@@ -335,8 +334,4 @@ function islandora_oralhistories_islandora_edit_datastream_registry(AbstractObje
     );
   }
 }
-
-//function islandora_oralhistories_form_alter(&$form, &$form_state, $form_id) {
-//  dpm($form_id, '$form_id');
-//}
 

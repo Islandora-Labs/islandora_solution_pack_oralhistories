@@ -61,4 +61,8 @@ function islandora_oralhistories_annotation_form(array $form, array &$form_state
     '#size' => 25,
   );
 
+
+
+  return $form;
+
 }

@@ -34,7 +34,6 @@
         print "No Content available.";
       }
       ?>
-      <a href="http://islandora.local:8181/islandora/object/islandora%3A357/web_annotation/nojs">Add new annotation</a>
     </div>
   </div>
 </div>

@@ -171,6 +171,13 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
   }
 
+  // Retrieve annotations.
+  if (TRUE) {
+    $viewer_params += array(
+      'annotation_content' => islandora_oralhistories_get_annotation($object->id),
+    );
+  }
+
   $viewer_params += array(
     'enable_caption_display' => variable_get('islandora_oralhistories_enable_caption_display'),
     'enable_transcript_display' => variable_get('islandora_oralhistories_enbable_transcript_display'),
@@ -241,4 +248,26 @@ function islandora_oralhistories_preprocess_islandora_oralhistories_transcript_e
 function theme_islandora_oralhistories_transcript_edit_form($variables) {
   // Renders all elements of a form.
   return drupal_render_children($variables['form']);
+}
+
+function theme_islandora_webannotation(array &$variables) {
+  module_load_include('inc', 'islandora_oralhistories', 'includes/annotation.form');
+  $path = current_path();
+  $part_parts = explode('/', $path);
+  $object = islandora_object_load($part_parts[2]);
+
+  $out = "<div class='btn-group' role='group'>";
+  $out .= "<button type='button' class='btn btn-default previous' title='Previous line'><span class='glyphicon glyphicon-arrow-left'></span> " . t('Prev') . "</button>";
+  $out .= "<button type='button' class='btn btn-default sameagain' title='Same line'><span class='glyphicon glyphicon-repeat'></span>" . t('Same') . "</button>";
+  $out .= "<button type='button' class='btn btn-default next' title='Next line'><span class='glyphicon glyphicon-arrow-right'></span>" . t('Next') . "</button>";
+  if (TRUE) {
+    ctools_include('modal');
+    ctools_modal_add_js();
+    global $base_url;
+
+    $out .= "<a id='annotation-edit' class='btn btn-default edit ctools-use-modal' title='Add' href='" . $base_url . "/islandora/object/{$object->id}/web_annotation/nojs";
+    $out .= "'><span class='glyphicon glyphicon-tag'></span>" . t('Add') . "</a>";
+  }
+  $out .= "</div>";
+  return $out;
 }
