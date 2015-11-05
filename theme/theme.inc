@@ -257,16 +257,13 @@ function theme_islandora_webannotation(array &$variables) {
   $object = islandora_object_load($part_parts[2]);
 
   $out = "<div class='btn-group' role='group'>";
-  $out .= "<button type='button' class='btn btn-default previous' title='Previous line'><span class='glyphicon glyphicon-arrow-left'></span> " . t('Prev') . "</button>";
-  $out .= "<button type='button' class='btn btn-default sameagain' title='Same line'><span class='glyphicon glyphicon-repeat'></span>" . t('Same') . "</button>";
-  $out .= "<button type='button' class='btn btn-default next' title='Next line'><span class='glyphicon glyphicon-arrow-right'></span>" . t('Next') . "</button>";
-  if (TRUE) {
+  if (isset($object) && islandora_object_access(ISLANDORA_WEB_ANNOTATION_CREATE, $object)) {
     ctools_include('modal');
     ctools_modal_add_js();
     global $base_url;
 
-    $out .= "<a id='annotation-edit' class='btn btn-default edit ctools-use-modal' title='Add' href='" . $base_url . "/islandora/object/{$object->id}/web_annotation/nojs";
-    $out .= "'><span class='glyphicon glyphicon-tag'></span>" . t('Add') . "</a>";
+    $out .= "<a id='annotation-edit' class='btn btn-default edit ctools-use-modal' title='New Annotation' href='" . $base_url . "/islandora/object/{$object->id}/web_annotation/nojs";
+    $out .= "'><span class='glyphicon glyphicon-tag'></span>" . t('New Annotation') . "</a>";
   }
   $out .= "</div>";
   return $out;
