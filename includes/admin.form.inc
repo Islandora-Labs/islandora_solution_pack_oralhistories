@@ -43,12 +43,18 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#default_value' => variable_get('islandora_oralhistories_enbable_transcript_display', FALSE),
   );
 
-
   $form['islandora_oralhistories_transcript_layout_side'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display media and transcript side-by-side'),
     '#description' => t('By default, the trascript will be displayed beneath the media object.'),
     '#default_value' => variable_get('islandora_oralhistories_transcript_layout_side', FALSE),
+  );
+
+  $form['islandora_oralhistories_annotation_tab_display'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Display annotation tab'),
+    '#description' => t('By default, the annotation tab will not be displayed.'),
+    '#default_value' => variable_get('islandora_oralhistories_annotation_tab_display', FALSE),
   );
 
   $form['actions'] = array('#type' => 'actions');

@@ -171,8 +171,8 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
   }
 
-  // Retrieve annotations.
-  if (TRUE) {
+  // Retrieve/display annotations.
+  if (variable_get('islandora_oralhistories_annotation_tab_display', FALSE)) {
     $viewer_params += array(
       'annotation_content' => islandora_oralhistories_get_annotation($object->id),
     );
