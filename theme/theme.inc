@@ -251,19 +251,21 @@ function theme_islandora_oralhistories_transcript_edit_form($variables) {
 }
 
 function theme_islandora_webannotation(array &$variables) {
-  module_load_include('inc', 'islandora_oralhistories', 'includes/annotation.form');
+  module_load_include('inc', 'islandora_oralhistories', 'includes/annotation');
   $path = current_path();
   $part_parts = explode('/', $path);
   $object = islandora_object_load($part_parts[2]);
 
   $out = "<div class='btn-group' role='group'>";
   if (isset($object) && islandora_object_access(ISLANDORA_WEB_ANNOTATION_CREATE, $object)) {
-    ctools_include('modal');
-    ctools_modal_add_js();
-    global $base_url;
-
-    $out .= "<a id='annotation-edit' class='btn btn-default edit ctools-use-modal' title='New Annotation' href='" . $base_url . "/islandora/object/{$object->id}/web_annotation/nojs";
-    $out .= "'><span class='glyphicon glyphicon-tag'></span>" . t('New Annotation') . "</a>";
+//    ctools_include('modal');
+//    ctools_modal_add_js();
+//    global $base_url;
+//
+//    $out .= "<a id='annotation-edit' class='btn btn-default edit ctools-use-modal' title='New Annotation' href='" . $base_url . "/islandora/object/{$object->id}/web_annotation/nojs";
+//    $out .= "'><span class='glyphicon glyphicon-tag'></span>" . t('New Annotation') . "</a>";
+    $form = drupal_get_form('islandora_oralhistories_annotation_form', $object);
+    $out .= drupal_render($form);
   }
   $out .= "</div>";
   return $out;
