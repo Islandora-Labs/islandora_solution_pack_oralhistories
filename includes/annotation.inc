@@ -55,7 +55,7 @@ function islandora_oralhistories_annotation_form(array $form, array &$form_state
   $form['web_annotation_new'] = array(
     '#type' => 'checkbox',
     '#title' => t('Add new annotation'),
-    '#attributes' => array('id' => 'add-new-annotation'),
+    '#attributes' => array('id' => 'web-annotation-add-new'),
   );
   $form['web_annotation'] = array(
     '#type' => 'container',
@@ -68,24 +68,33 @@ function islandora_oralhistories_annotation_form(array $form, array &$form_state
 
   $form['web_annotation']['start'] = array(
     '#type' => 'textfield',
-    '#title' => t('Start time in seconds'),
+    '#title' => t('Start time'),
     '#description' => t('Start time in seconds'),
     '#default_value' => 0.00,
     '#size' => 25,
-    '#attributes' => array('class' => array('web-annotation-start')),
+    '#attributes' => array(
+      'class' => array('web-annotation-start'),
+      'id' => 'web-annotation-start-time'
+    ),
   );
   $form['web_annotation']['end'] = array(
-    '#type' => 'textfield',
-    '#title' => t('End time in seconds'),
+    '#type' => 'hidden',
+    '#title' => t('End time'),
     '#description' => t('End time in seconds'),
     '#size' => 25,
-    '#attributes' => array('class' => array('web-annotation-end')),
+    '#attributes' => array(
+      'class' => array('web-annotation-end'),
+      'id' => 'web-annotation-end-time'
+    ),
   );
   $form['web_annotation']['annotation_body'] = array(
     '#type' => 'textarea',
     '#title' => t('Annotation content'),
     '#description' => t('Annotation content'),
-    '#attributes' => array('class' => array('web-annotation-body')),
+    '#attributes' => array(
+      'class' => array('web-annotation-body'),
+      'id' => 'web-annotation-body'
+    ),
   );
   $form['web_annotation']['annotation_motivation'] = array(
     '#type' => 'select',
@@ -99,7 +108,10 @@ function islandora_oralhistories_annotation_form(array $form, array &$form_state
       'oa:tagging' => t('Tagging'),
     ),
     '#default_value' => 'oa:commenting',
-    '#attributes' => array('class' => array('web-annotation-motivation')),
+    '#attributes' => array(
+      'class' => array('web-annotation-motivation'),
+      'id' => 'web-annotation-motivation'
+    ),
   );
   $form['web_annotation']['submit'] = array(
     '#type' => 'submit',

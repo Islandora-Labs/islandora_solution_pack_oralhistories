@@ -14,7 +14,7 @@
                 });
 
             // Annotation.
-            var addNewAnnotation = $("#add-new-annotation");
+            var addNewAnnotation = $("#web-annotation-add-new");
             addNewAnnotation.change(function(){
                 if (this.checked) {
                     console.log("The addnewannotation is checked.");
