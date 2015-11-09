@@ -198,10 +198,11 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'objectId' => $object->id,
     'enbableTranscriptDisplay' => variable_get('islandora_oralhistories_enbable_transcript_display'),
     'enbableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
+    'enbableAnnotationTabDisplay' => variable_get('islandora_oralhistories_annotation_tab_display'),
     'tracks' => $tracks
   );
 
-  if (variable_get('islandora_oralhistories_enbable_transcript_display') && $object->models[0] == 'islandora:oralhistoriesCModel' ) {
+  if ($object->models[0] == 'islandora:oralhistoriesCModel' ) {
     drupal_add_js(array('islandoraOralhistories' => $js_settings), 'setting');
     drupal_add_js(drupal_get_path('module', 'islandora_oralhistories') . '/js/oralhistories.js');
   }
