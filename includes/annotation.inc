@@ -55,6 +55,7 @@ function islandora_oralhistories_annotation_form(array $form, array &$form_state
   $form['web_annotation_new'] = array(
     '#type' => 'checkbox',
     '#title' => t('Add new annotation'),
+    '#attributes' => array('id' => 'add-new-annotation'),
   );
   $form['web_annotation'] = array(
     '#type' => 'container',
