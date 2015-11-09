@@ -26,8 +26,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   // Add videojs.
   drupal_add_css($module_path . '/lib/videojs/video-js.css');
   drupal_add_js($module_path . '/lib/videojs/videojs.js');
-  drupal_add_css($module_path . '/lib/annotator.css');
-  drupal_add_js($module_path . '/lib/annotator.js');
+
 
   // Use jquery.ui tabs.
   drupal_add_library('system', 'ui.tabs');
