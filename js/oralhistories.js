@@ -4,8 +4,6 @@
 (function($){
     Drupal.behaviors.islandoraOralHistories = {
         attach: function (context, settings) {
-            //var enableCaptionDisp = Drupal.settings.islandoraOralhistories.enbableCaptionDisplay;
-            //var tracksUploaded = Drupal.settings.islandoraOralhistories.tracks;
             var targetObjectId = Drupal.settings.islandoraOralhistories.objectId;
 
             // Show transcript display as tabs.

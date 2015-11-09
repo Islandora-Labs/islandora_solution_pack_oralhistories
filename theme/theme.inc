@@ -196,9 +196,9 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   // Pass settings to javascript.
   $js_settings = array(
     'objectId' => $object->id,
-    'enbableTranscriptDisplay' => variable_get('islandora_oralhistories_enbable_transcript_display'),
-    'enbableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
-    'enbableAnnotationTabDisplay' => variable_get('islandora_oralhistories_annotation_tab_display'),
+    'enableTranscriptDisplay' => variable_get('islandora_oralhistories_enable_transcript_display'),
+    'enableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
+    'enableAnnotationTabDisplay' => variable_get('islandora_oralhistories_annotation_tab_display'),
     'tracks' => $tracks
   );
 
