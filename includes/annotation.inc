@@ -46,6 +46,20 @@ function edit_annotation_modal(AbstractObject $object, $ajax) {
   }
 }
 
+function _get_web_annotation_form(AbstractObject $object) {
+  $form = drupal_render(drupal_get_form('islandora_oralhistories_annotation_form', $object));
+  $javascript = drupal_add_js(NULL, NULL);
+  $settings = FALSE;
+
+  if(isset($javascript['settings'])) {
+    $settings = '<script type="text/javascript">jQuery.extend(Drupal.settings, ' .
+      drupal_json_encode(call_user_func_array('array_merge_recursive', $javascript['settings']['data'])) .
+      ');</script>';
+  }
+
+  die($form . $settings);
+}
+
 function islandora_oralhistories_annotation_form(array $form, array &$form_state, AbstractObject $object) {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   module_load_include('inc', 'islandora', 'includes/datastream');
@@ -54,22 +68,10 @@ function islandora_oralhistories_annotation_form(array $form, array &$form_state
   $form['#prefix'] = '<div id="islandora-oralhistories-annotation-form-wrapper">';
   $form['#suffix'] = '</div>';
 
-  $form['web_annotation_new'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Add new annotation'),
-    '#attributes' => array(
-      'id' => 'web-annotation-add-new',
-    ),
-  );
   $form['web_annotation'] = array(
     '#type' => 'container',
     '#prefix' => '<div id="web-annotation-container-wrapper">',
     '#suffix' => '</div>',
-    '#states' => array(
-      'visible' => array(
-        ':input[name="web_annotation_new"]' => array('checked' => TRUE),
-      ),
-    ),
   );
 
   $form['web_annotation']['start'] = array(
@@ -124,7 +126,7 @@ function islandora_oralhistories_annotation_form(array $form, array &$form_state
     '#value' => t('Submit'),
     "#ajax" => array(
       "callback" => "web_annotation_form_ajax_callback",
-      "wrapper" => "web-annotation-container-wrapper",
+      "wrapper" => "islandora-oralhistories-annotation-form-wrapper",
     ),
   );
 
@@ -132,26 +134,15 @@ function islandora_oralhistories_annotation_form(array $form, array &$form_state
 }
 
 function web_annotation_form_ajax_callback(array $form, array &$form_state) {
-  $new_state = array();
-  $new_state['build_info'] = $form_state['build_info'];
-  $new_state['rebuild'] = TRUE;
-  $new_state['no_cache'] = TRUE;
-  $new_state['values'] = array();
-  $new_state += form_state_defaults();
+  if (form_get_errors()) {
+    $form_state['rebuild'] = TRUE;
+    $commands = array();
+    $commands[] = ajax_command_prepend(NULL, theme('status_messages'));
+    return array('#type' => 'ajax', '#commands' => $commands);
+  }
+  else {
+    $system_message = drupal_get_messages();
+    return t('Thank you for your submission!');
+  }
 
-  $new_form_array = drupal_rebuild_form('islandora_oralhistories_annotation_form', $new_state);
-  $new_form = drupal_render($new_form_array);
-
-  $commands = array();
-  $commands[] = ajax_command_html('#islandora-oralhistories-annotation-form-wrapper', $new_form);
-
-  drupal_set_message('New annotation created', 'status', FALSE);
-  $messages = theme_status_messages(array('display' => 'status'));
-  $commands[] = ajax_command_append(NULL, $messages);
-
-  return array('#type' => 'ajax', '#commands' => $commands);
 }
-
-//function islandora_oralhistories_annotation_form_submit(array $form, array &$form_state) {
-//
-//}

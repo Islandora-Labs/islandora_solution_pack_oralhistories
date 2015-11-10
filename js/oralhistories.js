@@ -14,29 +14,32 @@
                 });
 
             // Annotation.
-            var annotationForm = $("#islandora-oralhistories-annotation-form");
-            var annotationFormStart = $("#web-annotation-start-time");
-            var annotationFormSubmit = $("#edit-web-annotation-submit");
-            var addNewAnnotation = $("#web-annotation-add-new");
-            addNewAnnotation.change(function(){
-                if (this.checked) {
-                    if (!videoElement.paused) {
-                        videoElement.pause();
-                        annotationFormStart.val(videoElement.currentTime.toFixed(2));
-                    }
-                }
+            //var annotationForm = $("#islandora-oralhistories-annotation-form");
+            //var annotationFormStart = $("#web-annotation-start-time");
+            //var annotationFormSubmit = $("#edit-web-annotation-submit");
+            var addNewAnnotation = $("#annotation-add-new-btn");
+
+            addNewAnnotation.once("load-web-annotation-form", function(){
+                var ajaxLoadUrl = '/islandora/object/' + targetObjectId + '/web_annotation/add';
+                $(this).click(function(){
+                    $("#web-annotation-form-ajax-loader").load(ajaxLoadUrl, function(){
+                        Drupal.attachBehaviors();
+                        if (!videoElement.paused) {
+                            videoElement.pause();
+                            $("#web-annotation-start-time").val(videoElement.currentTime.toFixed(2));
+                        }
+                    });
+
+                });
             });
-            //annotationForm.submit(function() {
-            //    this.submit();
-            //    if (annotationFormSubmit.hasClass("ajax-processed")) {
-            //        $("#web-annotation-container-wrapper").hide();
-            //    }
-            //});
 
 
 
         } // end attach function
     };
+
 })(jQuery);
+
+
 
 

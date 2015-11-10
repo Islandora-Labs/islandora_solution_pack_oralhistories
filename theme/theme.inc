@@ -258,14 +258,9 @@ function theme_islandora_webannotation(array &$variables) {
 
   $out = "<div class='btn-group' role='group'>";
   if (isset($object) && islandora_object_access(ISLANDORA_WEB_ANNOTATION_CREATE, $object)) {
-//    ctools_include('modal');
-//    ctools_modal_add_js();
-//    global $base_url;
-//
-//    $out .= "<a id='annotation-edit' class='btn btn-default edit ctools-use-modal' title='New Annotation' href='" . $base_url . "/islandora/object/{$object->id}/web_annotation/nojs";
-//    $out .= "'><span class='glyphicon glyphicon-tag'></span>" . t('New Annotation') . "</a>";
-    $form = drupal_get_form('islandora_oralhistories_annotation_form', $object);
-    $out .= drupal_render($form);
+    $out .= "<div><a id='annotation-add-new-btn' class='btn btn-default add' title='Add' ";
+    $out .= "'><span class='glyphicon glyphicon-comment'></span> " . t('Add new annotation') . "</a></div>";
+    $out .= "<div id='web-annotation-form-ajax-loader'></div>";
   }
   $out .= "</div>";
   return $out;
