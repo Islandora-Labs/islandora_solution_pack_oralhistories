@@ -152,6 +152,6 @@ function web_annotation_form_ajax_callback(array $form, array &$form_state) {
   return array('#type' => 'ajax', '#commands' => $commands);
 }
 
-function islandora_oralhistories_annotation_form_submit(array $form, array &$form_state) {
-// do submit
-}
+//function islandora_oralhistories_annotation_form_submit(array $form, array &$form_state) {
+//
+//}
