@@ -58,24 +58,34 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
   // prepare viewer params for media file.
   try {
-    if (isset($object['MP4']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['MP4'])) {
+    $mime = 'video/mp4';
+    $viewer_params = array(
+      'pid' => $object->id,
+    );
+    $viewer_params += array(
+      'media_tag' => 'video',
+    );
+    if (isset($object['MP4'])) {
       $media_dsid = 'MP4';
-      $mime = 'video/mp4';
-      $viewer_params = array(
-        'pid' => $object->id,
-      );
-      $viewer_params += array(
-        'media_tag' => 'video',
-      );
-
-      // Video player.
-      if (isset($object[$media_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$media_dsid])) {
-        $media_url = url("islandora/object/{$object->id}/datastream/$media_dsid/view", array('absolute' => TRUE));
-        $viewer_params += array(
-          'mime' => $mime,
-          'url' => $media_url,
-        );
+    }
+    if (!$object['MP4']) {
+      if (variable_get('islandora_video_play_obj', true)) {
+        if ($object['OBJ'] && $object['OBJ']->mimetype == 'video/mp4') {
+          $max_file_size = ((int) variable_get('islandora_video_max_obj_size', 500)) * 1024 * 1024;
+          if ($object['OBJ']->size < $max_file_size) {
+            $media_dsid = 'OBJ';
+          }
+        }
       }
+    }
+
+    // Video player.
+    if (isset($object[$media_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$media_dsid])) {
+      $media_url = url("islandora/object/{$object->id}/datastream/$media_dsid/view", array('absolute' => TRUE));
+      $viewer_params += array(
+        'mime' => $mime,
+        'url' => $media_url,
+      );
     }
   }
   catch (Exception $e) {
