@@ -131,11 +131,25 @@ function islandora_oralhistories_islandora_required_objects(IslandoraTuque $conn
   $datastream->mimetype = 'image/png';
   $datastream->setContentFromFile("$module_path/images/folder.png", FALSE);
   $oralhistories_collection->ingestDatastream($datastream);
+
+  // Web annotation CModel
+  $wa_content_model = $connection->repository->constructObject('islandora:WADMCModel');
+  $wa_content_model->owner = 'fedoraAdmin';
+  $wa_content_model->label = 'Islandora Web Annotation Content Model';
+  $wa_content_model->models = 'fedora-system:ContentModel-3.0';
+  // DS-COMPOSITE-MODEL Datastream.
+  $datastream = $wa_content_model->constructDatastream('DS-COMPOSITE-MODEL', 'X');
+  $datastream->label = 'DS-COMPOSITE-MODEL';
+  $datastream->mimetype = 'text/xml';
+  $datastream->setContentFromFile("$module_path/xml/webannotation_ds_composite_model.xml", FALSE);
+  $wa_content_model->ingestDatastream($datastream);
+
   return array(
     'islandora_oralhistories' => array(
       'title' => 'Islandora Oral Histories',
       'objects' => array(
         $oralhistories_content_model,
+        $wa_content_model,
         $oralhistories_collection,
       ),
     ),
