@@ -107,11 +107,8 @@ function islandora_oralhistories_islandora_required_objects(IslandoraTuque $conn
   $oralhistories_content_model->label = 'Islandora Oral Histories Content Model';
   $oralhistories_content_model->models = 'fedora-system:ContentModel-3.0';
   // DS-COMPOSITE-MODEL Datastream.
-  $datastream = $oralhistories_content_model->constructDatastream('DS-COMPOSITE-MODEL', 'X');
-  $datastream->label = 'DS-COMPOSITE-MODEL';
-  $datastream->mimetype = 'text/xml';
-  $datastream->setContentFromFile("$module_path/xml/islandora_oralhistories_ds_composite_model.xml", FALSE);
-  $oralhistories_content_model->ingestDatastream($datastream);
+  islandora_oralhistories_ingest__ds_composite_datastream($oralhistories_content_model,
+    $module_path . "/xml/islandora_oralhistories_ds_composite_model.xml");
 
   // Oral Histories Collection.
   $oralhistories_collection = $connection->repository->constructObject('islandora:oralhistories_collection');
@@ -138,11 +135,8 @@ function islandora_oralhistories_islandora_required_objects(IslandoraTuque $conn
   $wa_content_model->label = 'Islandora Web Annotation Content Model';
   $wa_content_model->models = 'fedora-system:ContentModel-3.0';
   // DS-COMPOSITE-MODEL Datastream.
-  $datastream = $wa_content_model->constructDatastream('DS-COMPOSITE-MODEL', 'X');
-  $datastream->label = 'DS-COMPOSITE-MODEL';
-  $datastream->mimetype = 'text/xml';
-  $datastream->setContentFromFile("$module_path/xml/webannotation_ds_composite_model.xml", FALSE);
-  $wa_content_model->ingestDatastream($datastream);
+  islandora_oralhistories_ingest__ds_composite_datastream($wa_content_model,
+    $module_path . "/xml/webannotation_ds_composite_model.xml");
 
   return array(
     'islandora_oralhistories' => array(
@@ -155,6 +149,26 @@ function islandora_oralhistories_islandora_required_objects(IslandoraTuque $conn
     ),
   );
 }
+
+/**
+ * This function will add an entity DS composite datastream to an object.
+ *
+ * This is a workaround of a known issue with temp files being lost in Tuque in
+ * batches because of object destruction during the serialization process.
+ *
+ * @param AbstractObject $object
+ *   The object to add the DS composite datastream to.
+ */
+function islandora_oralhistories_ingest__ds_composite_datastream(AbstractObject $object, $filename) {
+  $module_path = drupal_get_path('module', 'islandora_oralhistories');
+
+  $ds_composite_datastream = $object->constructDatastream('DS-COMPOSITE-MODEL', 'X');
+  $ds_composite_datastream->label = 'DS-COMPOSITE-MODEL';
+  $ds_composite_datastream->mimetype = 'text/xml';
+  $ds_composite_datastream->setContentFromFile($filename, FALSE);
+  $object->ingestDatastream($ds_composite_datastream);
+}
+
 
 /**
  * Implements hook_islandora_xml_form_builder_forms().
