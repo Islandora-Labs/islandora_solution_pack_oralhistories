@@ -82,23 +82,23 @@ function _create_web_annotation(AbstractObject $object) {
 }
 
 /**
- * Menu callback for "islandora/object/%islandora_object/web_annotation/remove/%anno_object"
+ * Menu callback for "islandora/object/%islandora_object/web_annotation/remove/%"
  * @param \AbstractObject $object
- * @param \AbstractObject $anno_object
+ * @param string $anno_object_pid
  * @return string
  */
-function _remove_web_annotation(AbstractObject $object, AbstractObject $anno_object) {
+function _remove_web_annotation(AbstractObject $object, $anno_object_pid = '') {
   // @todo: remove an existing annotation.
   return 'remove an existing annotation.';
 }
 
 /**
- * Menu callback for "islandora/object/%islandora_object/web_annotation/remove/%anno_object"
+ * Menu callback for "islandora/object/%islandora_object/web_annotation/remove/%"
  * @param \AbstractObject $object
- * @param \AbstractObject $anno_object
+ * @param string $anno_object_pid
  * @return string
  */
-function _update_web_annotation(AbstractObject $object, AbstractObject $anno_object) {
+function _update_web_annotation(AbstractObject $object, $anno_object_pid = '') {
   // @todo: update an existing annotation.
   return 'update an existing annotation.';
 }
