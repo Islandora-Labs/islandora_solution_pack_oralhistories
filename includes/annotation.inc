@@ -60,10 +60,49 @@ function _get_web_annotation_form(AbstractObject $object) {
   die($form . $settings);
 }
 
+/**
+ * Menu callback for "islandora/object/%islandora_object/web_annotation".
+ *
+ * @param \AbstractObject $object
+ * @return string
+ */
 function _retrieve_web_annotations(AbstractObject $object) {
-  // @todo: retrieve all annotations for a given $object.
+  // @todo: retrieve all annotations for a given $object, return in json.
   return 'Annotation list';
 }
+
+/**
+ * Menu callback for "islandora/object/%islandora_object/web_annotation/create"
+ * @param \AbstractObject $object
+ * @return string
+ */
+function _add_web_annotation(AbstractObject $object) {
+  // @todo: add a new annotation.
+  return 'A new annotation is added.';
+}
+
+/**
+ * Menu callback for "islandora/object/%islandora_object/web_annotation/remove/%anno_object"
+ * @param \AbstractObject $object
+ * @param \AbstractObject $anno_object
+ * @return string
+ */
+function _remove_web_annotation(AbstractObject $object, AbstractObject $anno_object) {
+  // @todo: remove an existing annotation.
+  return 'remove an existing annotation.';
+}
+
+/**
+ * Menu callback for "islandora/object/%islandora_object/web_annotation/remove/%anno_object"
+ * @param \AbstractObject $object
+ * @param \AbstractObject $anno_object
+ * @return string
+ */
+function _update_web_annotation(AbstractObject $object, AbstractObject $anno_object) {
+  // @todo: update an existing annotation.
+  return 'update an existing annotation.';
+}
+
 
 function islandora_oralhistories_annotation_form(array $form, array &$form_state, AbstractObject $object) {
   module_load_include('inc', 'islandora', 'includes/solution_packs');

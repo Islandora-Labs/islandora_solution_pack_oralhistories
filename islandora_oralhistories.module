@@ -87,6 +87,37 @@ function islandora_oralhistories_menu() {
     'file' => 'includes/annotation.inc',
     'type' => MENU_CALLBACK,
   );
+  $items['islandora/object/%islandora_object/web_annotation/create'] = array(
+    'title' => 'Create Oral Histories Web Annotation',
+    'description' => 'Add a new Web Annotation',
+    'page callback' => '_add_web_annotation',
+    'page arguments' => array(2),
+    'access callback' => 'islandora_object_access_callback',
+    'access arguments' => array(ISLANDORA_WEB_ANNOTATION_CREATE, 2),
+    'file' => 'includes/annotation.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['islandora/object/%islandora_object/web_annotation/remove/%anno_object'] = array(
+    'title' => 'Remove Oral Histories Web Annotation',
+    'description' => 'Remove an existing Web Annotation',
+    'page callback' => '_remove_web_annotation',
+    'page arguments' => array(2, 5),
+    'access callback' => 'islandora_object_access_callback',
+    'access arguments' => array(ISLANDORA_WEB_ANNOTATION_CREATE, 2),
+    'file' => 'includes/annotation.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['islandora/object/%islandora_object/web_annotation/update/%anno_object'] = array(
+    'title' => 'Update Oral Histories Web Annotation',
+    'description' => 'Update an existing Web Annotation',
+    'page callback' => '_update_web_annotation',
+    'page arguments' => array(2, 5),
+    'access callback' => 'islandora_object_access_callback',
+    'access arguments' => array(ISLANDORA_WEB_ANNOTATION_CREATE, 2),
+    'file' => 'includes/annotation.inc',
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
