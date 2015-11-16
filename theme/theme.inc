@@ -269,7 +269,7 @@ function theme_islandora_webannotation(array &$variables) {
   $out = "<div class='btn-group' role='group'>";
   if (isset($object) && islandora_object_access(ISLANDORA_WEB_ANNOTATION_CREATE, $object)) {
     $out .= "<div><a id='annotation-add-new-btn' class='btn btn-default add' title='Add' ";
-    $out .= "'><span class='glyphicon glyphicon-comment'></span> " . t('Add new annotation') . "</a></div>";
+    $out .= "'><span class='glyphicon glyphicon-plus'></span> " . t('Add new annotation') . "</a></div>";
     $out .= "<div id='web-annotation-form-ajax-loader'></div>";
   }
   $out .= "</div>";

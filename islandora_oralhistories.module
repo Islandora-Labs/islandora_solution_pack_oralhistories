@@ -90,7 +90,7 @@ function islandora_oralhistories_menu() {
   $items['islandora/object/%islandora_object/web_annotation/create'] = array(
     'title' => 'Create Oral Histories Web Annotation',
     'description' => 'Add a new Web Annotation',
-    'page callback' => '_add_web_annotation',
+    'page callback' => '_create_web_annotation',
     'page arguments' => array(2),
     'access callback' => 'islandora_object_access_callback',
     'access arguments' => array(ISLANDORA_WEB_ANNOTATION_CREATE, 2),

@@ -76,7 +76,7 @@ function _retrieve_web_annotations(AbstractObject $object) {
  * @param \AbstractObject $object
  * @return string
  */
-function _add_web_annotation(AbstractObject $object) {
+function _create_web_annotation(AbstractObject $object) {
   // @todo: add a new annotation.
   return 'A new annotation is added.';
 }
