@@ -7,6 +7,10 @@
 
 define('ISLANDORA_WEB_ANNOTATION_VIEW', 'view web annotations');
 define('ISLANDORA_WEB_ANNOTATION_CREATE', 'create web annotations');
+define('ISLANDORA_WEB_ANNOTATION_EDIT_OWN', 'edit own web annotations');
+define('ISLANDORA_WEB_ANNOTATION_EDIT_ANY', 'edit any web annotations');
+define('ISLANDORA_WEB_ANNOTATION_REMOVE_OWN', 'remove own web annotations');
+define('ISLANDORA_WEB_ANNOTATION_REMOVE_ANY', 'remove any web annotations');
 
 /**
  * Implements hook_menu().
@@ -134,6 +138,22 @@ function islandora_oralhistories_permission() {
     ISLANDORA_WEB_ANNOTATION_CREATE => array(
       'title' => t('Create web annotations'),
       'description' => t('Create web annotations'),
+    ),
+    ISLANDORA_WEB_ANNOTATION_EDIT_OWN => array(
+      'title' => t('Edit own web annotations'),
+      'description' => t('edit own web annotations'),
+    ),
+    ISLANDORA_WEB_ANNOTATION_EDIT_ANY => array(
+      'title' => t('Edit any web annotations'),
+      'description' => t('edit any web annotations'),
+    ),
+    ISLANDORA_WEB_ANNOTATION_REMOVE_OWN => array(
+      'title' => t('Remove own web annotations'),
+      'description' => t('remove own web annotations'),
+    ),
+    ISLANDORA_WEB_ANNOTATION_REMOVE_ANY => array(
+      'title' => t('Remove any web annotations'),
+      'description' => t('remove any web annotations'),
     ),
   );
 }

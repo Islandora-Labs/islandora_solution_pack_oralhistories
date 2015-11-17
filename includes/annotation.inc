@@ -73,11 +73,15 @@ function _retrieve_web_annotations(AbstractObject $object) {
 
 /**
  * Menu callback for "islandora/object/%islandora_object/web_annotation/create"
- * @param \AbstractObject $object
+ *
+ * Our annotationApp will post data to this url.
  * @return string
  */
-function _create_web_annotation(AbstractObject $object) {
+function _create_web_annotation() {
   // @todo: add a new annotation.
+  // Retrieve our POST DATA
+
+  
   return 'A new annotation is added.';
 }
 
