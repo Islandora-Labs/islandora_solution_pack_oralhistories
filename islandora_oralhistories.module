@@ -107,8 +107,9 @@ function islandora_oralhistories_menu() {
     'description' => 'Remove an existing Web Annotation',
     'page callback' => '_remove_web_annotation',
     'page arguments' => array(2, 5),
-    'access callback' => 'islandora_object_access_callback',
-    'access arguments' => array(ISLANDORA_WEB_ANNOTATION_REMOVE_OWN, ISLANDORA_WEB_ANNOTATION_REMOVE_ANY, 2),
+    'access callback' => 'islandora_oralhistories_web_annotation_access',
+    'access arguments' => array(
+      array(ISLANDORA_WEB_ANNOTATION_REMOVE_OWN, ISLANDORA_WEB_ANNOTATION_REMOVE_ANY), 2),
     'file' => 'includes/annotation.inc',
     'type' => MENU_CALLBACK,
   );
@@ -117,8 +118,9 @@ function islandora_oralhistories_menu() {
     'description' => 'Update an existing Web Annotation',
     'page callback' => '_update_web_annotation',
     'page arguments' => array(2, 5),
-    'access callback' => 'islandora_object_access_callback',
-    'access arguments' => array(ISLANDORA_WEB_ANNOTATION_CREATE, ISLANDORA_WEB_ANNOTATION_EDIT_OWN, ISLANDORA_WEB_ANNOTATION_EDIT_ANY, 2),
+    'access callback' => 'islandora_oralhistories_web_annotation_access',
+    'access arguments' => array(
+      array(ISLANDORA_WEB_ANNOTATION_EDIT_OWN, ISLANDORA_WEB_ANNOTATION_EDIT_ANY), 2),
     'file' => 'includes/annotation.inc',
     'type' => MENU_CALLBACK,
   );
@@ -134,11 +136,11 @@ function islandora_oralhistories_permission() {
   return array(
     ISLANDORA_WEB_ANNOTATION_VIEW => array(
       'title' => t('View web annotations'),
-      'description' => t('View web annotations.'),
+      'description' => t('view web annotations.'),
     ),
     ISLANDORA_WEB_ANNOTATION_CREATE => array(
       'title' => t('Create web annotations'),
-      'description' => t('Create web annotations'),
+      'description' => t('create web annotations'),
     ),
     ISLANDORA_WEB_ANNOTATION_EDIT_OWN => array(
       'title' => t('Edit own web annotations'),
@@ -157,6 +159,36 @@ function islandora_oralhistories_permission() {
       'description' => t('remove any web annotations'),
     ),
   );
+}
+
+/**
+ * Checks whether the user can access web annotations for a given object.
+ *
+ * @param array $perms
+ *  Array of user permission to test for.
+ * @param \AbstractObject $object
+ *  The object to test, if NULL given the object doesn't exist or is
+ *   inaccessible.
+ *
+ * @return bool
+ *   TRUE if user access granted
+ *   FALSE if user access denied
+ */
+function islandora_oralhistories_web_annotation_access(array $perms, AbstractObject $object = NULL) {
+  global $user;
+  $has_access = FALSE;
+  if (!isset($object)) {
+    return FALSE;
+  } else if ($user->uid == 1) {
+    return TRUE;
+  } else {
+    foreach ($perms as $perm) {
+      if (user_access($perm) && islandora_object_access($perm, $object)) {
+        $has_access = TRUE;
+      }
+    }
+    return $has_access;
+  }
 }
 
 /**
