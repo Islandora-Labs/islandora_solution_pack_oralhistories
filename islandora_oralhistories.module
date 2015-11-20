@@ -7,10 +7,8 @@
 
 define('ISLANDORA_WEB_ANNOTATION_VIEW', 'view web annotations');
 define('ISLANDORA_WEB_ANNOTATION_CREATE', 'create web annotations');
-define('ISLANDORA_WEB_ANNOTATION_EDIT_OWN', 'edit own web annotations');
-define('ISLANDORA_WEB_ANNOTATION_EDIT_ANY', 'edit any web annotations');
-define('ISLANDORA_WEB_ANNOTATION_REMOVE_OWN', 'remove own web annotations');
-define('ISLANDORA_WEB_ANNOTATION_REMOVE_ANY', 'remove any web annotations');
+define('ISLANDORA_WEB_ANNOTATION_MANAGE_OWN', 'manage own web annotations');
+define('ISLANDORA_WEB_ANNOTATION_MANAGE_ANY', 'manage any web annotations');
 
 /**
  * Implements hook_menu().
@@ -109,7 +107,7 @@ function islandora_oralhistories_menu() {
     'page arguments' => array(2, 5),
     'access callback' => 'islandora_oralhistories_web_annotation_access',
     'access arguments' => array(
-      array(ISLANDORA_WEB_ANNOTATION_REMOVE_OWN, ISLANDORA_WEB_ANNOTATION_REMOVE_ANY), 2),
+      array(ISLANDORA_WEB_ANNOTATION_MANAGE_OWN, ISLANDORA_WEB_ANNOTATION_MANAGE_ANY), 2),
     'file' => 'includes/annotation.inc',
     'type' => MENU_CALLBACK,
   );
@@ -120,7 +118,7 @@ function islandora_oralhistories_menu() {
     'page arguments' => array(2, 5),
     'access callback' => 'islandora_oralhistories_web_annotation_access',
     'access arguments' => array(
-      array(ISLANDORA_WEB_ANNOTATION_EDIT_OWN, ISLANDORA_WEB_ANNOTATION_EDIT_ANY), 2),
+      array(ISLANDORA_WEB_ANNOTATION_MANAGE_OWN, ISLANDORA_WEB_ANNOTATION_MANAGE_ANY), 2),
     'file' => 'includes/annotation.inc',
     'type' => MENU_CALLBACK,
   );
@@ -142,21 +140,13 @@ function islandora_oralhistories_permission() {
       'title' => t('Create web annotations'),
       'description' => t('create web annotations'),
     ),
-    ISLANDORA_WEB_ANNOTATION_EDIT_OWN => array(
-      'title' => t('Edit own web annotations'),
-      'description' => t('edit own web annotations'),
+    ISLANDORA_WEB_ANNOTATION_MANAGE_OWN => array(
+      'title' => t('Manage own web annotations'),
+      'description' => t('manage own web annotations'),
     ),
-    ISLANDORA_WEB_ANNOTATION_EDIT_ANY => array(
-      'title' => t('Edit any web annotations'),
-      'description' => t('edit any web annotations'),
-    ),
-    ISLANDORA_WEB_ANNOTATION_REMOVE_OWN => array(
-      'title' => t('Remove own web annotations'),
-      'description' => t('remove own web annotations'),
-    ),
-    ISLANDORA_WEB_ANNOTATION_REMOVE_ANY => array(
-      'title' => t('Remove any web annotations'),
-      'description' => t('remove any web annotations'),
+    ISLANDORA_WEB_ANNOTATION_MANAGE_ANY => array(
+      'title' => t('Manage any web annotations'),
+      'description' => t('manage any web annotations'),
     ),
   );
 }
