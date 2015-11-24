@@ -31,6 +31,10 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   // Use jquery.ui tabs.
   drupal_add_library('system', 'ui.tabs');
 
+  // reactJS library
+  drupal_add_js($module_path . '/lib/reactjs/react.js');
+  drupal_add_js($module_path . '/lib/reactjs/react-dom.js');
+
   $object = $variables['object'];
   $repository = $object->repository;
   // We should eventually remove the DC object and dc_array code as it only
@@ -228,7 +232,8 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
   if ($object->models[0] == 'islandora:oralhistoriesCModel' ) {
     drupal_add_js(array('islandoraOralhistories' => $js_settings), 'setting');
-    drupal_add_js(drupal_get_path('module', 'islandora_oralhistories') . '/js/oralhistories.js');
+    drupal_add_js($module_path . '/js/oralhistories.js');
+    drupal_add_js($module_path . '/js/annotationApp.js');
   }
   return array('' => $viewer);
 }

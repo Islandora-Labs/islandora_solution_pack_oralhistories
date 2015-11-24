@@ -15,3 +15,5 @@ Thumbs.db
 # Test files #
 ######################
 tests/
+
+ js/node_modules/

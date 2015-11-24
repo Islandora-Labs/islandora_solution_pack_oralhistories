@@ -18,21 +18,21 @@
             //var annotationForm = $("#islandora-oralhistories-annotation-form");
             //var annotationFormStart = $("#web-annotation-start-time");
             //var annotationFormSubmit = $("#edit-web-annotation-submit");
-            var addNewAnnotation = $("#annotation-add-new-btn");
-
-            addNewAnnotation.once("load-web-annotation-form", function(){
-                var ajaxLoadUrl = '/islandora/object/' + targetObjectId + '/web_annotation/add';
-                $(this).click(function(){
-                    $("#web-annotation-form-ajax-loader").load(ajaxLoadUrl, function(){
-                        Drupal.attachBehaviors();
-                        if (!videoElement.paused) {
-                            videoElement.pause();
-                            $("#web-annotation-start-time").val(videoElement.currentTime.toFixed(2));
-                        }
-                    });
-
-                });
-            });
+            //var addNewAnnotation = $("#annotation-add-new-btn");
+            //
+            //addNewAnnotation.once("load-web-annotation-form", function(){
+            //    var ajaxLoadUrl = '/islandora/object/' + targetObjectId + '/web_annotation/add';
+            //    $(this).click(function(){
+            //        $("#web-annotation-form-ajax-loader").load(ajaxLoadUrl, function(){
+            //            Drupal.attachBehaviors();
+            //            if (!videoElement.paused) {
+            //                videoElement.pause();
+            //                $("#web-annotation-start-time").val(videoElement.currentTime.toFixed(2));
+            //            }
+            //        });
+            //
+            //    });
+            //});
 
 
 
