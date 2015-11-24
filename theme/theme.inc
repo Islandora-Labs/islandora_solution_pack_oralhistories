@@ -183,6 +183,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   // Retrieve/display annotations.
   if (variable_get('islandora_oralhistories_annotation_tab_display', FALSE)) {
     $viewer_params += array(
+      //@todo: we may need change this to function _retrieve_web_annotations().
       'annotation_content' => islandora_oralhistories_get_annotation($object->id),
     );
   }
@@ -210,6 +211,19 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'enableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
     'enableAnnotationTabDisplay' => variable_get('islandora_oralhistories_annotation_tab_display'),
     'tracks' => $tracks
+  );
+
+  // Add more settings for annotation.
+  global $user;
+  $js_settings['permissions'] = array(
+    'view' => islandora_oralhistories_web_annotation_access(array('view web annotations'), $object),
+    'create' => islandora_oralhistories_web_annotation_access(array('create web annotations'), $object),
+    'manage_own' => islandora_oralhistories_web_annotation_access(array('manage own web annotations'), $object),
+    'manage_any' => islandora_oralhistories_web_annotation_access(array('manage any web annotations'), $object)
+  );
+  $js_settings['user'] = array(
+    'uid' => $user->uid,
+    'name' => $user->name
   );
 
   if ($object->models[0] == 'islandora:oralhistoriesCModel' ) {

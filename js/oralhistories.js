@@ -4,6 +4,7 @@
 (function($){
     Drupal.behaviors.islandoraOralHistories = {
         attach: function (context, settings) {
+            //console.dir(Drupal.settings.islandoraOralhistories);
             var targetObjectId = Drupal.settings.islandoraOralhistories.objectId;
             var enableAnnotation = Drupal.settings.enableAnnotationTabDisplay;
             var videoElement = $(".islandora-oralhistories-object").find('video, audio')[0];
