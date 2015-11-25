@@ -7,6 +7,13 @@
     Drupal.behaviors.annotationApp = {
         attach: function (context, settings) {
             console.dir(Drupal.settings.islandoraOralhistories);
+            var targetObjectId = Drupal.settings.islandoraOralhistories.objectId;
+            var enableAnnotation = Drupal.settings.islandoraOralhistories.enableAnnotationTabDisplay;
+            var videoElement = $(".islandora-oralhistories-object").find('video, audio')[0];
+            var apiUrl = '/islandora/object/' + targetObjectId + '/web_annotation/create';
+            var user = Drupal.settings.islandoraOralhistories.user;
+            var permissions = Drupal.settings.islandoraOralhistories.permissions;
+
             //AnnotationBox
             var AnnotationBox = React.createClass({
                 displayName: 'AnnotationBox',
@@ -237,7 +244,7 @@
                 }
             });
 
-            ReactDOM.render(React.createElement(AnnotationBox, { url: '#', pollInterval: 2000 }), document.getElementById('annotation-tab'));
+            ReactDOM.render(React.createElement(AnnotationBox, { url: apiUrl, pollInterval: 2000 }), document.getElementById('annotation-tab'));
         } // End of attach
 
     };
