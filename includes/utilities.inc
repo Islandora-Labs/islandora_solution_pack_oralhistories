@@ -120,8 +120,9 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
   $fields = array_merge($fields, $tiers);
   $fields = array_merge($fields, $speaker);
 
-  // Build solr query.
-  $query = "$qualifier AND " . 'RELS_EXT_hasModel_uri_mt:"islandora:oralhistoriesCModel"';
+  // Build solr query. giving up RELS_EXT_hasModel_uri_mt as some solr instance doesn't have this field for sure.
+//  $query = "$qualifier AND " . 'RELS_EXT_hasModel_uri_mt:"islandora:oralhistoriesCModel"';
+  $query = "$qualifier";
   $query .= "&sort=or_start asc";
 
   if ($options['term'] == '') {
