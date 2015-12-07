@@ -223,7 +223,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   );
   $js_settings['user'] = array(
     'uid' => $user->uid,
-    'name' => $user->name
+    'name' => ($user->uid == 0) ? 'anonymous' : $user->name
   );
 
   if ($object->models[0] == 'islandora:oralhistoriesCModel' ) {
