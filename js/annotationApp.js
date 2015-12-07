@@ -6,7 +6,7 @@
 (function ($) {
     Drupal.behaviors.annotationApp = {
         attach: function (context, settings) {
-            console.dir(Drupal.settings.islandoraOralhistories);
+            //console.dir(Drupal.settings.islandoraOralhistories);
             var targetObjectId = Drupal.settings.islandoraOralhistories.objectId;
             var enableAnnotation = Drupal.settings.islandoraOralhistories.enableAnnotationTabDisplay;
             var videoElement = $(".islandora-oralhistories-object").find('video, audio')[0];
@@ -32,16 +32,19 @@
                     });
                 },
                 handleAnnotationSubmit: function (annotation) {
-                    var annotations = this.state.data;
-                    var newAnnotations = annotations.concat([annotation]);
-                    this.setState({ data: newAnnotations });
+                    var arr = this.state.annotations;
+                    arr.push(annotation);
+                    //var newAnnotations = annotations.concat([annotation]);
+                    //this.setState({annotations: annotations});
+                    this.setState({ annotations: arr });
                     $.ajax({
                         url: this.props.url,
                         dataType: 'json',
                         type: 'POST',
                         data: annotation,
                         success: (function (data) {
-                            this.setState({ data: data });
+                            //this.setState({annotations: data});
+                            console.dir(data);
                         }).bind(this),
                         error: (function (xhr, status, err) {
                             console.error(this.props.url, status, err.toString());
@@ -50,18 +53,18 @@
                 },
                 getInitialState: function () {
                     return {
-                        data: [],
-                        adding: false
+                        annotations: []
                     };
                 },
                 componentDidMount: function () {
-                    this.loadAnnotationsFromServer();
+                    //this.loadAnnotationsFromServer();
                     //setInterval(this.loadAnnotationsFromServer, this.props.pollInterval);
                 },
                 addNewForm: function () {
                     this.setState({ adding: true });
                 },
                 renderDisplay: function () {
+                    //console.dir(this.state.data, 'data from annotationbox');
                     if (!this.state.adding) {
                         return React.createElement(
                             'div',
@@ -77,7 +80,7 @@
                                     Drupal.t('New Annotation')
                                 )
                             ),
-                            React.createElement(AnnotationList, { data: this.state.data })
+                            React.createElement(AnnotationList, { data: this.state.annotations })
                         );
                     } else {
                         return React.createElement(
@@ -95,7 +98,7 @@
                                 )
                             ),
                             React.createElement(AnnotationForm, { onAnnotationSubmit: this.handleAnnotationSubmit }),
-                            React.createElement(AnnotationList, { data: this.state.data })
+                            React.createElement(AnnotationList, { data: this.state.annotations })
                         );
                     }
                 },
@@ -113,11 +116,12 @@
                     return this.uniqueId++;
                 },
                 render: function () {
-                    var annotationItems = this.props.data.map(function (item) {
+                    //console.dir(this.props.data);
+                    var annotationItems = this.props.data.map(function (item, index) {
                         return React.createElement(
                             Annotation,
-                            { author: item.author, key: item.id, start: item.start, end: item.end },
-                            item.text
+                            { author: item.author, key: index, start: item.mediaFragmentStart, end: item.mediaFragmentEnd },
+                            item.content
                         );
                     });
                     return React.createElement(
@@ -133,28 +137,29 @@
 
                 utcTime: function () {
                     var d = new Date();
-                    return d.getUTCFullYear() + '-' + d.getUTCMonth() + '-' + d.getUTCDate() + 'T' + d.getUTCHours() + ':' + d.getUTCMinutes() + ':' + d.getUTCSeconds() + 'Z';
+                    return d.getUTCFullYear() + '-' + (d.getUTCMonth() + 1) + '-' + d.getUTCDate() + 'T' + d.getUTCHours() + ':' + d.getUTCMinutes() + ':' + d.getUTCSeconds() + 'Z';
                 },
-                handleSubmit: function () {
+                handleSubmit: function (e) {
                     e.preventDefault();
                     var content = this.refs.annotationText.value.trim();
                     var start = this.refs.startTime.value.trim();
                     var end = (parseFloat(this.refs.startTime.value.trim()) + 5.00).toFixed(2); // Default end time to startTime + 5 seconds
-                    if (!text || !start) {
+                    if (!content || !start) {
                         return;
                     }
-                    this.props.onAnnotationSubmit({
+                    var annotation = {
                         author: user,
                         content: content,
                         targetPid: targetObjectId,
-                        mediaFragment: '#t=' + start + ',' + end,
-                        annotatedAt: utcTime(),
+                        mediaFragmentStart: start,
+                        mediaFragmentEnd: end,
+                        annotatedAt: this.utcTime(),
                         targetSource: videoElement.currentSrc,
                         scope: videoElement.baseURI
-                    });
-                    this.refs.startTime.value = '';
-                    this.refs.annotationText = '';
-                    return;
+                    };
+                    this.props.onAnnotationSubmit(annotation);
+                    //this.refs.startTime.value = '';
+                    //this.refs.annotationText = '';
                 },
                 render: function () {
                     return React.createElement(
@@ -219,7 +224,7 @@
                 displayName: 'Annotation',
 
                 render: function () {
-                    console.log(this.state);
+                    //console.log(this.state);
                     return React.createElement(
                         'li',
                         { className: 'annotationItem', 'data-begin': this.props.start, 'data-end': this.props.end },
@@ -230,7 +235,7 @@
                                 'button',
                                 {
                                     className: 'btn btn-default btn-xs' },
-                                this.props.start.toFixed(2),
+                                this.props.start,
                                 React.createElement('span', { className: 'glyphicon glyphicon-play' })
                             )
                         ),
