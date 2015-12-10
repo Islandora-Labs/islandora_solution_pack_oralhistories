@@ -13,6 +13,7 @@
             var apiUrl = '/islandora/object/' + targetObjectId + '/web_annotation/create';
             var user = Drupal.settings.islandoraOralhistories.user;
             var permissions = Drupal.settings.islandoraOralhistories.permissions;
+            console.log(permissions);
 
 
             //AnnotationBox
@@ -146,8 +147,6 @@
                         scope: videoElement.baseURI
                     };
                     this.props.onAnnotationSubmit(annotation);
-                    //this.refs.startTime.value = '';
-                    //this.refs.annotationText = '';
                 },
                 render: function() {
                     return (
@@ -178,22 +177,28 @@
                 }
             });
 
+
+            var AnnotationManager = React.createClass({
+                render: function() {
+                    return (
+                        <span>
+                            <button className="btn glyphicon glyphicon-pencil" />
+                            <button className="btn glyphicon glyphicon-trash" />
+                        </span>
+                    );
+                }
+            });
             var Annotation = React.createClass({
                 render: function() {
                     //console.log(this.state);
                     return (
                         <li className="annotationItem" data-begin={this.props.start} data-end={this.props.end} >
-                <span>
-                    <button
-                        className="btn btn-default btn-xs">{this.props.start}<span className="glyphicon glyphicon-play"></span></button>
-                </span>
+                            <span>
+                                <button
+                                    className="btn btn-default btn-xs">{this.props.start}<span className="glyphicon glyphicon-play"></span></button>
+                            </span>
                             <span>{this.props.children}</span>
-				<span>
-				<button
-                    className="btn btn-primary btn-xs glyphicon glyphicon-pencil"></button>
-				<button
-                    className="btn btn-primary btn-xs glyphicon glyphicon-trash"></button>
-				</span>
+                            <AnnotationManager />
                         </li>
                     );
                 }

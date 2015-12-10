@@ -225,6 +225,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'manage_own' => islandora_oralhistories_web_annotation_access(array('manage own web annotations'), $object),
     'manage_any' => islandora_oralhistories_web_annotation_access(array('manage any web annotations'), $object)
   );
+  dpm($js_settings['permissions'], 'perms');
   $js_settings['user'] = array(
     'uid' => $user->uid,
     'name' => ($user->uid == 0) ? 'anonymous' : $user->name
