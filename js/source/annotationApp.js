@@ -126,9 +126,15 @@
                 handleSubmit: function(e) {
                     e.preventDefault();
                     var content = this.refs.annotationText.value.trim();
-                    var start = this.refs.startTime.value.trim();
-                    var end = (parseFloat(this.refs.startTime.value.trim()) + 5.00).toFixed(2); // Default end time to startTime + 5 seconds
+                    var start = parseFloat(this.refs.startTime.value.trim()).toFixed(2);
+                    var end = 0.00;
+                    if (isNaN(parseFloat(this.refs.endTime.value.trim()))) {
+                        end = (parseFloat(this.refs.startTime.value.trim()) + 5.00).toFixed(2);
+                    } else {
+                        end = parseFloat(this.refs.endTime.value.trim()).toFixed(2);
+                    }
                     if (!content || !start) {
+                        // @todo validate fields;
                         return;
                     }
                     var annotation = {
