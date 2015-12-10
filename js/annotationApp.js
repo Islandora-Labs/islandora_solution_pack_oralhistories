@@ -45,6 +45,7 @@
                         success: (function (data) {
                             //this.setState({annotations: data});
                             console.dir(data);
+                            this.setState({ adding: false });
                         }).bind(this),
                         error: (function (xhr, status, err) {
                             console.error(this.props.url, status, err.toString());

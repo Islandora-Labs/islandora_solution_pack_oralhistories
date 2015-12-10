@@ -32,18 +32,16 @@
                 },
                 handleAnnotationSubmit: function(annotation) {
                     var arr = this.state.annotations;
-                    arr.push(annotation);
-                    //var newAnnotations = annotations.concat([annotation]);
-                    //this.setState({annotations: annotations});
-                    this.setState({annotations: arr});
                     $.ajax({
                         url: this.props.url,
                         dataType: 'json',
                         type: 'POST',
                         data: annotation,
                         success: function(data) {
-                            //this.setState({annotations: data});
+                            arr.push(data->results);
+                            this.setState({annotations: arr});
                             console.dir(data);
+                            this.setState({adding: false}); // Hide the form after submission
 
                         }.bind(this),
                         error: function(xhr, status, err) {
