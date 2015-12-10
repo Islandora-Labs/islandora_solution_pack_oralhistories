@@ -80,9 +80,9 @@ function _retrieve_web_annotations(AbstractObject $object) {
 function _create_web_annotation() {
   // @todo: add a new annotation.
   // Retrieve our POST DATA
-
-  
-  return 'A new annotation is added.';
+  $data = $_POST['annotation'];
+  return drupal_json_output(array('message' => 'posted', 'results' => $_POST));
+//  return 'A new annotation is added.';
 }
 
 /**

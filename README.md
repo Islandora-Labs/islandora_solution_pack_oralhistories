@@ -31,8 +31,7 @@ For example, with simple transcript xml file below the TIER_ID will be or_transc
 
 ## Notes
 
-- We are using 'Bootstrap' compatible markup so it displays everything nicely if you are using [Bootstrap theme](https://www.drupal.org/project/bootstrap). Otherwise you need update your theme accordingly.
-- This Solution Pack is currently in development stage. It only supports transcript file in a flat xml format like below:
+**Caution:** This Solution Pack is currently in development stage. It only supports transcript file in a flat xml format like below:
 
 Here is a simple xml file for transcript:
 ```
