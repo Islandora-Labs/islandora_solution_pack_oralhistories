@@ -193,8 +193,8 @@
                 render: function() {
                     return (
                         <span>
-                            <button className="btn glyphicon glyphicon-pencil" />
-                            <button className="btn glyphicon glyphicon-trash" />
+                            <button className="btn btn-default btn-xs"><span className="glyphicon glyphicon-pencil"></span></button>
+                            <button className="btn btn-default btn-xs"><span className="glyphicon glyphicon-trash"></span></button>
                         </span>
                     );
                 }

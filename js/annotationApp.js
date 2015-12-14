@@ -240,8 +240,16 @@
                     return React.createElement(
                         'span',
                         null,
-                        React.createElement('button', { className: 'btn glyphicon glyphicon-pencil' }),
-                        React.createElement('button', { className: 'btn glyphicon glyphicon-trash' })
+                        React.createElement(
+                            'button',
+                            { className: 'btn btn-default btn-xs' },
+                            React.createElement('span', { className: 'glyphicon glyphicon-pencil' })
+                        ),
+                        React.createElement(
+                            'button',
+                            { className: 'btn btn-default btn-xs' },
+                            React.createElement('span', { className: 'glyphicon glyphicon-trash' })
+                        )
                     );
                 }
             });
