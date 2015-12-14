@@ -218,8 +218,10 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   $js_settings['permissions'] = array(
     'view' => islandora_oralhistories_web_annotation_access(array('view web annotations'), $object),
     'create' => islandora_oralhistories_web_annotation_access(array('create web annotations'), $object),
-    'manage_own' => islandora_oralhistories_web_annotation_access(array('manage own web annotations'), $object),
-    'manage_any' => islandora_oralhistories_web_annotation_access(array('manage any web annotations'), $object)
+    'edit_own' => islandora_oralhistories_web_annotation_access(array('edit own web annotations'), $object),
+    'edit_any' => islandora_oralhistories_web_annotation_access(array('edit any web annotations'), $object),
+    'delete_own' => islandora_oralhistories_web_annotation_access(array('delete own web annotations'), $object),
+    'delete_any' => islandora_oralhistories_web_annotation_access(array('delete any web annotations'), $object)
   );
   $js_settings['user'] = array(
     'uid' => $user->uid,
