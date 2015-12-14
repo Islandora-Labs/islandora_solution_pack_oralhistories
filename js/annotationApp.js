@@ -13,6 +13,7 @@
             var apiUrl = '/islandora/object/' + targetObjectId + '/web_annotation/create';
             var user = Drupal.settings.islandoraOralhistories.user;
             var permissions = Drupal.settings.islandoraOralhistories.permissions;
+            console.log(permissions);
 
             //AnnotationBox
             var AnnotationBox = React.createClass({
@@ -33,19 +34,18 @@
                 },
                 handleAnnotationSubmit: function (annotation) {
                     var arr = this.state.annotations;
-                    arr.push(annotation);
-                    //var newAnnotations = annotations.concat([annotation]);
-                    //this.setState({annotations: annotations});
-                    this.setState({ annotations: arr });
                     $.ajax({
                         url: this.props.url,
                         dataType: 'json',
                         type: 'POST',
                         data: annotation,
                         success: (function (data) {
-                            //this.setState({annotations: data});
+                            if (data == 'success') {
+                                arr.push(annotation);
+                                this.setState({ annotations: arr });
+                                this.setState({ adding: false }); // Hide the form after submission
+                            }
                             console.dir(data);
-                            this.setState({ adding: false });
                         }).bind(this),
                         error: (function (xhr, status, err) {
                             console.error(this.props.url, status, err.toString());
@@ -165,8 +165,6 @@
                         scope: videoElement.baseURI
                     };
                     this.props.onAnnotationSubmit(annotation);
-                    //this.refs.startTime.value = '';
-                    //this.refs.annotationText = '';
                 },
                 render: function () {
                     return React.createElement(
@@ -227,6 +225,18 @@
                 }
             });
 
+            var AnnotationManager = React.createClass({
+                displayName: 'AnnotationManager',
+
+                render: function () {
+                    return React.createElement(
+                        'span',
+                        null,
+                        React.createElement('button', { className: 'btn glyphicon glyphicon-pencil' }),
+                        React.createElement('button', { className: 'btn glyphicon glyphicon-trash' })
+                    );
+                }
+            });
             var Annotation = React.createClass({
                 displayName: 'Annotation',
 
@@ -251,14 +261,7 @@
                             null,
                             this.props.children
                         ),
-                        React.createElement(
-                            'span',
-                            null,
-                            React.createElement('button', {
-                                className: 'btn btn-primary btn-xs glyphicon glyphicon-pencil' }),
-                            React.createElement('button', {
-                                className: 'btn btn-primary btn-xs glyphicon glyphicon-trash' })
-                        )
+                        React.createElement(AnnotationManager, null)
                     );
                 }
             });

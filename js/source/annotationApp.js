@@ -39,10 +39,12 @@
                         type: 'POST',
                         data: annotation,
                         success: function(data) {
-                            arr.push(data->results);
-                            this.setState({annotations: arr});
+                            if (data == 'success') {
+                                arr.push(annotation);
+                                this.setState({annotations: arr});
+                                this.setState({adding: false}); // Hide the form after submission
+                            }
                             console.dir(data);
-                            this.setState({adding: false}); // Hide the form after submission
 
                         }.bind(this),
                         error: function(xhr, status, err) {
