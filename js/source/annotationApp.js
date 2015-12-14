@@ -66,24 +66,33 @@
                 },
                 renderDisplay: function() {
                     //console.dir(this.state.data, 'data from annotationbox');
-                    if (!this.state.adding) {
+                    if (JSON.parse(permissions['create'])) {
+                        if (!this.state.adding) {
+                            return (
+                                <div className="annotationBox">
+                                    <div className="annotationToolbars">
+                                        <button onClick={this.addNewForm}
+                                                className="btn btn-success btn-sm glyphicon glyphicon-plus"> {Drupal.t('New Annotation')}</button>
+                                    </div>
+                                    <AnnotationList data={this.state.annotations} />
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div className="annotationBox">
+                                    <div className="annotationToolbars">
+                                        <button onClick={this.addNewForm}
+                                                className="btn btn-success btn-sm glyphicon glyphicon-plus"> {Drupal.t('New Annotation')}</button>
+                                    </div>
+                                    <AnnotationForm onAnnotationSubmit={this.handleAnnotationSubmit}/>
+                                    <AnnotationList data={this.state.annotations} />
+                                </div>
+                            );
+                        }
+                    }
+                    else if(JSON.parse(permissions['view'])) {
                         return (
                             <div className="annotationBox">
-                                <div className="annotationToolbars">
-                                    <button onClick={this.addNewForm}
-                                            className="btn btn-success btn-sm glyphicon glyphicon-plus"> {Drupal.t('New Annotation')}</button>
-                                </div>
-                                <AnnotationList data={this.state.annotations} />
-                            </div>
-                        );
-                    } else {
-                        return (
-                            <div className="annotationBox">
-                                <div className="annotationToolbars">
-                                    <button onClick={this.addNewForm}
-                                            className="btn btn-success btn-sm glyphicon glyphicon-plus"> {Drupal.t('New Annotation')}</button>
-                                </div>
-                                <AnnotationForm onAnnotationSubmit={this.handleAnnotationSubmit}/>
                                 <AnnotationList data={this.state.annotations} />
                             </div>
                         );

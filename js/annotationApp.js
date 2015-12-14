@@ -66,39 +66,47 @@
                 },
                 renderDisplay: function () {
                     //console.dir(this.state.data, 'data from annotationbox');
-                    if (!this.state.adding) {
+                    if (JSON.parse(permissions['create'])) {
+                        if (!this.state.adding) {
+                            return React.createElement(
+                                'div',
+                                { className: 'annotationBox' },
+                                React.createElement(
+                                    'div',
+                                    { className: 'annotationToolbars' },
+                                    React.createElement(
+                                        'button',
+                                        { onClick: this.addNewForm,
+                                            className: 'btn btn-success btn-sm glyphicon glyphicon-plus' },
+                                        ' ',
+                                        Drupal.t('New Annotation')
+                                    )
+                                ),
+                                React.createElement(AnnotationList, { data: this.state.annotations })
+                            );
+                        } else {
+                            return React.createElement(
+                                'div',
+                                { className: 'annotationBox' },
+                                React.createElement(
+                                    'div',
+                                    { className: 'annotationToolbars' },
+                                    React.createElement(
+                                        'button',
+                                        { onClick: this.addNewForm,
+                                            className: 'btn btn-success btn-sm glyphicon glyphicon-plus' },
+                                        ' ',
+                                        Drupal.t('New Annotation')
+                                    )
+                                ),
+                                React.createElement(AnnotationForm, { onAnnotationSubmit: this.handleAnnotationSubmit }),
+                                React.createElement(AnnotationList, { data: this.state.annotations })
+                            );
+                        }
+                    } else if (JSON.parse(permissions['view'])) {
                         return React.createElement(
                             'div',
                             { className: 'annotationBox' },
-                            React.createElement(
-                                'div',
-                                { className: 'annotationToolbars' },
-                                React.createElement(
-                                    'button',
-                                    { onClick: this.addNewForm,
-                                        className: 'btn btn-success btn-sm glyphicon glyphicon-plus' },
-                                    ' ',
-                                    Drupal.t('New Annotation')
-                                )
-                            ),
-                            React.createElement(AnnotationList, { data: this.state.annotations })
-                        );
-                    } else {
-                        return React.createElement(
-                            'div',
-                            { className: 'annotationBox' },
-                            React.createElement(
-                                'div',
-                                { className: 'annotationToolbars' },
-                                React.createElement(
-                                    'button',
-                                    { onClick: this.addNewForm,
-                                        className: 'btn btn-success btn-sm glyphicon glyphicon-plus' },
-                                    ' ',
-                                    Drupal.t('New Annotation')
-                                )
-                            ),
-                            React.createElement(AnnotationForm, { onAnnotationSubmit: this.handleAnnotationSubmit }),
                             React.createElement(AnnotationList, { data: this.state.annotations })
                         );
                     }
