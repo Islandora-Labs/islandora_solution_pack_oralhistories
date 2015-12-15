@@ -14,6 +14,7 @@
             var user = Drupal.settings.islandoraOralhistories.user;
             var permissions = Drupal.settings.islandoraOralhistories.permissions;
             console.log(permissions);
+            console.log(user);
 
 
             //AnnotationBox
@@ -188,30 +189,86 @@
                 }
             });
 
-
-            var AnnotationManager = React.createClass({
+            // @todo: we need consider permission for edit and delete.
+            var AnnotationEditor = React.createClass({
                 render: function() {
                     return (
-                        <span>
                             <button className="btn btn-default btn-xs"><span className="glyphicon glyphicon-pencil"></span></button>
-                            <button className="btn btn-default btn-xs"><span className="glyphicon glyphicon-trash"></span></button>
-                        </span>
+                    );
+                }
+            });
+            var AnnotationRemover = React.createClass({
+                render: function() {
+                    return (
+                    <button className="btn btn-default btn-xs"><span className="glyphicon glyphicon-trash"></span></button>
                     );
                 }
             });
             var Annotation = React.createClass({
                 render: function() {
                     //console.log(this.state);
-                    return (
-                        <li className="annotationItem" data-begin={this.props.start} data-end={this.props.end} >
+                    //var annoUser = this.props.author;
+                    console.log(this.props.author.uid);
+                    console.log(permissions.edit_any);
+                    if (JSON.parse(permissions.edit_any)) {
+                        if (JSON.parse(permissions.delete_any) || (JSON.parse(permissions.delete_own) && user.uid == this.props.author.uid)) {
+                            return (
+                                <li className="annotationItem" data-begin={this.props.start} data-end={this.props.end} >
                             <span>
                                 <button
                                     className="btn btn-default btn-xs">{this.props.start}<span className="glyphicon glyphicon-play"></span></button>
                             </span>
-                            <span>{this.props.children}</span>
-                            <AnnotationManager />
-                        </li>
-                    );
+                                    <span>{this.props.children}</span>
+                            <span>
+                                <AnnotationEditor />
+                                <AnnotationRemover />
+                            </span>
+                                </li>
+                            );
+                        } else {
+                            return (
+                                <li className="annotationItem" data-begin={this.props.start} data-end={this.props.end} >
+                            <span>
+                                <button
+                                    className="btn btn-default btn-xs">{this.props.start}<span className="glyphicon glyphicon-play"></span></button>
+                            </span>
+                                    <span>{this.props.children}</span>
+                            <span>
+                                <AnnotationEditor />
+                            </span>
+                                </li>
+                            );
+                        }
+                    } else if (JSON.parse(permissions.edit_own) && user.uid == this.props.author.uid){
+                        if (JSON.parse(permissions.delete_any || (JSON.parse(permissions.delete_own) && user.uid == this.props.author.uid))) {
+                            return (
+                                <li className="annotationItem" data-begin={this.props.start} data-end={this.props.end} >
+                            <span>
+                                <button
+                                    className="btn btn-default btn-xs">{this.props.start}<span className="glyphicon glyphicon-play"></span></button>
+                            </span>
+                                    <span>{this.props.children}</span>
+                            <span>
+                                <AnnotationEditor />
+                                <AnnotationRemover />
+                            </span>
+                                </li>
+                            );
+                        } else {
+                            return (
+                                <li className="annotationItem" data-begin={this.props.start} data-end={this.props.end} >
+                            <span>
+                                <button
+                                    className="btn btn-default btn-xs">{this.props.start}<span className="glyphicon glyphicon-play"></span></button>
+                            </span>
+                                    <span>{this.props.children}</span>
+                                </li>
+                            );
+                        }
+
+                    }
+
+
                 }
             });
 

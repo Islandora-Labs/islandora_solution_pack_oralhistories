@@ -14,6 +14,7 @@
             var user = Drupal.settings.islandoraOralhistories.user;
             var permissions = Drupal.settings.islandoraOralhistories.permissions;
             console.log(permissions);
+            console.log(user);
 
             //AnnotationBox
             var AnnotationBox = React.createClass({
@@ -233,23 +234,26 @@
                 }
             });
 
-            var AnnotationManager = React.createClass({
-                displayName: 'AnnotationManager',
+            // @todo: we need consider permission for edit and delete.
+            var AnnotationEditor = React.createClass({
+                displayName: 'AnnotationEditor',
 
                 render: function () {
                     return React.createElement(
-                        'span',
-                        null,
-                        React.createElement(
-                            'button',
-                            { className: 'btn btn-default btn-xs' },
-                            React.createElement('span', { className: 'glyphicon glyphicon-pencil' })
-                        ),
-                        React.createElement(
-                            'button',
-                            { className: 'btn btn-default btn-xs' },
-                            React.createElement('span', { className: 'glyphicon glyphicon-trash' })
-                        )
+                        'button',
+                        { className: 'btn btn-default btn-xs' },
+                        React.createElement('span', { className: 'glyphicon glyphicon-pencil' })
+                    );
+                }
+            });
+            var AnnotationRemover = React.createClass({
+                displayName: 'AnnotationRemover',
+
+                render: function () {
+                    return React.createElement(
+                        'button',
+                        { className: 'btn btn-default btn-xs' },
+                        React.createElement('span', { className: 'glyphicon glyphicon-trash' })
                     );
                 }
             });
@@ -258,27 +262,115 @@
 
                 render: function () {
                     //console.log(this.state);
-                    return React.createElement(
-                        'li',
-                        { className: 'annotationItem', 'data-begin': this.props.start, 'data-end': this.props.end },
-                        React.createElement(
-                            'span',
-                            null,
-                            React.createElement(
-                                'button',
-                                {
-                                    className: 'btn btn-default btn-xs' },
-                                this.props.start,
-                                React.createElement('span', { className: 'glyphicon glyphicon-play' })
-                            )
-                        ),
-                        React.createElement(
-                            'span',
-                            null,
-                            this.props.children
-                        ),
-                        React.createElement(AnnotationManager, null)
-                    );
+                    //var annoUser = this.props.author;
+                    console.log(this.props.author.uid);
+                    console.log(permissions.edit_any);
+                    if (JSON.parse(permissions.edit_any)) {
+                        if (JSON.parse(permissions.delete_any) || JSON.parse(permissions.delete_own) && user.uid == this.props.author.uid) {
+                            return React.createElement(
+                                'li',
+                                { className: 'annotationItem', 'data-begin': this.props.start, 'data-end': this.props.end },
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    React.createElement(
+                                        'button',
+                                        {
+                                            className: 'btn btn-default btn-xs' },
+                                        this.props.start,
+                                        React.createElement('span', { className: 'glyphicon glyphicon-play' })
+                                    )
+                                ),
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    this.props.children
+                                ),
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    React.createElement(AnnotationEditor, null),
+                                    React.createElement(AnnotationRemover, null)
+                                )
+                            );
+                        } else {
+                            return React.createElement(
+                                'li',
+                                { className: 'annotationItem', 'data-begin': this.props.start, 'data-end': this.props.end },
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    React.createElement(
+                                        'button',
+                                        {
+                                            className: 'btn btn-default btn-xs' },
+                                        this.props.start,
+                                        React.createElement('span', { className: 'glyphicon glyphicon-play' })
+                                    )
+                                ),
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    this.props.children
+                                ),
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    React.createElement(AnnotationEditor, null)
+                                )
+                            );
+                        }
+                    } else if (JSON.parse(permissions.edit_own) && user.uid == this.props.author.uid) {
+                        if (JSON.parse(permissions.delete_any || JSON.parse(permissions.delete_own) && user.uid == this.props.author.uid)) {
+                            return React.createElement(
+                                'li',
+                                { className: 'annotationItem', 'data-begin': this.props.start, 'data-end': this.props.end },
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    React.createElement(
+                                        'button',
+                                        {
+                                            className: 'btn btn-default btn-xs' },
+                                        this.props.start,
+                                        React.createElement('span', { className: 'glyphicon glyphicon-play' })
+                                    )
+                                ),
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    this.props.children
+                                ),
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    React.createElement(AnnotationEditor, null),
+                                    React.createElement(AnnotationRemover, null)
+                                )
+                            );
+                        } else {
+                            return React.createElement(
+                                'li',
+                                { className: 'annotationItem', 'data-begin': this.props.start, 'data-end': this.props.end },
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    React.createElement(
+                                        'button',
+                                        {
+                                            className: 'btn btn-default btn-xs' },
+                                        this.props.start,
+                                        React.createElement('span', { className: 'glyphicon glyphicon-play' })
+                                    )
+                                ),
+                                React.createElement(
+                                    'span',
+                                    null,
+                                    this.props.children
+                                )
+                            );
+                        }
+                    }
                 }
             });
 

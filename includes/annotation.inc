@@ -68,6 +68,7 @@ function _get_web_annotation_form(AbstractObject $object) {
  */
 function _retrieve_web_annotations(AbstractObject $object) {
   // @todo: retrieve all annotations for a given $object, return in json.
+  // @todo: should
   return 'Annotation list';
 }
 
