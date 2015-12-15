@@ -67,7 +67,7 @@
                 },
                 renderDisplay: function () {
                     //console.dir(this.state.data, 'data from annotationbox');
-                    if (JSON.parse(permissions['create'])) {
+                    if (JSON.parse(permissions.create)) {
                         if (!this.state.adding) {
                             return React.createElement(
                                 'div',
@@ -104,7 +104,7 @@
                                 React.createElement(AnnotationList, { data: this.state.annotations })
                             );
                         }
-                    } else if (JSON.parse(permissions['view'])) {
+                    } else if (JSON.parse(permissions.view)) {
                         return React.createElement(
                             'div',
                             { className: 'annotationBox' },
@@ -130,7 +130,7 @@
                     var annotationItems = this.props.data.map(function (item, index) {
                         return React.createElement(
                             Annotation,
-                            { author: item.author, key: index, start: item.mediaFragmentStart, end: item.mediaFragmentEnd },
+                            { index: index, author: item.author, key: index, start: item.mediaFragmentStart, end: item.mediaFragmentEnd },
                             item.content
                         );
                     });
@@ -261,15 +261,11 @@
                 displayName: 'Annotation',
 
                 render: function () {
-                    //console.log(this.state);
-                    //var annoUser = this.props.author;
-                    console.log(this.props.author.uid);
-                    console.log(permissions.edit_any);
                     if (JSON.parse(permissions.edit_any)) {
                         if (JSON.parse(permissions.delete_any) || JSON.parse(permissions.delete_own) && user.uid == this.props.author.uid) {
                             return React.createElement(
                                 'li',
-                                { className: 'annotationItem', 'data-begin': this.props.start, 'data-end': this.props.end },
+                                { className: 'annotationItem', id: this.props.index, 'data-begin': this.props.start, 'data-end': this.props.end },
                                 React.createElement(
                                     'span',
                                     null,
@@ -296,7 +292,7 @@
                         } else {
                             return React.createElement(
                                 'li',
-                                { className: 'annotationItem', 'data-begin': this.props.start, 'data-end': this.props.end },
+                                { className: 'annotationItem', id: this.props.index, 'data-begin': this.props.start, 'data-end': this.props.end },
                                 React.createElement(
                                     'span',
                                     null,
@@ -324,7 +320,7 @@
                         if (JSON.parse(permissions.delete_any || JSON.parse(permissions.delete_own) && user.uid == this.props.author.uid)) {
                             return React.createElement(
                                 'li',
-                                { className: 'annotationItem', 'data-begin': this.props.start, 'data-end': this.props.end },
+                                { className: 'annotationItem', id: this.props.index, 'data-begin': this.props.start, 'data-end': this.props.end },
                                 React.createElement(
                                     'span',
                                     null,
@@ -351,7 +347,7 @@
                         } else {
                             return React.createElement(
                                 'li',
-                                { className: 'annotationItem', 'data-begin': this.props.start, 'data-end': this.props.end },
+                                { className: 'annotationItem', id: this.props.index, 'data-begin': this.props.start, 'data-end': this.props.end },
                                 React.createElement(
                                     'span',
                                     null,

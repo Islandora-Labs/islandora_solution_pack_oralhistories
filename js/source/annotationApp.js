@@ -67,7 +67,7 @@
                 },
                 renderDisplay: function() {
                     //console.dir(this.state.data, 'data from annotationbox');
-                    if (JSON.parse(permissions['create'])) {
+                    if (JSON.parse(permissions.create)) {
                         if (!this.state.adding) {
                             return (
                                 <div className="annotationBox">
@@ -91,7 +91,7 @@
                             );
                         }
                     }
-                    else if(JSON.parse(permissions['view'])) {
+                    else if(JSON.parse(permissions.view)) {
                         return (
                             <div className="annotationBox">
                                 <AnnotationList data={this.state.annotations} />
@@ -114,7 +114,7 @@
                     //console.dir(this.props.data);
                     var annotationItems = this.props.data.map(function(item, index) {
                         return (
-                            <Annotation author={item.author} key={index} start={item.mediaFragmentStart} end={item.mediaFragmentEnd}>
+                            <Annotation index={index} author={item.author} key={index} start={item.mediaFragmentStart} end={item.mediaFragmentEnd}>
                                 {item.content}
                             </Annotation>
                         );
@@ -206,14 +206,10 @@
             });
             var Annotation = React.createClass({
                 render: function() {
-                    //console.log(this.state);
-                    //var annoUser = this.props.author;
-                    console.log(this.props.author.uid);
-                    console.log(permissions.edit_any);
                     if (JSON.parse(permissions.edit_any)) {
                         if (JSON.parse(permissions.delete_any) || (JSON.parse(permissions.delete_own) && user.uid == this.props.author.uid)) {
                             return (
-                                <li className="annotationItem" data-begin={this.props.start} data-end={this.props.end} >
+                                <li className="annotationItem" id={this.props.index} data-begin={this.props.start} data-end={this.props.end} >
                             <span>
                                 <button
                                     className="btn btn-default btn-xs">{this.props.start}<span className="glyphicon glyphicon-play"></span></button>
@@ -227,7 +223,7 @@
                             );
                         } else {
                             return (
-                                <li className="annotationItem" data-begin={this.props.start} data-end={this.props.end} >
+                                <li className="annotationItem" id={this.props.index} data-begin={this.props.start} data-end={this.props.end} >
                             <span>
                                 <button
                                     className="btn btn-default btn-xs">{this.props.start}<span className="glyphicon glyphicon-play"></span></button>
@@ -242,7 +238,7 @@
                     } else if (JSON.parse(permissions.edit_own) && user.uid == this.props.author.uid){
                         if (JSON.parse(permissions.delete_any || (JSON.parse(permissions.delete_own) && user.uid == this.props.author.uid))) {
                             return (
-                                <li className="annotationItem" data-begin={this.props.start} data-end={this.props.end} >
+                                <li className="annotationItem" id={this.props.index} data-begin={this.props.start} data-end={this.props.end} >
                             <span>
                                 <button
                                     className="btn btn-default btn-xs">{this.props.start}<span className="glyphicon glyphicon-play"></span></button>
@@ -256,7 +252,7 @@
                             );
                         } else {
                             return (
-                                <li className="annotationItem" data-begin={this.props.start} data-end={this.props.end} >
+                                <li className="annotationItem" id={this.props.index} data-begin={this.props.start} data-end={this.props.end} >
                             <span>
                                 <button
                                     className="btn btn-default btn-xs">{this.props.start}<span className="glyphicon glyphicon-play"></span></button>
