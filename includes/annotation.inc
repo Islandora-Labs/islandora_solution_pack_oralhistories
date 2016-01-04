@@ -86,7 +86,7 @@ function _create_web_annotation() {
 //  return drupal_json_output(array('message' => 'posted', 'results' => $_POST));
 //  return drupal_json_output($_POST);
 //  return 'A new annotation is added.';
-  return drupal_json_output("success");
+  return drupal_json_output(array('annotation' => $_POST, 'response' => 'success'));
 }
 
 /**

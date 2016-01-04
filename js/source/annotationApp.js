@@ -10,7 +10,7 @@
             var targetObjectId = Drupal.settings.islandoraOralhistories.objectId;
             var enableAnnotation = Drupal.settings.islandoraOralhistories.enableAnnotationTabDisplay;
             var videoElement = $(".islandora-oralhistories-object").find('video, audio')[0];
-            var apiUrl = '/islandora/object/' + targetObjectId + '/web_annotation/create';
+            var apiUrl = '/islandora/object/' + targetObjectId + '/web_annotation';
             var user = Drupal.settings.islandoraOralhistories.user;
             var permissions = Drupal.settings.islandoraOralhistories.permissions;
             console.log(permissions);
@@ -35,17 +35,17 @@
                 handleAnnotationSubmit: function(annotation) {
                     var arr = this.state.annotations;
                     $.ajax({
-                        url: this.props.url,
+                        url: this.props.url + '/create',
                         dataType: 'json',
                         type: 'POST',
                         data: annotation,
                         success: function(data) {
-                            if (data == 'success') {
+                            console.log(data);
+                            if (data.response == 'success') {
                                 arr.push(annotation);
                                 this.setState({annotations: arr});
                                 this.setState({adding: false}); // Hide the form after submission
                             }
-                            console.dir(data);
 
                         }.bind(this),
                         error: function(xhr, status, err) {
