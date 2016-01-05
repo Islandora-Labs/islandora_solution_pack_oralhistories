@@ -80,13 +80,26 @@ function _retrieve_web_annotations(AbstractObject $object) {
  */
 function _create_web_annotation() {
   // @todo: add a new annotation.
-  // Retrieve our POST DATA
-  $data = $_POST['annotation'];
-  debug($_POST);
-//  return drupal_json_output(array('message' => 'posted', 'results' => $_POST));
-//  return drupal_json_output($_POST);
-//  return 'A new annotation is added.';
-  return drupal_json_output(array('annotation' => $_POST, 'response' => 'success'));
+  if (user_access(ISLANDORA_WEB_ANNOTATION_CREATE)) {
+
+    return drupal_json_output(array(
+      'annotation' => $_POST,
+      'response' => array(
+        'code' => 'success',
+        'message' => 'New annotation is created'
+      )
+    ));
+
+  }
+  else {
+    return drupal_json_output(array(
+      'response' => array(
+        'code' => 'error',
+        'message' => 'No permission to create annotation'
+      )
+    ));
+  }
+
 }
 
 /**

@@ -42,7 +42,7 @@
                         data: annotation,
                         success: (function (data) {
                             console.log(data);
-                            if (data.response == 'success') {
+                            if (data.response.code == 'success') {
                                 arr.push(annotation);
                                 this.setState({ annotations: arr });
                                 this.setState({ adding: false }); // Hide the form after submission
