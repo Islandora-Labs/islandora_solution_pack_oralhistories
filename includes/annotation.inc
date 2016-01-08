@@ -81,9 +81,15 @@ function _retrieve_web_annotations(AbstractObject $object) {
 function _create_web_annotation() {
   // @todo: add a new annotation.
   if (user_access(ISLANDORA_WEB_ANNOTATION_CREATE)) {
+    $author = isset($_POST['author']) ? $_POST['author'] : 'anonymous';
+    $content = isset($_POST['content']) ? check_plain($_POST['content']) : '';
+    $target_pid = isset($_POST['targetPid']) ? $_POST['targetPid'] : '';
+    $mf_start = isset($_POST['mediaFragmentStart']) ? floatval($_POST['mediaFragmentStart']) : 0.00;
+    $mf_end = isset($_POST['mediaFragmentEnd']) ? floatval($_POST['mediaFragmentEnd']) : 0.00;
+    $annotated_at = isset($_POST['annotatedAt']) ? $_POST['annotatedAt'] : getUTCTime();
 
     return drupal_json_output(array(
-      'annotation' => $_POST,
+      'annotation' => $author,
       'response' => array(
         'code' => 'success',
         'message' => 'New annotation is created'
@@ -210,4 +216,12 @@ function web_annotation_form_ajax_callback(array $form, array &$form_state) {
     return t('Thank you for your submission!');
   }
 
+}
+
+/**
+ * Helper function to get current date time as UTC format.
+ * @return bool|string
+ */
+function getUTCTime() {
+  return date("c", time());
 }
