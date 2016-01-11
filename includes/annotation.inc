@@ -80,15 +80,15 @@ function _retrieve_web_annotations(AbstractObject $object) {
  */
 function _create_web_annotation() {
   // @todo: add a new annotation.
-  if (user_access(ISLANDORA_WEB_ANNOTATION_CREATE)) {
+  if (user_access(ISLANDORA_WEB_ANNOTATION_CREATE) && !empty($_POST['content'])) {
     $author = isset($_POST['author']) ? $_POST['author'] : 'anonymous';
-    $content = isset($_POST['content']) ? check_plain($_POST['content']) : NULL;
+    $content = check_plain($_POST['content']);
     $target_pid = isset($_POST['targetPid']) ? $_POST['targetPid'] : '';
     $mf_start = isset($_POST['mediaFragmentStart']) ? floatval($_POST['mediaFragmentStart']) : 0.00;
     $mf_end = isset($_POST['mediaFragmentEnd']) ? floatval($_POST['mediaFragmentEnd']) : 0.00;
     $annotated_at = isset($_POST['annotatedAt']) ? $_POST['annotatedAt'] : getUTCTime();
-    $target_url = isset($_POST['targetSource']) ? $_POST['targetSource'] : NULL;
-    $scope = isset($_POST['scope']) ? $_POST['scope'] : NULL;
+    $target_url = isset($_POST['targetSource']) ? $_POST['targetSource'] : '';
+    $scope = isset($_POST['scope']) ? $_POST['scope'] : '';
 
     return drupal_json_output(array(
       'annotation' => $author,
@@ -103,7 +103,7 @@ function _create_web_annotation() {
     return drupal_json_output(array(
       'response' => array(
         'code' => 'error',
-        'message' => 'No permission to create annotation'
+        'message' => 'No permission to create annotation or annotation content is empty'
       )
     ));
   }
