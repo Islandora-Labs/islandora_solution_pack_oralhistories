@@ -80,6 +80,7 @@ function _retrieve_web_annotations(AbstractObject $object) {
  */
 function _create_web_annotation() {
   // @todo: add a new annotation.
+  module_load_include('php', 'islandora_oralhistories', 'lib/EasyRdf/EasyRdf');
   if (user_access(ISLANDORA_WEB_ANNOTATION_CREATE) && !empty($_POST['content'])) {
     $author = isset($_POST['author']) ? $_POST['author'] : 'anonymous';
     $content = check_plain($_POST['content']);
@@ -90,8 +91,20 @@ function _create_web_annotation() {
     $target_url = isset($_POST['targetSource']) ? $_POST['targetSource'] : '';
     $scope = isset($_POST['scope']) ? $_POST['scope'] : '';
 
+    // use EasyRdf to construct web annotation rdfxml
+    EasyRdf_Namespace::set('oa', 'http://www.w3.org/ns/oa#');
+
+    $graph = new EasyRdf_Graph();
+
+    $annoObject = $graph->resource('urn:uuid:C6C3D269-C440-0001-584C-158088601E6B', 'rdf:Description');
+    $annoObject->set('rdf:type', 'http://www.w3.org/ns/oa#Annotation');
+    $annoObject->set('oa:annotatedBy', 'Admin');
+
+    $format = 'rdfxml';
+    $data = $graph->serialise($format);
+
     return drupal_json_output(array(
-      'annotation' => $author,
+      'annotation' => $data,
       'response' => array(
         'code' => 'success',
         'message' => 'New annotation is created'
