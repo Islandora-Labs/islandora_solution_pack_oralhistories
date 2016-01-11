@@ -130,8 +130,7 @@
             var AnnotationForm = React.createClass({
                 utcTime: function() {
                     var d = new Date();
-                    return d.getUTCFullYear() + '-' + (d.getUTCMonth() + 1) + '-' + d.getUTCDate() + 'T'
-                        + d.getUTCHours() + ':' + d.getUTCMinutes() + ':' + d.getUTCSeconds() + 'Z';
+                    return d.toISOString();
 
                 },
                 handleSubmit: function(e) {
