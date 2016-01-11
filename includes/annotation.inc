@@ -240,3 +240,14 @@ function web_annotation_form_ajax_callback(array $form, array &$form_state) {
 function getUTCTime() {
   return date("c", time());
 }
+
+/**
+ * Helper function to generate UUID.
+ * @return string valid version 4 UUIDs
+ */
+function getUUID() {
+  if (function_exists('com_create_guid') === true) {
+    return trim(com_create_guid(), '{}');
+  }
+  return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+}
