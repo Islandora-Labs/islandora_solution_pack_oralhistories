@@ -80,31 +80,23 @@ function _retrieve_web_annotations(AbstractObject $object) {
  */
 function _create_web_annotation() {
   // @todo: add a new annotation.
-  module_load_include('php', 'islandora_oralhistories', 'lib/EasyRdf/EasyRdf');
+
   if (user_access(ISLANDORA_WEB_ANNOTATION_CREATE) && !empty($_POST['content'])) {
-    $author = isset($_POST['author']) ? $_POST['author'] : 'anonymous';
-    $content = check_plain($_POST['content']);
-    $target_pid = isset($_POST['targetPid']) ? $_POST['targetPid'] : '';
-    $mf_start = isset($_POST['mediaFragmentStart']) ? floatval($_POST['mediaFragmentStart']) : 0.00;
-    $mf_end = isset($_POST['mediaFragmentEnd']) ? floatval($_POST['mediaFragmentEnd']) : 0.00;
-    $annotated_at = isset($_POST['annotatedAt']) ? $_POST['annotatedAt'] : getUTCTime();
-    $target_url = isset($_POST['targetSource']) ? $_POST['targetSource'] : '';
-    $scope = isset($_POST['scope']) ? $_POST['scope'] : '';
+    $annotation = array();
 
-    // use EasyRdf to construct web annotation rdfxml
-    EasyRdf_Namespace::set('oa', 'http://www.w3.org/ns/oa#');
+    $annotation['author'] = isset($_POST['author']) ? $_POST['author'] : 'anonymous';
+    $annotation['content'] = check_plain($_POST['content']);
+    $annotation['target_pid'] = isset($_POST['targetPid']) ? $_POST['targetPid'] : '';
+    $annotation['mf_start'] = isset($_POST['mediaFragmentStart']) ? floatval($_POST['mediaFragmentStart']) : 0.00;
+    $annotation['mf_end'] = isset($_POST['mediaFragmentEnd']) ? floatval($_POST['mediaFragmentEnd']) : 0.00;
+    $annotation['annotated_at'] = isset($_POST['annotatedAt']) ? $_POST['annotatedAt'] : getUTCTime();
+    $annotation['target_url'] = isset($_POST['targetSource']) ? $_POST['targetSource'] : '';
+    $annotation['scope'] = isset($_POST['scope']) ? $_POST['scope'] : '';
 
-    $graph = new EasyRdf_Graph();
+    $annoRDF = createRDF($annotation);
 
-    $annoObject = $graph->resource('urn:uuid:C6C3D269-C440-0001-584C-158088601E6B', 'rdf:Description');
-    $annoObject->set('rdf:type', 'http://www.w3.org/ns/oa#Annotation');
-    $annoObject->set('oa:annotatedBy', 'Admin');
-
-    $format = 'rdfxml';
-    $data = $graph->serialise($format);
-
-    return drupal_json_output(array(
-      'annotation' => $data,
+    drupal_json_output(array(
+      'annotation' => $annoRDF,
       'response' => array(
         'code' => 'success',
         'message' => 'New annotation is created'
@@ -113,7 +105,7 @@ function _create_web_annotation() {
 
   }
   else {
-    return drupal_json_output(array(
+    drupal_json_output(array(
       'response' => array(
         'code' => 'error',
         'message' => 'No permission to create annotation or annotation content is empty'
@@ -250,4 +242,30 @@ function getUUID() {
     return trim(com_create_guid(), '{}');
   }
   return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+}
+
+
+function createRDF($anno) {
+  module_load_include('php', 'islandora_oralhistories', 'lib/EasyRdf/EasyRdf');
+  // use EasyRdf to construct web annotation rdfxml
+  EasyRdf_Namespace::set('oa', 'http://www.w3.org/ns/oa#');
+  EasyRdf_Namespace::set('dc', 'http://purl.org/dc/elements/1.1/');
+  EasyRdf_Namespace::set('dctypes', 'http://purl.org/dc/dcmitype/');
+  EasyRdf_Namespace::set('foaf', 'http://xmlns.com/foaf/0.1/');
+  EasyRdf_Namespace::set('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
+  EasyRdf_Namespace::set('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
+
+  if (!empty($anno)) {
+    $graph = new EasyRdf_Graph();
+    $uuid = 'urn:uuid:' . getUUID();
+
+    $annoObject = $graph->resource($uuid, 'rdf:Description');
+    $annoObject->set('rdf:type', 'http://www.w3.org/ns/oa#Annotation');
+    $annoObject->set('oa:annotatedBy', 'Admin');
+
+    $format = 'rdfxml';
+    return $graph->serialise($format);
+  } else {
+    return NULL;
+  }
 }
