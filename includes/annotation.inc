@@ -93,7 +93,29 @@ function _create_web_annotation() {
     $annotation['target_url'] = isset($_POST['targetSource']) ? $_POST['targetSource'] : '';
     $annotation['scope'] = isset($_POST['scope']) ? $_POST['scope'] : '';
 
-    $annoRDF = createRDF($annotation);
+    $annoRDF = _createRDF($annotation);
+    try {
+      islandora_oralhistories_add_annotation($annoRDF, $annotation);
+    }
+    catch (exception $e) {
+      drupal_set_message(t('Failed to add Web annotation'), 'error');
+      return array(
+        'success' => FALSE,
+        'messages' => array(
+          array(
+            'message' => t('Failed to add Web annotation. Error message: @message<br/>Stack: @stack'),
+            'message_sub' => array(
+              '@message' => $e->getMessage(),
+              '@stack' => $e->getTraceAsString(),
+            ),
+            'type' => 'watchdog',
+            'severity' => WATCHDOG_ERROR,
+          ),
+        ),
+      );
+    }
+
+
 
     drupal_json_output(array(
       'annotation' => $annoRDF,
@@ -237,15 +259,19 @@ function getUTCTime() {
  * Helper function to generate UUID.
  * @return string valid version 4 UUIDs
  */
-function getUUID() {
+function generateUUID() {
   if (function_exists('com_create_guid') === true) {
     return trim(com_create_guid(), '{}');
   }
   return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
 }
 
-
-function createRDF($anno) {
+/**
+ * Helper function to create web annotation in rdf/xml format.
+ * @param $anno
+ * @return mixed|null
+ */
+function _createRDF($anno) {
   module_load_include('php', 'islandora_oralhistories', 'lib/EasyRdf/EasyRdf');
   // use EasyRdf to construct web annotation rdfxml
   EasyRdf_Namespace::set('oa', 'http://www.w3.org/ns/oa#');
@@ -257,7 +283,7 @@ function createRDF($anno) {
 
   if (!empty($anno)) {
     $graph = new EasyRdf_Graph();
-    $uuid = 'urn:uuid:' . getUUID();
+    $uuid = 'urn:uuid:' . generateUUID();
 
     $annoObject = $graph->resource($uuid, 'rdf:Description');
     $annoObject->set('rdf:type', 'http://www.w3.org/ns/oa#Annotation');
@@ -268,4 +294,29 @@ function createRDF($anno) {
   } else {
     return NULL;
   }
+}
+
+/**
+ * Add a Web annotation CModel object.
+ * @param $RDF
+ * @param $annoArray
+ */
+function islandora_oralhistories_add_annotation($RDF, $anno) {
+  module_load_include('inc', 'islandora', 'includes/utilities');
+  $connection = islandora_get_tuque_connection();
+  $repository = $connection->repository;
+
+  // Get namespace for Web annotation CModel.
+  $collection_object = islandora_object_load('islandora:oralhistories_collection');
+  $collection_policy = new CollectionPolicy($collection_object['COLLECTION_POLICY']->content);
+  $collection_models = $collection_policy->getContentModels();
+  if (isset($collection_models['islandora:livingresearchlab_mouseCModel'])) {
+    $namespace = check_plain($collection_models['islandora:WADMCModel']['namespace']);
+  }
+  else {
+    $namespace = 'islandora';
+  }
+
+  $object = $repository->constructObject($namespace);
+
 }
