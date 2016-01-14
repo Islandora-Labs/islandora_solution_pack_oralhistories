@@ -316,7 +316,8 @@ function islandora_oralhistories_add_annotation($RDF, $anno) {
   else {
     $namespace = 'islandora';
   }
-
+  //@todo: create Web annotation CModel object
+  //@todo: parse $RDF (rdfxml format)
   $object = $repository->constructObject($namespace);
 
 }
