@@ -56,6 +56,10 @@ function _get_web_annotation_form(AbstractObject $object) {
       drupal_json_encode(call_user_func_array('array_merge_recursive', $javascript['settings']['data'])) .
       ');</script>';
   }
+  $var1 = isset($_GET['var1']) ? $_GET['var1'] : 'No var1 passed';
+  print "<pre>";
+  print_r($var1);
+  print "</pre>";
 
   die($form . $settings);
 }
@@ -276,18 +280,56 @@ function _createRDF($anno) {
   // use EasyRdf to construct web annotation rdfxml
   EasyRdf_Namespace::set('oa', 'http://www.w3.org/ns/oa#');
   EasyRdf_Namespace::set('dc', 'http://purl.org/dc/elements/1.1/');
-  EasyRdf_Namespace::set('dctypes', 'http://purl.org/dc/dcmitype/');
+  EasyRdf_Namespace::set('dctypes', 'http://purl.org/dc/terms/');
+  EasyRdf_Namespace::set('dcterms', 'http://purl.org/dc/dcmitype/');
   EasyRdf_Namespace::set('foaf', 'http://xmlns.com/foaf/0.1/');
   EasyRdf_Namespace::set('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
   EasyRdf_Namespace::set('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
 
   if (!empty($anno)) {
     $graph = new EasyRdf_Graph();
-    $uuid = 'urn:uuid:' . generateUUID();
+    $annoObj = array(
+      'urn' => 'urn:uuid:' . generateUUID(),
+      'url' => '',
+    );
+    $annoBody = array(
+      'urn' => 'urn:uuid:' . generateUUID(),
+      'url' => '',
+    );
+    $annoTarget = array(
+      'urn' => 'urn:uuid:' . generateUUID(),
+      'url' => $anno['target_url'],
+    );
 
-    $annoObject = $graph->resource($uuid, 'rdf:Description');
-    $annoObject->set('rdf:type', 'http://www.w3.org/ns/oa#Annotation');
-    $annoObject->set('oa:annotatedBy', 'Admin');
+    $annoFragment = array(
+      'urn' => 'urn:uuid:' . generateUUID(),
+      'url' => '',
+    );
+
+    $annoObj['graph'] = $graph->resource($annoObj['urn'], 'rdf:Description');
+//    $annoObj['graph']->setType('http://www.w3.org/ns/oa#Annotation');
+    $annoObj['graph']->set('oa:annotatedBy', $anno['author']['name']);
+    $annoObj['graph']->set('oa:annotatedAt', $anno['annotated_at']);
+    $annoObj['graph']->set('oa:hasBody', $annoBody['urn']);
+    $annoObj['graph']->set('oa:hasTarget', $annoTarget['urn']);
+    $graph->add($annoObj['graph'], 'rdf:type', $graph->resource('http://www.w3.org/ns/oa#Annotation'));
+
+    $annoBody['graph'] = $graph->resource($annoBody['urn'], 'rdf:Description');
+    $annoBody['graph']->set('rdf:type', 'http://www.w3.org/ns/oa#EmbeddedContent');
+    $annoBody['graph']->set('dc:format', 'text/plain');
+    $annoBody['graph']->set('rdf:value', $anno['content']);
+
+    $annoTarget['graph'] = $graph->resource($annoTarget['urn'], 'rdf:Description');
+    $annoTarget['graph']->set('rdf:type', 'http://www.w3.org/ns/oa#SpecificResource');
+    $annoTarget['graph']->set('oa:hasScope', $anno['scope']);
+    $annoTarget['graph']->set('oa:hasSelector', $annoFragment['urn']);
+    $annoTarget['graph']->set('oa:hasSource', $annoTarget['url']);
+
+    $annoFragment['graph'] = $graph->resource($annoFragment['urn'], 'rdf:Description');
+    $annoFragment['graph']->set('rdf:type', 'http://www.w3.org/ns/oa#FragmentSelector');
+    $annoFragment['graph']->set('dcterms:conformsTo', 'http://www.w3.org/TR/media-frags/');
+    $annoFragment['graph']->set('rdf:value', '#t=' . $anno['mf_start'] . ',' , $anno['mf_end']);
+    $annoFragment['graph']->set('oa:hasSource', $annoTarget['url']);
 
     $format = 'rdfxml';
     return $graph->serialise($format);
@@ -319,5 +361,12 @@ function islandora_oralhistories_add_annotation($RDF, $anno) {
   //@todo: create Web annotation CModel object
   //@todo: parse $RDF (rdfxml format)
   $object = $repository->constructObject($namespace);
+  $annotation = islandora_oralhistories_parse_RDF($RDF);
 
+}
+
+function islandora_oralhistories_parse_RDF($RDF) {
+  $xml = simplexml_load_string($RDF);
+//  drupal_goto("islandora/object/islandora%3A363/web_annotation/add", array('query' => array('var1' => $xml)));
+  return $xml;
 }
