@@ -306,30 +306,33 @@ function _createRDF($anno) {
       'url' => '',
     );
 
-    $annoObj['graph'] = $graph->resource($annoObj['urn'], 'rdf:Description');
-//    $annoObj['graph']->setType('http://www.w3.org/ns/oa#Annotation');
-    $annoObj['graph']->set('oa:annotatedBy', $anno['author']['name']);
-    $annoObj['graph']->set('oa:annotatedAt', $anno['annotated_at']);
-    $annoObj['graph']->set('oa:hasBody', $annoBody['urn']);
-    $annoObj['graph']->set('oa:hasTarget', $annoTarget['urn']);
-    $graph->add($annoObj['graph'], 'rdf:type', $graph->resource('http://www.w3.org/ns/oa#Annotation'));
 
-    $annoBody['graph'] = $graph->resource($annoBody['urn'], 'rdf:Description');
-    $annoBody['graph']->set('rdf:type', 'http://www.w3.org/ns/oa#EmbeddedContent');
-    $annoBody['graph']->set('dc:format', 'text/plain');
-    $annoBody['graph']->set('rdf:value', $anno['content']);
+    $annoObj['resource'] = $graph->resource($annoObj['urn'], 'rdf:Description');
+    $annoBody['resource'] = $graph->resource($annoBody['urn'], 'rdf:Description');
+    $annoTarget['resource'] = $graph->resource($annoTarget['urn'], 'rdf:Description');
+    $annoFragment['resource'] = $graph->resource($annoFragment['urn'], 'rdf:Description');
 
-    $annoTarget['graph'] = $graph->resource($annoTarget['urn'], 'rdf:Description');
-    $annoTarget['graph']->set('rdf:type', 'http://www.w3.org/ns/oa#SpecificResource');
-    $annoTarget['graph']->set('oa:hasScope', $anno['scope']);
-    $annoTarget['graph']->set('oa:hasSelector', $annoFragment['urn']);
-    $annoTarget['graph']->set('oa:hasSource', $annoTarget['url']);
+    $annoObj['resource']->set('oa:annotatedBy', $anno['author']['name']);
+    $annoObj['resource']->set('oa:annotatedAt', $anno['annotated_at']);
+    $annoObj['resource']->addResource('oa:hasBody', $annoBody['resource']);
+    $annoObj['resource']->addResource('oa:hasTarget', $annoTarget['resource']);
+    $annoObj['resource']->add('rdf:type', $graph->resource('http://www.w3.org/ns/oa#Annotation'));
 
-    $annoFragment['graph'] = $graph->resource($annoFragment['urn'], 'rdf:Description');
-    $annoFragment['graph']->set('rdf:type', 'http://www.w3.org/ns/oa#FragmentSelector');
-    $annoFragment['graph']->set('dcterms:conformsTo', 'http://www.w3.org/TR/media-frags/');
-    $annoFragment['graph']->set('rdf:value', '#t=' . $anno['mf_start'] . ',' , $anno['mf_end']);
-    $annoFragment['graph']->set('oa:hasSource', $annoTarget['url']);
+    $annoBody['resource']->set('dc:format', 'text/plain');
+    $annoBody['resource']->set('rdf:value', $anno['content']);
+    $annoBody['resource']->add('rdf:type', $graph->resource('http://www.w3.org/ns/oa#EmbeddedContent'));
+
+
+    $annoTarget['resource']->set('rdf:type', 'http://www.w3.org/ns/oa#SpecificResource');
+    $annoTarget['resource']->set('oa:hasScope', $anno['scope']);
+    $annoTarget['resource']->set('oa:hasSelector', $annoFragment['urn']);
+    $annoTarget['resource']->set('oa:hasSource', $annoTarget['url']);
+
+
+    $annoFragment['resource']->set('rdf:type', 'http://www.w3.org/ns/oa#FragmentSelector');
+    $annoFragment['resource']->set('dcterms:conformsTo', 'http://www.w3.org/TR/media-frags/');
+    $annoFragment['resource']->set('rdf:value', '#t=' . $anno['mf_start'] . ',' , $anno['mf_end']);
+    $annoFragment['resource']->set('oa:hasSource', $annoTarget['url']);
 
     $format = 'rdfxml';
     return $graph->serialise($format);
