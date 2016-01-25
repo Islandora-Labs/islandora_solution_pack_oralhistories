@@ -276,18 +276,11 @@ function generateUUID() {
  * @return mixed|null
  */
 function _createRDF($anno) {
-  module_load_include('php', 'islandora_oralhistories', 'lib/EasyRdf/EasyRdf');
-  // use EasyRdf to construct web annotation rdfxml
-  EasyRdf_Namespace::set('oa', 'http://www.w3.org/ns/oa#');
-  EasyRdf_Namespace::set('dc', 'http://purl.org/dc/elements/1.1/');
-  EasyRdf_Namespace::set('dctypes', 'http://purl.org/dc/terms/');
-  EasyRdf_Namespace::set('dcterms', 'http://purl.org/dc/dcmitype/');
-  EasyRdf_Namespace::set('foaf', 'http://xmlns.com/foaf/0.1/');
-  EasyRdf_Namespace::set('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
-  EasyRdf_Namespace::set('rdfs', 'http://www.w3.org/2000/01/rdf-schema#');
-
+  module_load_include('inc', 'islandora_oralhistories', 'includes/rdf_builder');
+  $children = array();
+  $rdf = new IslandoraRdfBuilder();
   if (!empty($anno)) {
-    $graph = new EasyRdf_Graph();
+
     $annoObj = array(
       'urn' => 'urn:uuid:' . generateUUID(),
       'url' => '',
@@ -305,39 +298,44 @@ function _createRDF($anno) {
       'urn' => 'urn:uuid:' . generateUUID(),
       'url' => '',
     );
+    $children = array(
+       array(
+         'name' => 'rdf:type',
+         'attributes' => array('rdf:resource' => 'http://www.w3.org/ns/oa#Annotation'),
+         'value' => ''
+       ),
+      array(
+        'name' => 'oa:hasBody',
+        'attributes' => array('rdf:resource' => $annoBody['urn']),
+        'value' => ''
+      ),
+      array(
+        'name' => 'oa:hasTarget',
+        'attributes' => array('rdf:resource' => $annoTarget['urn']),
+        'value' => ''
+      ),
+    );
+    $rdf->addDescriptionNode($annoObj['urn'], $children);
 
+    // Add body
+    $children = array(
+      array(
+        'name' => 'rdf:type',
+        'attributes' => array('rdf:resource' => 'http://www.w3.org/ns/oa#EmbeddedContent'),
+        'value' => ''
+      ),
+      array(
+        'name' => 'dc:format',
+        'value' => 'text/plain',
+      ),
+      array(
+        'name' => 'rdf:value',
+        'value' => $anno['content'],
+      ),
+    );
+    $rdf->addDescriptionNode($annoBody['urn'], $children);
+    return $rdf->printRdf();
 
-    $annoObj['resource'] = $graph->resource($annoObj['urn'], 'rdf:Description');
-    $annoBody['resource'] = $graph->resource($annoBody['urn'], 'rdf:Description');
-    $annoTarget['resource'] = $graph->resource($annoTarget['urn'], 'rdf:Description');
-    $annoFragment['resource'] = $graph->resource($annoFragment['urn'], 'rdf:Description');
-
-    $annoObj['resource']->set('oa:annotatedBy', $anno['author']['name']);
-    $annoObj['resource']->set('oa:annotatedAt', $anno['annotated_at']);
-    $annoObj['resource']->addResource('oa:hasBody', $annoBody['resource']);
-    $annoObj['resource']->addResource('oa:hasTarget', $annoTarget['resource']);
-    $annoObj['resource']->add('rdf:type', $graph->resource('http://www.w3.org/ns/oa#Annotation'));
-
-    $annoBody['resource']->set('dc:format', 'text/plain');
-    $annoBody['resource']->set('rdf:value', $anno['content']);
-    $annoBody['resource']->add('rdf:type', $graph->resource('http://www.w3.org/ns/oa#EmbeddedContent'));
-
-
-    $annoTarget['resource']->set('rdf:type', 'http://www.w3.org/ns/oa#SpecificResource');
-    $annoTarget['resource']->set('oa:hasScope', $anno['scope']);
-    $annoTarget['resource']->set('oa:hasSelector', $annoFragment['urn']);
-    $annoTarget['resource']->set('oa:hasSource', $annoTarget['url']);
-
-
-    $annoFragment['resource']->set('rdf:type', 'http://www.w3.org/ns/oa#FragmentSelector');
-    $annoFragment['resource']->set('dcterms:conformsTo', 'http://www.w3.org/TR/media-frags/');
-    $annoFragment['resource']->set('rdf:value', '#t=' . $anno['mf_start'] . ',' , $anno['mf_end']);
-    $annoFragment['resource']->set('oa:hasSource', $annoTarget['url']);
-
-    $format = 'rdfxml';
-    return $graph->serialise($format);
-  } else {
-    return NULL;
   }
 }
 
