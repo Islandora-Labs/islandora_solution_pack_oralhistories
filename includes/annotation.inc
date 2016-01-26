@@ -256,7 +256,7 @@ function web_annotation_form_ajax_callback(array $form, array &$form_state) {
  * @return bool|string
  */
 function getUTCTime() {
-  return date("c", time());
+  return gmdate("Y-m-d\TH:i:s\Z", time());
 }
 
 /**
@@ -280,7 +280,6 @@ function _createRDF($anno) {
   $children = array();
   $rdf = new IslandoraRdfBuilder();
   if (!empty($anno)) {
-
     $annoObj = array(
       'urn' => 'urn:uuid:' . generateUUID(),
       'url' => '',
@@ -298,6 +297,7 @@ function _createRDF($anno) {
       'urn' => 'urn:uuid:' . generateUUID(),
       'url' => '',
     );
+    // Add Annotation Object
     $children = array(
        array(
          'name' => 'rdf:type',
@@ -314,10 +314,22 @@ function _createRDF($anno) {
         'attributes' => array('rdf:resource' => $annoTarget['urn']),
         'value' => ''
       ),
+      array(
+        'name' => 'oa:annotatedAt',
+        'value' => $anno['annotated_at']
+      ),
+      array(
+        'name' => 'oa:annotatedBy',
+        'value' => $anno['author']['name']
+      ),
+      array(
+        'name' => 'oa:serializedAt',
+        'value' => getUTCTime()
+      ),
     );
     $rdf->addDescriptionNode($annoObj['urn'], $children);
 
-    // Add body
+    // Add Annotation body
     $children = array(
       array(
         'name' => 'rdf:type',
@@ -334,6 +346,51 @@ function _createRDF($anno) {
       ),
     );
     $rdf->addDescriptionNode($annoBody['urn'], $children);
+
+    // Add Annotation target
+    $children = array(
+      array(
+        'name' => 'rdf:type',
+        'attributes' => array('rdf:resource' => 'http://www.w3.org/ns/oa#SpecificResource'),
+        'value' => ''
+      ),
+      array(
+        'name' => 'oa:hasSource',
+        'attributes' => array('rdf:resource' => $annoTarget['url']),
+        'value' => ''
+      ),
+      array(
+        'name' => 'oa:hasScope',
+        'attributes' => array('rdf:resource' => $anno['scope']),
+        'value' => ''
+      ),
+      array(
+        'name' => 'oa:hasSelector',
+        'attributes' => array('rdf:resource' => $annoFragment['urn']),
+        'value' => ''
+      ),
+    );
+    $rdf->addDescriptionNode($annoTarget['urn'], $children);
+
+    // Add FragmentSelector for Target
+    $children = array(
+      array(
+        'name' => 'rdf:type',
+        'attributes' => array('rdf:resource' => 'http://www.w3.org/ns/oa#FragmentSelector'),
+        'value' => ''
+      ),
+      array(
+        'name' => 'dcterms:conformsTo',
+        'attributes' => array('rdf:resource' => 'http://www.w3.org/TR/media-frags/'),
+        'value' => ''
+      ),
+      array(
+        'name' => 'rdf:value',
+        'value' => '#t=' . $anno['mf_start'] . ',' . $anno['mf_end']
+      ),
+    );
+    $rdf->addDescriptionNode($annoFragment['urn'], $children);
+
     return $rdf->printRdf();
 
   }
