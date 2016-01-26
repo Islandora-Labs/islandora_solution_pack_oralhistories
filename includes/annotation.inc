@@ -399,9 +399,9 @@ function _createRDF($anno) {
 /**
  * Add a Web annotation CModel object.
  * @param $RDF
- * @param $annoArray
+ * @param array $anno
  */
-function islandora_oralhistories_add_annotation($RDF, $anno) {
+function islandora_oralhistories_add_annotation($RDF, $anno = array()) {
   module_load_include('inc', 'islandora', 'includes/utilities');
   $connection = islandora_get_tuque_connection();
   $repository = $connection->repository;
@@ -418,8 +418,39 @@ function islandora_oralhistories_add_annotation($RDF, $anno) {
   }
   //@todo: create Web annotation CModel object
   //@todo: parse $RDF (rdfxml format)
-  $object = $repository->constructObject($namespace);
-  $annotation = islandora_oralhistories_parse_RDF($RDF);
+  if (isset($RDF) && !empty($RDF)) {
+    if (!isset($anno)) {
+      // we need extract some information from $RDF if no $anno passed
+      $annotation = islandora_oralhistories_parse_RDF($RDF);
+    }
+    try {
+      $object = $repository->constructObject($namespace);
+      $object->label = 'Islandora Web Annotation';
+      $object->models = array('islandora:WADMCModel');
+      $object->relationships->add(FEDORA_RELS_EXT_URI, 'isMemberOfCollection', 'islandora:oralhistories_collection');
+      $object->relationships->add(FEDORA_RELS_EXT_URI, 'isAnnotationOf', $anno['target_pid']);
+
+      $dsid = 'WADM';
+      $ds = $object->constructDatastream($dsid, 'M');
+      $ds->label = $dsid;
+      $ds->mimetype = 'text/xml';
+      $ds->setContentFromString($RDF);
+      $object->ingestDatastream($ds);
+      $repository->ingestObject($object);
+      drupal_set_message(t('Add new annotation: %t', array('%t' => $object->id)), 'status', FALSE);
+    }
+    catch (Exception $e) {
+      drupal_set_message(t('Error adding annotation object: %t', array('%t' => $e->getMessage())), 'error', FALSE);
+    }
+
+  } else {
+    // Throw error
+    drupal_set_message(t('No RDF or annotation passed: %t', array('%t' => $e->getMessage())), 'error', FALSE);
+  }
+
+
+
+
 
 }
 
