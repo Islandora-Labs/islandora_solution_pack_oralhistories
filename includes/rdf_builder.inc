@@ -170,6 +170,20 @@ class IslandoraRdfBuilder {
   }
 
   /**
+   * Retrieves the uuid of the node itself.
+   *
+   * @return string
+   *   A uuid containing urn:uuid:. This is the uuid of the node.
+   */
+  public function getAnnotationUrn() {
+    if (empty($this->xpath)) {
+      $this->setXPath();
+    }
+    $candidates = $this->xpath->query('//rdf:Description');
+    return $candidates->item(0)->getAttribute('rdf:about');
+  }
+
+  /**
    * Retrieves the uuid of the hasBody node.
    *
    * @param string $id
@@ -190,14 +204,14 @@ class IslandoraRdfBuilder {
   }
 
   /**
-   * Retrieves the uuid of the hasTarget node.
-   *
-   * @param string $id
-   *   The uuid containing urn:uuid:.
-   *
-   * @return string
-   *   A uuid containing urn:uuid:. This is the uuid of the hasTarget node.
-   */
+ * Retrieves the uuid of the hasTarget node.
+ *
+ * @param string $id
+ *   The uuid containing urn:uuid:.
+ *
+ * @return string
+ *   A uuid containing urn:uuid:. This is the uuid of the hasTarget node.
+ */
   public function getAnnotationTargetUrn($id) {
     if (empty($this->xpath)) {
       $this->setXPath();
