@@ -1,50 +1,13 @@
 <?php
-//function edit_annotation_modal(AbstractObject $object, $ajax) {
-//  if (!$object) {
-//    $path = current_path();
-//    $part_parts = explode('/', $path);
-//    $object = islandora_object_load($part_parts[2]);
-//  }
-//  if ($ajax) {
-//    ctools_include('ajax');
-//    ctools_include('modal');
-//
-//    $form_state = array(
-//      'ajax' => TRUE,
-//      'title' => t('Annotation Modal Form'),
-//    );
-//    // pass arguments to ctools_modal_form_wrapper().
-//    $form_state['build_info']['args'][] = $object;
-//
-//    // Use ctools to generate ajax instructions for the browser to create
-//    // a form in a modal popup.
-//    $output = ctools_modal_form_wrapper(
-//      'islandora_oralhistories_annotation_form',
-//      $form_state
-//    );
-//
-//    if (!empty($form_state['executed'])) {
-//
-//      // Add the responder javascript, required by ctools
-//      ctools_add_js('ajax-responder');
-//
-//      // Create ajax command array, dismiss the modal window.
-//      $output = array();
-//      $output[] = ctools_modal_command_dismiss();
-//    }
-//
-//
-//    // Return the ajax instructions to the browser via ajax_render().
-//    print ajax_render($output);
-//    drupal_exit();
-//  }
-//  else {
-//    return drupal_get_form(
-//      'islandora_oralhistories_annotation_form',
-//      $object
-//    );
-//  }
-//}
+define('ISLANDORA_ORALHISTORIES_NAMESPACE_DC', 'http://purl.org/dc/elements/1.1/');
+define('ISLANDORA_ORALHISTORIES_NAMESPACE_DCTERMS', 'http://purl.org/dc/terms/');
+define('ISLANDORA_ORALHISTORIES_NAMESPACE_DCTYPES', 'http://purl.org/dc/dcmitype/');
+define('ISLANDORA_ORALHISTORIES_NAMESPACE_OA', 'http://www.w3.org/ns/oa#');
+define('ISLANDORA_ORALHISTORIES_NAMESPACE_FOAF', 'http://xmlns.com/foaf/0.1/');
+define('ISLANDORA_ORALHISTORIES_NAMESPACE_PROV', 'http://www.w3.org/ns/prov#');
+define('ISLANDORA_ORALHISTORIES_NAMESPACE_RDF', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
+define('ISLANDORA_ORALHISTORIES_NAMESPACE_RDFS', 'http://www.w3.org/2000/01/rdf-schema#');
+define('ISLANDORA_ORALHISTORIES_NAMESPACE_SKOS', 'http://www.w3.org/2004/02/skos/core#');
 
 function _get_web_annotation_form(AbstractObject $object) {
   $form = drupal_render(drupal_get_form('islandora_oralhistories_annotation_form', $object));
@@ -272,6 +235,7 @@ function generateUUID() {
 
 /**
  * Helper function to create web annotation in rdf/xml format.
+ *
  * @param $anno
  * @return mixed|null
  */
@@ -416,19 +380,19 @@ function islandora_oralhistories_add_annotation($RDF, $anno = array()) {
   else {
     $namespace = 'islandora';
   }
-  //@todo: create Web annotation CModel object
-  //@todo: parse $RDF (rdfxml format)
+
   if (isset($RDF) && !empty($RDF)) {
     if (!isset($anno)) {
-      // we need extract some information from $RDF if no $anno passed
+      // @todo we need extract some information from $RDF if no $anno passed
       $annotation = islandora_oralhistories_parse_RDF($RDF);
     }
     try {
       $object = $repository->constructObject($namespace);
-      $object->label = 'Islandora Web Annotation';
+      $object->label = islandora_oralhistories_shorten_title($anno['content'], 30);
       $object->models = array('islandora:WADMCModel');
       $object->relationships->add(FEDORA_RELS_EXT_URI, 'isMemberOfCollection', 'islandora:oralhistories_collection');
       $object->relationships->add(FEDORA_RELS_EXT_URI, 'isAnnotationOf', $anno['target_pid']);
+//      $object->relationships->add(ISLANDORA_RELS_EXT_URI, 'hasURN', $mother_pid);
 
       $dsid = 'WADM';
       $ds = $object->constructDatastream($dsid, 'M');
@@ -438,24 +402,36 @@ function islandora_oralhistories_add_annotation($RDF, $anno = array()) {
       $object->ingestDatastream($ds);
       $repository->ingestObject($object);
       drupal_set_message(t('Add new annotation: %t', array('%t' => $object->id)), 'status', FALSE);
+      watchdog('Islandora OralHistories', 'Add new annotation: %t', array('%t' => $object->id), WATCHDOG_INFO);
     }
     catch (Exception $e) {
       drupal_set_message(t('Error adding annotation object: %t', array('%t' => $e->getMessage())), 'error', FALSE);
+      watchdog('Islandora OralHistories', 'Error adding annotation object: %t', array('%t' => $e->getMessage()), WATCHDOG_ERROR);
     }
 
   } else {
     // Throw error
     drupal_set_message(t('No RDF or annotation passed: %t', array('%t' => $e->getMessage())), 'error', FALSE);
+    watchdog('Islandora OralHistories', 'No RDF or annotation passed: %t', array('%t' => $e->getMessage()), WATCHDOG_ERROR);
   }
-
-
-
-
-
 }
 
 function islandora_oralhistories_parse_RDF($RDF) {
   $xml = simplexml_load_string($RDF);
-//  drupal_goto("islandora/object/islandora%3A363/web_annotation/add", array('query' => array('var1' => $xml)));
+
   return $xml;
+}
+
+/**
+ * Helper function to extract the first x number of characters from a given string.
+ *
+ * @param $title string
+ * @param $length integer
+ * @return string
+ */
+function islandora_oralhistories_shorten_title($title, $length) {
+  if (strlen($title) > $length) {
+    $title = substr($title, 0, strpos($title, ' ', $length));
+  }
+  return $title;
 }
