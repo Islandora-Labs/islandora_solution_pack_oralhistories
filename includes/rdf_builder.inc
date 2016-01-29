@@ -169,18 +169,38 @@ class IslandoraRdfBuilder {
     return $return_array;
   }
 
-  /**
-   * Retrieves the uuid of the node itself.
-   *
-   * @return string
-   *   A uuid containing urn:uuid:. This is the uuid of the node.
-   */
+ /**
+ * Retrieves the uuid of the node itself.
+ *
+ * @return string
+ *   A uuid containing urn:uuid:. This is the uuid of the node.
+ */
   public function getAnnotationUrn() {
     if (empty($this->xpath)) {
       $this->setXPath();
     }
     $candidates = $this->xpath->query('//rdf:Description');
     return $candidates->item(0)->getAttribute('rdf:about');
+  }
+
+  /**
+   * Retrieves the uuid of the hasScope itself.
+   *
+   * * @param string $id
+   *   The target uuid containing urn:uuid:.
+   *
+   * @return string
+   *   A uuid containing urn:uuid:. This is the uuid of hasScope node.
+   */
+  public function getAnnotationScopeUrn($id) {
+    if (empty($this->xpath)) {
+      $this->setXPath();
+    }
+    $candidates = $this->xpath->query('//rdf:Description[@rdf:about="' . $id . '"]/oa:hasScope');
+    foreach ($candidates as $candidate) {
+      $resource[] = $candidate->getAttribute('rdf:resource');
+    }
+    return $resource;
   }
 
   /**
@@ -198,7 +218,7 @@ class IslandoraRdfBuilder {
     }
     $candidates = $this->xpath->query('//rdf:Description[@rdf:about="' . $id . '"]/oa:hasBody');
     foreach ($candidates as $candidate) {
-      $resource = $candidate->getAttribute('rdf:resource');
+      $resource[] = $candidate->getAttribute('rdf:resource');
     }
     return $resource;
   }
@@ -218,29 +238,10 @@ class IslandoraRdfBuilder {
     }
     $candidates = $this->xpath->query('//rdf:Description[@rdf:about="' . $id . '"]/oa:hasTarget');
     foreach ($candidates as $candidate) {
-      $resource = $candidate->getAttribute('rdf:resource');
+      $resource[] = $candidate->getAttribute('rdf:resource');
     }
     return $resource;
   }
 
-  /**
-   * Retrieves the uuid of the constrained target from the RDF.
-   *
-   * @param string $id
-   *   The uuid containing urn:uuid:.
-   *
-   * @return string
-   *   A uuid containing urn:uuid:. This is the uuid of the constrainedBy node.
-   */
-  public function getConstrainedTarget($id) {
-    if (empty($this->xpath)) {
-      $this->setXPath();
-    }
-    $candidates = $this->xpath->query('//rdf:Description[@rdf:about="' . $id . '"]/oa:constrainedBy');
-    foreach ($candidates as $candidate) {
-      $resource = $candidate->getAttribute('rdf:resource');
-    }
-    return $resource;
-  }
 
 }
