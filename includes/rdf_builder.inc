@@ -189,7 +189,7 @@ class IslandoraRdfBuilder {
    * * @param string $id
    *   The target uuid containing urn:uuid:.
    *
-   * @return string
+   * @return array
    *   A uuid containing urn:uuid:. This is the uuid of hasScope node.
    */
   public function getAnnotationScopeUrn($id) {
@@ -204,12 +204,29 @@ class IslandoraRdfBuilder {
   }
 
   /**
+   * Retrieves the uuid of the hasSource itself.
+   *
+   * * @param string $id
+   *   The target uuid containing urn:uuid:.
+   *
+   * @return string
+   *   A uuid containing urn:uuid:. This is the uuid of hasSource node.
+   */
+  public function getAnnotationSourceUrn($id) {
+    if (empty($this->xpath)) {
+      $this->setXPath();
+    }
+    $candidates = $this->xpath->query('//rdf:Description[@rdf:about="' . $id . '"]/oa:hasSource');
+    return $candidates->item(0)->getAttribute('rdf:resource');
+  }
+
+  /**
    * Retrieves the uuid of the hasBody node.
    *
    * @param string $id
    *   The uuid containing urn:uuid:.
    *
-   * @return string
+   * @return array
    *   A uuid containing urn:uuid:. This is the uuid of the hasBody node.
    */
   public function getAnnotationBodyUrn($id) {
@@ -224,12 +241,29 @@ class IslandoraRdfBuilder {
   }
 
   /**
+   * Retrieves value of Body node.
+   *
+   * @param string $id
+   *   The hasBody uuid containing urn:uuid:.
+   *
+   * @return string
+   *   value of Body node.
+   */
+  public function getAnnotationBodyContent($id) {
+    if (empty($this->xpath)) {
+      $this->setXPath();
+    }
+    $candidates = $this->xpath->query('//rdf:Description[@rdf:about="' . $id . '"]/rdf:value');
+    return $candidates->item(0)->nodeValue;
+  }
+
+ /**
  * Retrieves the uuid of the hasTarget node.
  *
  * @param string $id
  *   The uuid containing urn:uuid:.
  *
- * @return string
+ * @return array
  *   A uuid containing urn:uuid:. This is the uuid of the hasTarget node.
  */
   public function getAnnotationTargetUrn($id) {
@@ -243,5 +277,38 @@ class IslandoraRdfBuilder {
     return $resource;
   }
 
+  /**
+   * Retrieves the uuid of the hasSelector node.
+   *
+   * @param string $id
+   *   The uuid of target node.
+   *
+   * @return string
+   *   A uuid containing urn:uuid:. This is the uuid of the hasSelector node.
+   */
+  public function getAnnotationTargetSelectorUrn($id) {
+    if (empty($this->xpath)) {
+      $this->setXPath();
+    }
+    $candidates = $this->xpath->query('//rdf:Description[@rdf:about="' . $id . '"]/oa:hasSelector');
+    return $candidates->item(0)->getAttribute('rdf:resource');
+  }
+
+  /**
+   * Retrieves the value of FragmentSelector node.
+   *
+   * @param string $id
+   *   The uuid of selector node.
+   *
+   * @return string
+   *   value of FragmentSelector node.
+   */
+  public function getAnnotationTargetSelectorFrag($id) {
+    if (empty($this->xpath)) {
+      $this->setXPath();
+    }
+    $candidates = $this->xpath->query('//rdf:Description[@rdf:about="' . $id . '"]/rdf:value');
+    return $candidates->item(0)->nodeValue;
+  }
 
 }
