@@ -60,9 +60,9 @@ function _create_web_annotation() {
     $annotation['target_url'] = isset($_POST['targetSource']) ? $_POST['targetSource'] : '';
     $annotation['scope'] = isset($_POST['scope']) ? $_POST['scope'] : '';
 
-    $annoRDF = _createRDF($annotation);
+
     try {
-      islandora_oralhistories_add_annotation($annoRDF, $annotation);
+      islandora_oralhistories_add_annotation($annotation);
     }
     catch (exception $e) {
       drupal_set_message(t('Failed to add Web annotation'), 'error');
@@ -70,7 +70,7 @@ function _create_web_annotation() {
         'success' => FALSE,
         'messages' => array(
           array(
-            'message' => t('Failed to add Web annotation. Error message: @message<br/>Stack: @stack'),
+            'message' => t('Failed to add Web annotation. (line 73) Error message: @message<br/>Stack: @stack'),
             'message_sub' => array(
               '@message' => $e->getMessage(),
               '@stack' => $e->getTraceAsString(),
@@ -82,10 +82,10 @@ function _create_web_annotation() {
       );
     }
 
-
-
+    // This is to test RDF/XML is generated correctly.
+//    $annoRDF = _createRDF($annotation);
     drupal_json_output(array(
-      'annotation' => $annoRDF,
+      'annotation' => $annotation,
       'response' => array(
         'code' => 'success',
         'message' => 'New annotation is created'
@@ -236,7 +236,8 @@ function generateUUID() {
 /**
  * Helper function to create web annotation in rdf/xml format.
  *
- * @param $anno
+ * @param array $anno
+ *   Array contains POST data
  * @return mixed|null
  */
 function _createRDF($anno) {
@@ -362,10 +363,9 @@ function _createRDF($anno) {
 
 /**
  * Add a Web annotation CModel object.
- * @param $RDF
- * @param array $anno
+ * @param array $annotation
  */
-function islandora_oralhistories_add_annotation($RDF, $anno = array()) {
+function islandora_oralhistories_add_annotation($annotation) {
   module_load_include('inc', 'islandora', 'includes/utilities');
   $connection = islandora_get_tuque_connection();
   $repository = $connection->repository;
@@ -374,52 +374,71 @@ function islandora_oralhistories_add_annotation($RDF, $anno = array()) {
   $collection_object = islandora_object_load('islandora:oralhistories_collection');
   $collection_policy = new CollectionPolicy($collection_object['COLLECTION_POLICY']->content);
   $collection_models = $collection_policy->getContentModels();
-  if (isset($collection_models['islandora:livingresearchlab_mouseCModel'])) {
+  if (isset($collection_models['islandora:WADMCModel'])) {
     $namespace = check_plain($collection_models['islandora:WADMCModel']['namespace']);
   }
   else {
     $namespace = 'islandora';
   }
 
-  if (isset($RDF) && !empty($RDF)) {
-    if (!isset($anno)) {
-      // @todo we need extract some information from $RDF if no $anno passed
-      $annotation = islandora_oralhistories_parse_RDF($RDF);
-    }
+  if (isset($annotation) && !empty($annotation)) {
+//    $annotation = islandora_oralhistories_parse_RDF($RDF);
+    $RDF = _createRDF($annotation);
     try {
       $object = $repository->constructObject($namespace);
-      $object->label = islandora_oralhistories_shorten_title($anno['content'], 30);
+      $object->label = islandora_oralhistories_shorten_title($annotation['content'], 30);
       $object->models = array('islandora:WADMCModel');
       $object->relationships->add(FEDORA_RELS_EXT_URI, 'isMemberOfCollection', 'islandora:oralhistories_collection');
-      $object->relationships->add(FEDORA_RELS_EXT_URI, 'isAnnotationOf', $anno['target_pid']);
-//      $object->relationships->add(ISLANDORA_RELS_EXT_URI, 'hasURN', $mother_pid);
+      $object->relationships->add(FEDORA_RELS_EXT_URI, 'isAnnotationOf', $annotation['target_pid']);
+//      $object->relationships->add(ISLANDORA_RELS_EXT_URI, 'isAnnotationType', 'Islandora%20Web%20Annotation');
+//      $object->relationships->add(ISLANDORA_RELS_EXT_URI, 'hasURN', $annotation['urn']);
 
       $dsid = 'WADM';
       $ds = $object->constructDatastream($dsid, 'M');
       $ds->label = $dsid;
       $ds->mimetype = 'text/xml';
-      $ds->setContentFromString($RDF);
+      if (isset($RDF)) {
+        $ds->setContentFromString($RDF);
+      }
       $object->ingestDatastream($ds);
       $repository->ingestObject($object);
-      drupal_set_message(t('Add new annotation: %t', array('%t' => $object->id)), 'status', FALSE);
+//      drupal_set_message(t('Add new annotation: %t', array('%t' => $object->id)), 'status', FALSE);
       watchdog('Islandora OralHistories', 'Add new annotation: %t', array('%t' => $object->id), WATCHDOG_INFO);
     }
     catch (Exception $e) {
-      drupal_set_message(t('Error adding annotation object: %t', array('%t' => $e->getMessage())), 'error', FALSE);
+//      drupal_set_message(t('Error adding annotation object: %t', array('%t' => $e->getMessage())), 'error', FALSE);
       watchdog('Islandora OralHistories', 'Error adding annotation object: %t', array('%t' => $e->getMessage()), WATCHDOG_ERROR);
     }
 
   } else {
     // Throw error
-    drupal_set_message(t('No RDF or annotation passed: %t', array('%t' => $e->getMessage())), 'error', FALSE);
-    watchdog('Islandora OralHistories', 'No RDF or annotation passed: %t', array('%t' => $e->getMessage()), WATCHDOG_ERROR);
+    drupal_set_message(t('Empty RDF or annotation passed'), 'error', FALSE);
+    watchdog('Islandora OralHistories', 'Empty annotation passed', WATCHDOG_ERROR);
   }
 }
 
-function islandora_oralhistories_parse_RDF($RDF) {
-  $xml = simplexml_load_string($RDF);
+function islandora_oralhistories_parse_RDF($rdfxml) {
+  module_load_include('inc', 'islandora_oralhistories', 'includes/rdf_builder');
+  $annotation = array();
 
-  return $xml;
+  try {
+    $dom = new DOMDocument('1.0', 'utf-8');
+    $dom->loadXML($rdfxml);
+    $rdf = new IslandoraRdfBuilder($dom);
+    $annotation['urn'] = $rdf->getAnnotationUrn();
+    $annotation['target']['urn'] = $rdf->getAnnotationTargetUrn($annotation['urn']);
+    $annotation['target']['scope'] = $rdf->getAnnotationScopeUrn($annotation['target']['urn'][0]);
+    $annotation['target']['source'] = $rdf->getAnnotationSourceUrn($annotation['target']['urn'][0]);
+    $annotation['fragment']['urn'] = $rdf->getAnnotationTargetSelectorUrn($annotation['target']['urn'][0]);
+    $annotation['fragment']['value'] = $rdf->getAnnotationTargetSelectorFrag($annotation['fragment']['urn']);
+    $annotation['body']['urn'] = $rdf->getAnnotationBodyUrn($annotation['urn']);
+    $annotation['body']['value'] = $rdf->getAnnotationBodyContent($annotation['body']['urn'][0]);
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('Error parsing annotation rdfxml: %t', array('%t' => $e->getMessage())), 'error', FALSE);
+    watchdog('Islandora OralHistories', 'Error parsing annotation rdfxml: %t', array('%t' => $e->getMessage()), WATCHDOG_ERROR);
+  }
+  return $annotation;
 }
 
 /**
