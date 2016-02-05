@@ -192,7 +192,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   }
 
   $variables['islandora_content']['viewer'] = $viewer;
-  dpm($variables['islandora_content']);
 
   // Pass settings to javascript.
   $js_settings = array(
