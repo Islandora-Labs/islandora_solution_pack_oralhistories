@@ -65,7 +65,10 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'pid' => $object->id,
   );
 
-  if ($object['OBJ']->mimetype == 'video/mp4') {
+  if (preg_match('/^video/i', $object['OBJ']->mimetype)) {
+    $viewer_params += array(
+      'media_tag' => 'video',
+    );
     if (isset($object['MP4'])) {
       $media_dsid = 'MP4';
     } else {
@@ -78,12 +81,10 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
         }
       }
     }
-    $viewer_params += array(
-      'media_tag' => 'video',
-    );
+
   }
 
-  if ($object['OBJ']->mimetype == 'audio/mpeg') {
+  if (preg_match('/^audio/i', $object['OBJ']->mimetype)) {
     $media_dsid = 'PROXY_MP3';
     $viewer_params += array(
       'media_tag' => 'audio',
@@ -95,7 +96,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     if (isset($object[$media_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$media_dsid])) {
       $media_url = url("islandora/object/{$object->id}/datastream/$media_dsid/view", array('absolute' => TRUE));
       $viewer_params += array(
-        'mime' => $object['OBJ']->mimetype,
+        'mime' => $object[$media_dsid]->mimetype,
         'url' => $media_url,
       );
     }
@@ -191,6 +192,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   }
 
   $variables['islandora_content']['viewer'] = $viewer;
+  dpm($variables['islandora_content']);
 
   // Pass settings to javascript.
   $js_settings = array(
