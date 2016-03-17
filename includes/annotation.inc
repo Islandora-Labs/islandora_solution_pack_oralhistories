@@ -9,23 +9,6 @@ define('ISLANDORA_ORALHISTORIES_NAMESPACE_RDF', 'http://www.w3.org/1999/02/22-rd
 define('ISLANDORA_ORALHISTORIES_NAMESPACE_RDFS', 'http://www.w3.org/2000/01/rdf-schema#');
 define('ISLANDORA_ORALHISTORIES_NAMESPACE_SKOS', 'http://www.w3.org/2004/02/skos/core#');
 
-function _get_web_annotation_form(AbstractObject $object) {
-  $form = drupal_render(drupal_get_form('islandora_oralhistories_annotation_form', $object));
-  $javascript = drupal_add_js(NULL, NULL);
-  $settings = FALSE;
-
-  if(isset($javascript['settings'])) {
-    $settings = '<script type="text/javascript">jQuery.extend(Drupal.settings, ' .
-      drupal_json_encode(call_user_func_array('array_merge_recursive', $javascript['settings']['data'])) .
-      ');</script>';
-  }
-  $var1 = isset($_GET['var1']) ? $_GET['var1'] : 'No var1 passed';
-  print "<pre>";
-  print_r($var1);
-  print "</pre>";
-
-  die($form . $settings);
-}
 
 /**
  * Menu callback for "islandora/object/%islandora_object/web_annotation".

@@ -46,41 +46,6 @@ function islandora_oralhistories_menu() {
     'file' => 'includes/transcript.edit.form.inc',
     'type' => MENU_CALLBACK,
   );
-//  $items['islandora/object/%islandora_object/web_annotation/get/%islandora_web_annotation_object'] = array(
-//    'page callback' => 'islandora_oralhistories_web_annotation_get_callback',
-//    'page arguments' => array(2, 5),
-//    'access callback' => 'islandora_object_access_callback',
-//    'access arguments' => array(ISLANDORA_WEB_ANNOTATION_VIEW, 2),
-//    'file' => 'includes/annotation.inc',
-//    'type' => MENU_CALLBACK,
-//  );
-  // @todo: may need remove this menu item if we use ajax completely
-  $items['islandora/object/%islandora_object/web_annotation/add'] = array(
-    'title' => 'Oral Histories Web Annotation',
-    'description' => 'Edit Web Annotation',
-    'page callback' => '_get_web_annotation_form',
-//    'page arguments' => array('islandora_oralhistories_annotation_form', 2),
-    'page arguments' => array(2),
-    'access callback' => 'islandora_object_access_callback',
-    'access arguments' => array(ISLANDORA_WEB_ANNOTATION_CREATE, 2),
-    'file' => 'includes/annotation.inc',
-    'type' => MENU_CALLBACK,
-  );
-//  $items['islandora/object/%islandora_object/web_annotation/%ctools_js'] = array(
-//    'page callback' => 'edit_annotation_modal',
-//    'page arguments' => array(2, 4),
-//    'access callback' => 'islandora_object_manage_access_callback',
-//    'access arguments' => array(
-//      array(
-//        ISLANDORA_MANAGE_PROPERTIES,
-//        ISLANDORA_METADATA_EDIT,
-//        ISLANDORA_ADD_DS,
-//        ISLANDORA_PURGE,
-//        ISLANDORA_INGEST,
-//      ), 2),
-//    'file' => 'includes/annotation.inc',
-//    'type' => MENU_CALLBACK,
-//  );
 
   $items['islandora/object/%islandora_object/web_annotation'] = array(
     'title' => 'Oral Histories Web Annotations',
