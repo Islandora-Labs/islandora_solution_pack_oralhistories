@@ -162,7 +162,7 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
 
   if (isset($json['response']['docs'][0])) {
     $doc = $json['response']['docs'][0] ? $json['response']['docs'][0] : NULL;
-    $counter = count($doc['or_cue_id']);
+    $counter = isset($doc['or_cue_id']) ? count($doc['or_cue_id']) : 0;
 
     for ($i = 0; $i < $counter; $i++) {
       $tcus[$i] = new stdClass();
