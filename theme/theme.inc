@@ -254,9 +254,6 @@ function islandora_oralhistories_process_islandora_html5_video_stack(&$variables
   $variables['params']['trid'] ='trid-' . str_replace(':', '-', $variables['params']['pid']); // trid-PID with : being replaced by -
 }
 
-//function islandora_oralhistories_preprocess_islandora_oralhistories_transcript_edit_form(array &$variables) {
-////  dpm($variables, '$variables');
-//}
 
 /**
  * Implements theme_islandora_oralhistories_transcript_edit_form().
