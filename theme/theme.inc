@@ -263,18 +263,18 @@ function theme_islandora_oralhistories_transcript_edit_form($variables) {
   return drupal_render_children($variables['form']);
 }
 
-function theme_islandora_webannotation(array &$variables) {
-  module_load_include('inc', 'islandora_oralhistories', 'includes/annotation');
-  $path = current_path();
-  $part_parts = explode('/', $path);
-  $object = islandora_object_load($part_parts[2]);
-
-  $out = "<div class='btn-group' role='group'>";
-  if (isset($object) && islandora_object_access(ISLANDORA_WEB_ANNOTATION_CREATE, $object)) {
-    $out .= "<div><a id='annotation-add-new-btn' class='btn btn-default add' title='Add' ";
-    $out .= "'><span class='glyphicon glyphicon-plus'></span> " . t('Add new annotation') . "</a></div>";
-    $out .= "<div id='web-annotation-form-ajax-loader'></div>";
-  }
-  $out .= "</div>";
-  return $out;
-}
+//function theme_islandora_webannotation(array &$variables) {
+//  module_load_include('inc', 'islandora_oralhistories', 'includes/annotation');
+//  $path = current_path();
+//  $part_parts = explode('/', $path);
+//  $object = islandora_object_load($part_parts[2]);
+//
+//  $out = "<div class='btn-group' role='group'>";
+//  if (isset($object) && islandora_object_access(ISLANDORA_WEB_ANNOTATION_CREATE, $object)) {
+//    $out .= "<div><a id='annotation-add-new-btn' class='btn btn-default add' title='Add' ";
+//    $out .= "'><span class='glyphicon glyphicon-plus'></span> " . t('Add new annotation') . "</a></div>";
+//    $out .= "<div id='web-annotation-form-ajax-loader'></div>";
+//  }
+//  $out .= "</div>";
+//  return $out;
+//}

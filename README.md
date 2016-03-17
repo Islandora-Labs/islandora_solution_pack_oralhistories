@@ -27,7 +27,8 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 Select a viewer in Administration » Islandora » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories) and enable transcript or caption display.
 
 For "Transcripts UI" module, on Configuration » User Interface » Transcripts UI (admin/config/user-interface/transcripts), "Tiers" and "Speaker names" need be configured based on the transcript xml file in the form of TIER_ID|TIER_NAME.
-For example, with simple transcript xml file below the TIER_ID will be or_transcript (xml tag with 'or_' prefix). TIER_NAME could be any text label for users to see: or_transcript|Transcript
+For example, with simple transcript xml file below the TIER_ID will be or_transcript (xml tag with 'or_' prefix). TIER_NAME could be any text label for users to see: or_transcript|Transcript. 
+You can put all possible TIER_ID|TIER_NAME on your installation, as different transcript files may have different tiers (xml tags) and tier_names
 
 ## Notes
 
@@ -57,6 +58,11 @@ Here is a simple xml file for transcript:
 
 </cues>
 ```
+
+If you have determined on what xml tags for your use case, please make sure the structure child elements in <cue> tag are consistent *in the same transcript xml file*, even some child elements are empty.
+By doing so we can make sure those child elements are indexed with the correct sequence numbers so they can be assembled back properly when displaying on 'Transcript' tab.
+
+
                                                                                                                                                                         or_annotation|Annotation
 ## Index transcript fields in Solr
 
