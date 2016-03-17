@@ -410,17 +410,8 @@ function islandora_transcript_navigation(array &$variables) {
     ctools_include('modal');
     ctools_modal_add_js();
     global $base_url;
-
-//    $link = l(t('Edit'), "/$object->id/edit_form/{$object['TRANSCRIPT']->id}/nojs", array('attributes' => array('class' => 'btn btn-default edit ctools-use-modal')));
     $out .= "<a id='transcript-edit' class='btn btn-default edit ctools-use-modal' title='Edit' href='" . $base_url . "/islandora/object/{$object->id}/edit_form/{$object['TRANSCRIPT']->id}/nojs";
     $out .= "'><span class='glyphicon glyphicon-edit'></span> " . t('Edit') . "</a>";
-//    $out .= "<div id='transcript-edit-dialog'>";
-//    $form = drupal_get_form('islandora_oralhistories_transcript_edit_form', $object, $object['TRANSCRIPT']);
-    // Hide submit button.
-//    hide($form['actions']);
-//
-//    $out .= drupal_render($form);
-//    $out .= "</div>";
   }
   $out .= "</div>";
   return $out;
