@@ -48,22 +48,28 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
         '#collapsible' => TRUE,
         '#collapsed' => ($i == 0) ? FALSE : TRUE,
       );
-      foreach ($xml->cue[$i]->children() as $child) {
-        $node_name = (string) $child->getName();
-        if (preg_match('/speaker/i', $node_name) || preg_match('/start/i', $node_name) || preg_match('/end/i', $node_name)) {
-          $is_textarea = FALSE;
-        } else {
-          $is_textarea = TRUE;
+      if (is_array($xml->cue[$i]) || is_object($xml->cue[$i])) {
+        foreach ($xml->cue[$i] as $child) {
+          $node_name = (string) $child->getName();
+          if (preg_match('/speaker/i', $node_name) || preg_match(
+              '/start/i',
+              $node_name
+            ) || preg_match('/end/i', $node_name)
+          ) {
+            $is_textarea = FALSE;
+          }
+          else {
+            $is_textarea = TRUE;
+          }
+          $css_class = ($is_textarea) ? 'or-transcript-textarea' : 'or-transcript-textfield';
+          $form[$fieldset][$node_name] = array(
+            '#type' => $is_textarea ? 'textarea' : 'textfield',
+            '#title' => $node_name,
+            '#description' => $node_name,
+            '#required' => FALSE,
+            '#default_value' => (string) $child,
+          );
         }
-        $css_class = ($is_textarea) ? 'or-transcript-textarea' : 'or-transcript-textfield';
-        $form[$fieldset][$node_name] = array(
-          '#type' => $is_textarea ? 'textarea': 'textfield',
-          '#title' => $node_name,
-          '#description' => $node_name,
-          '#required' => FALSE,
-          '#default_value' => (string) $child,
-        );
-
       }
     } // End for loop
   } else {
