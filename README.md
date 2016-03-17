@@ -59,7 +59,7 @@ Here is a simple xml file for transcript:
 </cues>
 ```
 
-If you have determined on what xml tags for your use case, please make sure the structure child elements in <cue> tag are consistent *in the same transcript xml file*, even some child elements are empty.
+If you have determined on what xml tags for your use case, please make sure the structure of child elements in <cue> tag are consistent **in the same transcript xml file**, even some child elements are empty.
 By doing so we can make sure those child elements are indexed with the correct sequence numbers so they can be assembled back properly when displaying on 'Transcript' tab.
 
 
