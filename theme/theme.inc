@@ -31,7 +31,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   // Use jquery.ui tabs.
   drupal_add_library('system', 'ui.tabs');
 
-  // reactJS library
+  // reactJS library. This library is used for 'Annotation' tab.
   drupal_add_js($module_path . '/lib/reactjs/react.js');
   drupal_add_js($module_path . '/lib/reactjs/react-dom.js');
 
