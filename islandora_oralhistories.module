@@ -37,7 +37,7 @@ function islandora_oralhistories_menu() {
     'type' => MENU_CALLBACK,
     'load arguments' => array(2),
   );
-  // try ctools ajax modal form
+  // try ctools ajax modal form for transcript edit form.
   $items['islandora/object/%islandora_object/edit_form/%islandora_datastream/%ctools_js'] = array(
     'page callback' => 'edit_transcript_modal',
     'page arguments' => array(2, 4, 5),

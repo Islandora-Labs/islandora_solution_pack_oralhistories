@@ -66,7 +66,6 @@ function _create_web_annotation() {
     }
 
     // This is to test RDF/XML is generated correctly.
-//    $annoRDF = _createRDF($annotation);
     drupal_json_output(array(
       'annotation' => $annotation,
       'response' => array(
@@ -110,92 +109,6 @@ function _update_web_annotation(AbstractObject $object, $anno_object_pid = '') {
 }
 
 
-function islandora_oralhistories_annotation_form(array $form, array &$form_state, AbstractObject $object) {
-  module_load_include('inc', 'islandora', 'includes/solution_packs');
-  module_load_include('inc', 'islandora', 'includes/datastream');
-  $form = array();
-  $form['#tree'] = TRUE;
-  $form['#prefix'] = '<div id="islandora-oralhistories-annotation-form-wrapper">';
-  $form['#suffix'] = '</div>';
-
-  $form['web_annotation'] = array(
-    '#type' => 'container',
-    '#prefix' => '<div id="web-annotation-container-wrapper">',
-    '#suffix' => '</div>',
-  );
-
-  $form['web_annotation']['start'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Start time'),
-    '#description' => t('Start time in seconds'),
-    '#default_value' => 0.00,
-    '#size' => 25,
-    '#attributes' => array(
-      'class' => array('web-annotation-start'),
-      'id' => 'web-annotation-start-time'
-    ),
-  );
-  $form['web_annotation']['end'] = array(
-    '#type' => 'hidden',
-    '#title' => t('End time'),
-    '#description' => t('End time in seconds'),
-    '#size' => 25,
-    '#attributes' => array(
-      'class' => array('web-annotation-end'),
-      'id' => 'web-annotation-end-time'
-    ),
-  );
-  $form['web_annotation']['annotation_body'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Annotation content'),
-    '#description' => t('Annotation content'),
-    '#attributes' => array(
-      'class' => array('web-annotation-body'),
-      'id' => 'web-annotation-body'
-    ),
-  );
-  $form['web_annotation']['annotation_motivation'] = array(
-    '#type' => 'select',
-    '#title' => t('Motivation'),
-    '#description' => t('Reasons to create an annotation'),
-    '#options' => array(
-      'oa:commenting' => t('Commenting'),
-      'oa:describing' => t('Describing'),
-      'oa:replying' => t('Replying'),
-      'oa:reviewing' => t('Reviewing'),
-      'oa:tagging' => t('Tagging'),
-    ),
-    '#default_value' => 'oa:commenting',
-    '#attributes' => array(
-      'class' => array('web-annotation-motivation'),
-      'id' => 'web-annotation-motivation'
-    ),
-  );
-  $form['web_annotation']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Submit'),
-    "#ajax" => array(
-      "callback" => "web_annotation_form_ajax_callback",
-      "wrapper" => "islandora-oralhistories-annotation-form-wrapper",
-    ),
-  );
-
-  return $form;
-}
-
-function web_annotation_form_ajax_callback(array $form, array &$form_state) {
-  if (form_get_errors()) {
-    $form_state['rebuild'] = TRUE;
-    $commands = array();
-    $commands[] = ajax_command_prepend(NULL, theme('status_messages'));
-    return array('#type' => 'ajax', '#commands' => $commands);
-  }
-  else {
-    $system_message = drupal_get_messages();
-    return t('Thank you for your submission!');
-  }
-
-}
 
 /**
  * Helper function to get current date time as UTC format.
@@ -365,7 +278,6 @@ function islandora_oralhistories_add_annotation($annotation) {
   }
 
   if (isset($annotation) && !empty($annotation)) {
-//    $annotation = islandora_oralhistories_parse_RDF($RDF);
     $RDF = _createRDF($annotation);
     try {
       $object = $repository->constructObject($namespace);
@@ -373,8 +285,6 @@ function islandora_oralhistories_add_annotation($annotation) {
       $object->models = array('islandora:WADMCModel');
       $object->relationships->add(FEDORA_RELS_EXT_URI, 'isMemberOfCollection', 'islandora:oralhistories_collection');
       $object->relationships->add(FEDORA_RELS_EXT_URI, 'isAnnotationOf', $annotation['target_pid']);
-//      $object->relationships->add(ISLANDORA_RELS_EXT_URI, 'isAnnotationType', 'Islandora%20Web%20Annotation');
-//      $object->relationships->add(ISLANDORA_RELS_EXT_URI, 'hasURN', $annotation['urn']);
 
       $dsid = 'WADM';
       $ds = $object->constructDatastream($dsid, 'M');
@@ -385,11 +295,9 @@ function islandora_oralhistories_add_annotation($annotation) {
       }
       $object->ingestDatastream($ds);
       $repository->ingestObject($object);
-//      drupal_set_message(t('Add new annotation: %t', array('%t' => $object->id)), 'status', FALSE);
       watchdog('Islandora OralHistories', 'Add new annotation: %t', array('%t' => $object->id), WATCHDOG_INFO);
     }
     catch (Exception $e) {
-//      drupal_set_message(t('Error adding annotation object: %t', array('%t' => $e->getMessage())), 'error', FALSE);
       watchdog('Islandora OralHistories', 'Error adding annotation object: %t', array('%t' => $e->getMessage()), WATCHDOG_ERROR);
     }
 
