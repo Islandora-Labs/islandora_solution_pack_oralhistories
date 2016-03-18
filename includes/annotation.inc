@@ -18,7 +18,6 @@ define('ISLANDORA_ORALHISTORIES_NAMESPACE_SKOS', 'http://www.w3.org/2004/02/skos
  */
 function _retrieve_web_annotations(AbstractObject $object) {
   // @todo: retrieve all annotations for a given $object, return in json.
-  // @todo: should
   return 'Annotation list';
 }
 

@@ -259,6 +259,6 @@ function islandora_oralhistories_process_islandora_html5_video_stack(&$variables
  * Implements theme_islandora_oralhistories_transcript_edit_form().
  */
 function theme_islandora_oralhistories_transcript_edit_form($variables) {
-  // Renders all elements of a form.
+  // Renders all elements of the transcript edit form.
   return drupal_render_children($variables['form']);
 }

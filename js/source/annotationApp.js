@@ -1,6 +1,7 @@
 /**
  * @file
- * Annotation App js file
+ * Annotation App js file using ReactJs https://facebook.github.io/react/
+ *
  */
 
 (function($){

@@ -1,6 +1,10 @@
 /**
  * @file
- * Annotation App js file
+ * Annotation App js file.
+ *
+ * This file is transformed from js/source/annotationApp.js with babel
+ * Check on https://facebook.github.io/react/docs/getting-started.html for details
+ * babel --presets react source --watch --out-dir ./
  */
 
 (function ($) {
