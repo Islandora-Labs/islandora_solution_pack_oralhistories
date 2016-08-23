@@ -49,11 +49,21 @@ This tier is empty
 
 You must add all TIER_ID|TIER_NAME pairs relevant to your collection to the configuration, as different transcript files may have different tiers (xml tags) and tier_names.
 
+### Oral Histories Module
+
+There are some configuration options in Administration » Islandora » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories) page:
+
+* Check the boxes which are relevant to your use; these might include:
+  * "Create WEBVTT file for captions or subtitles" -- if you'd like the module to automatically create a caption file
+  * "Enable captions/subtitles display" -- if you'd like to display the captions
+  * "Enable transcript display" -- **this one is the most important** because it's what allows your transcript scroller to display
+  * "Display media and transcript side-by-side" -- if you don't like the default display of having the scrolling transcript below the video/audio player, check this to move the scroller to the side
+* The 'Annotation' tab is still in early development stage which should be disabled on a production server.
+
 ## Notes
 
-**Caution:** This Solution Pack is currently in development stage. It only supports transcript file in a flat xml format like below:
+**Caution:** This Solution Pack is currently in development stage. It only supports transcript files in a format like this one:
 
-Here is a simple xml file for transcript:
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <cues>
