@@ -23,14 +23,31 @@ This module requires the following modules/libraries:
 Install as usual, see [this](https://drupal.org/documentation/install/modules-themes/modules-7) for further information.
 
 ## Configuration
+### Transcripts UI
 
-There are some configuration options on Administration » Islandora » Oral Histories Solution Pack (admin/islandora/solution_pack_config/oralhistories) page. 'Annotation' tab is still in early development stage which should be disabled
-on production server. 
+In Configuration > User Interface > Transcripts UI (admin/config/user-interface/transcripts), "Tiers" and "Speaker names" need be configured based on the transcript xml file. It will look like this: TIER_ID|TIER_NAME.
 
-For "Transcripts UI" module, on Configuration » User Interface » Transcripts UI (admin/config/user-interface/transcripts), "Tiers" and "Speaker names" need be configured based on the transcript xml file in the form of TIER_ID|TIER_NAME.
-For example, with simple transcript xml file below the TIER_ID will be or_transcript (xml tag with 'or_' prefix). TIER_NAME could be any text label for users to see: or_transcript|Transcript. 
-You can put all possible TIER_ID|TIER_NAME on your installation, as different transcript files may have different tiers (xml tags) and tier_names
+For example, in the example transcript xml file below, the TIER_ID will be `or_transcript` (xml tag with 'or_' prefix). TIER_NAME could be any text label that users will see, such as `Transcript`.
+Together they should look something like: `or_transcript|Transcript`.
 
+There are a number of options included by default; you'll want to get rid of most of them. At MSUL, we have:
+#### Transcript Tiers
+| All tiers* | |
+| ----- | ----- |
+| or_transcript | English |
+
+| Hidden tiers | |
+| ----- | ----- |
+| | |
+This tier is empty
+
+| Speaker names* | |
+| ----- | ----- |
+| or_speaker | Speaker |
+
+* Entering at least one value here is required, or **your transcripts will not display**
+
+You must add all TIER_ID|TIER_NAME pairs relevant to your collection to the configuration, as different transcript files may have different tiers (xml tags) and tier_names.
 
 ## Notes
 
@@ -41,7 +58,7 @@ Here is a simple xml file for transcript:
 <?xml version="1.0" encoding="UTF-8"?>
 <cues>
     <!-- If the entire transcript has one speaker only, use 'solespeaker' element.
-         Then skip 'speaker' element in 'cue' element level. But DO NOT use them in both places. 
+         Then skip 'speaker' element in 'cue' element level. But DO NOT use them in both places.
          If 'solespeaker' element presents in the document, following 'speaker' elements will be ignored. -->
     <solespeaker>One Speaker</solespeaker>
     <cue>
@@ -49,8 +66,8 @@ Here is a simple xml file for transcript:
         <!-- 'start' and 'end' elements are start time and end time in seconds for the cue. -->
         <start>0.000</start>
         <end>12.124</end>
-        <!-- 'transcript' and/or 'translation' are default content tiers of the cue. 
-              Extra tier(s) can be added as long as they are listed in the configuration page. 
+        <!-- 'transcript' and/or 'translation' are default content tiers of the cue.
+              Extra tier(s) can be added as long as they are listed in the configuration page.
              'transcript' element is required if 'Enable captions/subtitles display' is configured to be true. -->
         <transcript>This is the transcript text content.</transcript>
         <translation>This is the annotation content.</translation>
@@ -61,22 +78,23 @@ Here is a simple xml file for transcript:
 </cues>
 ```
 
-If you have determined on what xml tags for your use case, please make sure the structure of child elements in <cue> tag are consistent **in the same transcript xml file**, even some child elements are empty.
-By doing so we can make sure those child elements are indexed with the correct sequence numbers so they can be assembled back properly when displaying on 'Transcript' tab.
+Once you have chosen xml tags for your use case, please make sure the structure of the child elements in <cue> tag are consistent **in the same transcript xml file**, even if some child elements are empty.
+This will ensure sure those child elements are indexed with the correct sequence numbers so they can be assembled properly when displaying on 'Transcript' tab.
 
-                                                                                                                                                                       
+
 ## Index transcript fields in Solr
 
-A or_transcript_solr.xslt file (xsl/or_transcript_solr.xslt) is included in the module in order to index transcript.xml fields in Solr.
+An or_transcript_solr.xslt file (xsl/or_transcript_solr.xslt) is included in the module in order to index transcript.xml fields in Solr.
 
-* Please drop this file to 'islandora_transforms' folder and update the foxmlToSolr.xslt file to include new xslt file.
+* Please copy this file to 'islandora_transforms' folder. Your institution/the folks running your instance will have made decisions about where this folder lives, so you'll want to follow those best practices for your site.  
+* Update the foxmlToSolr.xslt file to include new xslt file.
 * Modify solr schema.xml file to add or.* fields created from transcript.xml file.
-* On our instance, we use type="text" for those transcript fields as shown in the example below. You need use a correct field type based on your solr instance.
+* **Note** On our instance, we use type="text" for those transcript fields (as shown in the example below). You need use a correct field type based on your solr instance.
 
 ```xml
 <dynamicField name="or_*" type="text" indexed="true" stored="true" multiValued="true"/>
 ```
-Please restart the solr application with new schema. 
+* Please restart the solr application with new schema.
 
 ## Troubleshooting/Issues
 
