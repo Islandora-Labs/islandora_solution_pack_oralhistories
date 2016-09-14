@@ -1,0 +1,104 @@
+<?php
+
+/**
+ * @file
+ * Attempts to ingest a video and transcript into a randomly generated oral history collection
+ */
+
+class IslandoraOralHistoriesIngestTestCase extends IslandoraCollectionWebTestCase {
+    /**
+     * Get test information.
+     *
+     * @see IslandoraWebTestCase::getInfo()
+     */
+    public static function getInfo() {
+        return array(
+            'name' => 'OralHistories Ingest/Purge',
+            'description' => 'Ingests and purges an oral history resource from the fixtures.',
+            'group' => 'Islandora OralHistories',
+        );
+    }
+
+    /**
+     * Set up the test environment.
+     *
+     * @see IslandoraWebTestCase::setUp()
+     */
+    public function setUp() {
+        parent::setUp(array(
+            'islandora',
+            'islandora_basic_collection',
+            'islandora_video',
+            'islandora_audio',
+            'islandora_solr',
+            'transcripts_ui',
+            'ctools',
+            'islandora_oralhistories',
+        ));
+    }
+
+    /**
+     * Creates an administrative user and attempts to ingest a test image.
+     */
+    public function testIngestPurgeBasicOralHistory() {
+        $user = $this->drupalCreateUser(array(
+            'view fedora repository objects',
+            'ingest fedora objects',
+            'administer site configuration',
+            'manage object properties',
+            'delete fedora objects and datastreams',
+            'create child collection',
+        ));
+        $this->drupalLogin($user);
+
+        $label = $this->randomName(16);
+        $suffix = $this->randomName(16);
+        $collectionpid = 'islandora:' . $suffix;
+        $this->createTestCollection($label, 'islandora:oralhistoriesCModel', $collectionpid);
+
+
+        // Ensures derivative creation is turned on.
+        $edit = array(
+            'islandora_oralhistories_make_vtt' => TRUE,
+        );
+        $this->drupalPost('admin/islandora/solution_pack_config/oralhistories', $edit, 'Save configuration');
+
+        // Attempts to create an Oral History Object
+        $path = 'islandora/object/' . $collectionpid . '/manage/overview/ingest';
+        $file1 = drupal_get_path('module', 'islandora_oralhistories') . '/tests/fixtures/test.mp4';
+        $file2 = drupal_get_path('module', 'islandora_oralhistories') . '/tests/fixtures/test.xml';
+
+        $edit = array(
+            'files[media_file]' => $file1,
+            'files[transcript_file]' => $file2,
+        );
+
+        $this->drupalPost($path, $edit, t('Ingest'));
+        $this->assertText('New Object', 'Oral History Object was created', 'Islandora');
+
+        // Check if appropriate datastreams were created.
+        $oh_object = $this->getObjectFromPath($this->url);
+        $datastreams = array(
+            'RELS-EXT',
+            'DC',
+            'OBJ',
+            'TRANSCRIPT',
+            'TN',
+            'MEDIATRACK',
+        );
+        $this->assertDatastreams($oh_object, $datastreams);
+
+        // Validate the content of the datastream
+        // ToDo: May need to add custom check for mediatrack
+        $datastreams = array(
+            array('OBJ', 'mp4'),
+            array('TN', 'image'),
+        );
+        $this->validateDatastreams($oh_object, $datastreams);
+
+        // Attempts to delete the object and then collection.
+        $this->deleteObject($oh_object->id);
+        $this->deleteTestCollection($collectionpid);
+    }
+
+}
