@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="islandora_solution_pack_newspaper" default="build">
+<project name="islandora_solution_pack_oralhistories" default="build">
     <target name="build" depends="clean,prepare,php-eval,lint,phploc,code_sniff,phpcpd,pdepend,doxygen,phpcb,test,cc-process,cc-export" />
 
     <target name="clean" description="Cleanup build artifacts">
