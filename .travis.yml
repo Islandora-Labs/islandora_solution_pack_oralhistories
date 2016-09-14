@@ -1,0 +1,59 @@
+sudo: true
+
+language: php
+
+php:
+  - 5.3.3
+  - 5.4
+  - 5.5
+
+branches:
+  only:
+    - master
+
+env:
+  - FEDORA_VERSION="3.5"
+  - FEDORA_VERSION="3.6.2"
+  - FEDORA_VERSION="3.7.0"
+  - FEDORA_VERSION="3.8.1"
+
+before_install:
+  - cd $HOME
+  - git clone -b 7.x git://github.com/Islandora/islandora.git
+  - git clone -b 7.x git://github.com/Islandora/islandora_solution_pack_collection.git
+  - git clone -b 7.x git://github.com/Islandora/islandora_solution_pack_video.git
+  - git clone -b 7.x git://github.com/Islandora/islandora_solution_pack_audio.git
+  - git clone -b 7.x git://github.com/Islandora/islandora_solr_search.git
+  - git clone https://github.com/sprklinginfo/transcripts_ui.git
+  - git clone --branch 7.x-1.x https://git.drupal.org/project/ctools.git
+
+  - export ISLANDORA_DIR=$HOME/islandora
+  - $HOME/islandora/tests/scripts/travis_setup.sh
+  - cd $HOME/drupal-*
+
+  - ln -s $TRAVIS_BUILD_DIR sites/all/modules/islandora_solution_pack_oralhistories
+  - ln -s $HOME/islandora_solution_pack_collection sites/all/modules/islandora_solution_pack_collection
+  - ln -s $HOME/islandora_solution_pack_video sites/all/modules/islandora_solution_pack_video
+  - ln -s $HOME/islandora_solution_pack_audio sites/all/modules/islandora_solution_pack_audio
+  - ln -s $HOME/islandora_solr_search sites/all/modules/islandora_solr_search
+  - ln -s $HOME/transcripts_ui sites/all/modules/transcripts_ui
+  - ln -s $HOME/ctools sites/all/modules/ctools
+
+  - sudo sh $HOME/islandora_solution_pack_video/tests/scripts/ffmpeg-install.sh
+
+  - drush en --user=1 --yes islandora_basic_collection
+  - drush en --user=1 --yes islandora_video
+  - drush en --user=1 --yes islandora_audio
+  - drush en --user=1 --yes islandora_solr
+  - drush en --user=1 --yes transcripts_ui
+  - drush en --user=1 --yes ctools
+
+script:
+  - ant -buildfile sites/all/modules/islandora_solution_pack_oralhistories/build.xml lint
+  - $ISLANDORA_DIR/tests/scripts/line_endings.sh sites/all/modules/islandora_solution_pack_oralhistories
+  - drush coder-review --reviews=production,security,style,i18n,potx,sniffer islandora_basic_oralhistories
+  - phpcpd --names *.module,*.inc,*.test sites/all/modules/islandora_solution_pack_oralhistories
+  - drush test-run --uri=http://localhost:8081 "Islandora Oralhistories"
+
+notifications:
+  irc: "irc.freenode.org#islandora"
