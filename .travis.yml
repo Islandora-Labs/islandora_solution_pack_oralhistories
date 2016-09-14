@@ -1,3 +1,5 @@
+#islandora_solution_pack_oralhistories
+
 sudo: true
 
 language: php
