@@ -117,6 +117,8 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   $tracks= array();
   $transcript_mimetype = '';
   foreach ($object as $datastream) {
+
+    $getTrack = FALSE;
     if (preg_match('/TRANSCRIPT/', $datastream->id)) {
       if (strpos($datastream->mimetype,'xml') !== false) {
         $transcript_mimetype = 'xml';
@@ -124,24 +126,33 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       else {
         $transcript_mimetype = 'vtt';
       }
+      $getTrack = TRUE;
     }
+
     if (preg_match('/MEDIATRACK/', $datastream->id)) {
-      $track = array();
-
-      $source_url = url("islandora/object/{$object->id}/datastream/$datastream->id/view", array('absolute' => TRUE));
-
-      // @todo: how to determine language code? default to 'en'.
-      $lang_code = 'en';
-
-      $track['dsid'] = $datastream->id;
-      $track['lang_code'] = $lang_code;
-      $track['source_url'] =  $source_url;
-
-
-      if (isset($object[$datastream->id]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$datastream->id])) {
-        $tracks[] = $track;
-      }
+        $getTrack = TRUE;
     }
+
+    // Ensure that even if MEDIATRACK is not present, show TRANSCRIPT
+    // This works, but need to get more clarity as to how the TRANSCRIPT and MEDIATRACK content are handled at the front end
+    if($getTrack == TRUE) {
+        $track = array();
+
+        $source_url = url("islandora/object/{$object->id}/datastream/$datastream->id/view", array('absolute' => TRUE));
+
+        // @todo: how to determine language code? default to 'en'.
+        $lang_code = 'en';
+
+        $track['dsid'] = $datastream->id;
+        $track['lang_code'] = $lang_code;
+        $track['source_url'] = $source_url;
+
+
+        if (isset($object[$datastream->id]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$datastream->id])) {
+            $tracks[] = $track;
+        }
+    }
+
   }
   if (!empty($tracks)) {
     $viewer_params += array(
