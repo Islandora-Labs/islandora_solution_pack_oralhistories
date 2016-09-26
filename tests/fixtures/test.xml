@@ -7,7 +7,7 @@
         <speaker>Different Speaker</speaker>
         <!-- 'start' and 'end' elements are start time and end time in seconds for the cue. -->
         <start>0.000</start>
-        <end>0.05</end>
+        <end>30.0</end>
         <!-- 'transcript' and/or 'translation' are default content tiers of the cue. 
               Extra tier(s) can be added as long as they are listed in the configuration page. 
              'transcript' element is required if 'Enable captions/subtitles display' is configured to be true. -->
@@ -15,15 +15,26 @@
         <translation>This is the annotation content.</translation>
     </cue>
     <cue>
-        <speaker>Different Speaker2</speaker>
+        <speaker>Speaker2</speaker>
         <!-- 'start' and 'end' elements are start time and end time in seconds for the cue. -->
-        <start>0.05</start>
-        <end>0.12</end>
+        <start>30.0</start>
+        <end>60</end>
         <!-- 'transcript' and/or 'translation' are default content tiers of the cue. 
               Extra tier(s) can be added as long as they are listed in the configuration page. 
              'transcript' element is required if 'Enable captions/subtitles display' is configured to be true. -->
-        <transcript>aaaaa</transcript>
-        <translation>bbbb</translation>
+        <transcript>speaker 2 transcript</transcript>
+        <translation>speakder 2 transcript translation</translation>
+    </cue>
+    <cue>
+        <speaker>Speaker 3</speaker>
+        <!-- 'start' and 'end' elements are start time and end time in seconds for the cue. -->
+        <start>60.0</start>
+        <end>105</end>
+        <!-- 'transcript' and/or 'translation' are default content tiers of the cue. 
+              Extra tier(s) can be added as long as they are listed in the configuration page. 
+             'transcript' element is required if 'Enable captions/subtitles display' is configured to be true. -->
+        <transcript>speaker 3 transcript</transcript>
+        <translation>speadker 3 transcript translation</translation>
     </cue>
     <!-- add more cues with above structure.-->
 
