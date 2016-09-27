@@ -41,12 +41,25 @@ function parse_vtt($data = '') {
       $time = explode(' --> ', $parts[0]);
       $start_time = time_seconds($time[0]);
       $end_time = time_seconds($time[1]);
-      $text = preg_replace('/</', '&lt;', $parts[1]);
+
+      // Redmine#6611
+      $text = $parts[1];
+      $regex_vttName = '/^\s*<v\s+(?<name>.*)>/';
+      preg_match($regex_vttName, $text, $matches);
+
+      $name = "";
+      if(array_key_exists('name', $matches)){
+        $name = $matches['name'];
+        $text = preg_replace($regex_vttName, '', $text); 
+      }
+
+      $text = preg_replace('/</', '&lt;', $text);
       $text = preg_replace('/>/', '&gt;', $text);
       $cues[] = array(
         'start_time' => $start_time,
         'end_time' => $end_time,
-        'text' => $text
+        'text' => $text,
+        'name' => $name
       );
     }
   } // end foreach
@@ -224,7 +237,7 @@ function compose_vtt_transcript_as_transcripts_ui($ui)
         $tcus[$i]->start = (float)$cue['start_time'];
         $tcus[$i]->end = (float)$cue['end_time'];
         $tcus[$i]->or_transcript = $cue['text'];
-        $tcus[$i]->or_speaker = "";
+        $tcus[$i]->or_speaker = $cue['name'];
         $i++;
     }
     // VTT does not have highlights ?
