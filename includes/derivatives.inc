@@ -27,14 +27,37 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
     elseif ($object['TRANSCRIPT']->mimetype == 'application/xml') {
       $transcript = $object['TRANSCRIPT']->content;
       $cues = simplexml_load_string($transcript);
-      $vtt = "WEBVTT" . PHP_EOL;
+
+      // Get solespeaker if element is present
+      $solespeaker = "";
+      if(isset($cues->solespeaker)){
+        $solespeaker = "<v " . (string)$cues->solespeaker . ">";
+      }
+
+      $vtt = "WEBVTT" . PHP_EOL;      
       // A blank line, which is equivalent to two consecutive newlines.
       $vtt .= PHP_EOL;
-      foreach ($cues as $cue) {
+      foreach ($cues as $key => $cue) {
+
+        // Don't add to vtt cue if element is not cue
+        if($key == "solespeaker"){
+          continue;
+        }
+
+        // Get speaker value, if solespeaker set, overwrite it with that
+        // Related to Redmine#6753 and Github#2
+        $speaker = "";
+        if(isset($cue->speaker)){
+          $speaker = "<v " . (string)$cue->speaker . ">";
+        }
+        if($solespeaker != ""){
+          $speaker = $solespeaker;
+        }        
+
         $start = time_mm_ss((string)$cue->start);
         $end = time_mm_ss((string)$cue->end);
         $vtt .= $start . ' --> ' . $end . PHP_EOL;
-        $vtt .= (string)$cue->transcript . PHP_EOL;
+        $vtt .= $speaker . (string)$cue->transcript . PHP_EOL;
         $vtt .= PHP_EOL;
       }
       $dsid = 'MEDIATRACK';
