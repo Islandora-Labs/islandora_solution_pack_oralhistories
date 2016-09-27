@@ -1,3 +1,35 @@
+@todo/ tocheck
+
+**Should we make separate documents to the readme.md document and link
+to them from the readme to avoid a crazy long readme? If so, what should
+the split look like?**
+
+**README.md - typical islandora README**
+
+**Includes release notes**
+
+> DATE:
+>
+> Shoudl write something about the syncing of the MEDIATRACK and
+> TRANSCRIPT streams if they are uploaded separately and contain
+> separate content. We shoudl also try to do this and document what
+> happens if you try to upload separate content and then edit TRANSCRIPT
+> datastream
+>
+> confirmed that you can upload a separate mediatrack not derived from
+> transcript (and that CC will show mediatrack different from
+> transcript)
+>
+> confirmed that if you edit the transcript it will overwrite the
+> mediatrack
+>
+> Document the support of WEBVTT and limitations
+
+
+
+
+
+
 ### Introduction for Administrators
 
 The Oral History Solution Pack is a set of applications developed by the
