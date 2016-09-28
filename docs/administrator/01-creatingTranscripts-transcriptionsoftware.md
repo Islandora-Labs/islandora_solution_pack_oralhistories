@@ -15,65 +15,25 @@ In this Section:
 
 -   [***Transcription Best Practices***](#_sct1duoexw5d)
 
-    -   [***Transcription Formatting***](#transcription-formatting)
-
-    -   [***Recording Speakers***](#recording-speakers)
-
-    -   [***Recording Actions***](#recording-actions)
-
-    -   [***Dealing with Rapid-fire Changes in
-        > Speakers***](#dealing-with-rapid-fire-changes-in-speakers)
-
-    -   [***Adding additional tiers to your
-        > transcript***](fonts/SortsMillGoudy-italic.ttf)
-
-    -   [***Other rules***](#other-rules)
-
 -   [***Transcribing with Inqscribe***](#transcribing-with-inqscribe)
 
-    -   [***The Inqscribe Window***](#the-inqscribe-window)
-
-    -   [***Steps for Creating a Transcript in
-        > Inqscribe***](#steps-for-creating-a-transcript-in-inqscribe)
-
--   [***Creating a Transcript in
-    > Audacity***](#creating-transcripts-with-audacity)
-
-    -   [***The Audacity Window***](#the-audacity-window)
-
-    -   [***Steps for Creating a Transcript in
-        > Audacity***](#creating-transcripts-with-audacity)
+-   [***Creating a Transcript in > Audacity***](#creating-transcripts-with-audacity)
 
 ### Choosing your software
 
-This documentation covers the process of creating transcripts produced
-in Inqscribe, or in the Open Source Audacity. Other available tools for
-creating transcripts are YouTube and oTranscribe.
+This documentation covers the process of creating transcripts produced in Inqscribe, or in the Open Source Audacity. Other available tools for creating transcripts are YouTube and oTranscribe.
 
 #### Inqscribe
 
-With the software of choice, create transcripts to videos. At UTSC, we
-use Inqscribe which can be purchased with an academic or student
-discount.
-[*https://www.inqscribe.com/buy.html*](https://www.inqscribe.com/buy.html).
+With the software of choice, create transcripts to videos. At UTSC, we use Inqscribe which can be purchased with an academic or student discount. [*https://www.inqscribe.com/buy.html*](https://www.inqscribe.com/buy.html).
 
 #### Audacity
 
-Audacity is an open audio editing and recording program. Transcribing is
-possible in this program. You can transcribe the audio files as well as
-the audio from a video file (MOV/ MP4), but you will not be able to view
-the video in the process. This is a drawback if you believe there are
-important actions that need to be expressed in the text. Audacity is the
-top transcription choice of the DSU, if the paid for software Inqscribe
-is unavailable i.e. a classroom setting.
+Audacity is an open audio editing and recording program. Transcribing is possible in this program. You can transcribe the audio files as well as the audio from a video file (MOV/ MP4), but you will not be able to view the video in the process. This is a drawback if you believe there are important actions that need to be expressed in the text. Audacity is the top transcription choice of the DSU, if the paid for software Inqscribe is unavailable i.e. a classroom setting.
 
 #### YouTube
 
-YouTube allows transcripts to be created for uploaded videos. The
-transcripts can be downloaded as .srt, .vtt and sbv files. As YouTube
-does not export transcripts as delimited files there is an added
-intermediate step of converting the file in OpenRefine. These can then
-be processed in openrefine to produce XML files.
+YouTube allows transcripts to be created for uploaded videos. The transcripts can be downloaded as .srt, .vtt and sbv files. As YouTube does not export transcripts as delimited files there is an added intermediate step of converting the file in OpenRefine. These can then be processed in openrefine to produce XML files.
 
 #### oTranscribe (BETA)
 
