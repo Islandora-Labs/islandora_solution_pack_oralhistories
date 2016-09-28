@@ -246,42 +246,35 @@ The resulting file should match this format:
 
 **prefix**
 
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-
-&lt;cues&gt;
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<cues>
+```
 
 **row template **
 
-&lt;cue&gt;
-
-&lt;speaker&gt;{{cells\["SPEAKER"\].value}}&lt;/speaker&gt;
-
-&lt;start&gt;{{cells\[“START"\].value}}&lt;/start&gt;
-
-&lt;end&gt;{{cells\[“END"\].value}}&lt;/end&gt;
-
-&lt;transcript&gt;{{cells\["TRANSCRIPT"\].value}}&lt;/transcript&gt;
-
-&lt;/cue&gt;
+```xml
+<cue>
+<speaker>{{cells["SPEAKER"].value}}</speaker>
+<start>{{cells[“START"].value}}</start>
+<end>{{cells[“END"].value}}</end>
+<transcript>{{cells["TRANSCRIPT"].value}}</transcript>
+</cue>
+```
 
 **Row Template (Use only If your have transcript has tiers, change this
 template to match what tiers you are using.)**
 
-&lt;cue&gt;
-
-&lt;speaker&gt;{{cells\["INTERVIEWER"\].value}}&lt;/speaker&gt;
-
-&lt;start&gt;{{cells\["IN"\].value}}&lt;/start&gt;
-
-&lt;end&gt;{{cells\["OUT"\].value}}&lt;/end&gt;
-
-&lt;transcript&gt;{{cells\["TRANSCRIPT"\].value}}&lt;/transcript&gt;
-
-&lt;translation&gt;{{cells\["TRANSLATION"\].value}}&lt;/translation&gt;
-
-&lt;annotation&gt;{{cells\["ANNOTATION"\].value}}&lt;/annotation&gt;
-
-&lt;/cue&gt;
+```xml
+<cue>
+<speaker>{{cells["INTERVIEWER"].value}}</speaker>
+<start>{{cells["IN"].value}}</start>
+<end>{{cells["OUT"].value}}</end>
+<transcript>{{cells["TRANSCRIPT"].value}}</transcript>
+<translation>{{cells["TRANSLATION"].value}}</translation>
+<annotation>{{cells["ANNOTATION"].value}}</annotation>
+</cue>
+```
 
 **row separator**
 
@@ -289,59 +282,40 @@ none
 
 **suffix**
 
-&lt;/cues&gt;
+```xml
+</cues>
+```
 
 8.  The resulting XML file should have the structure seen below
 
 **Final Result**
 
-&lt;cue&gt;
+```xml
+<cue>
+<speaker>Dorjee Lhatoo</speaker>
+<start>36.0</start>
+<end>45.0</end>
+<transcript> Poor company with me. She would pour me a glass, one sip and it goes right through, you see -</transcript>
+</cue>
 
-&lt;speaker&gt;Dorjee Lhatoo&lt;/speaker&gt;
+<cue>
+<speaker>Interviewer2</speaker>
+<start>46.0</start>
+<end>49.0</end>
+<transcript> [indiscernible] on fire. She sounds like great fun.</transcript>
+</cue>
 
-&lt;start&gt;36.0&lt;/start&gt;
+<cue>
+<speaker>Dorjee Lhatoo</speaker>
+<start>49.0</start>
+<end>52.0</end>
+<transcript> And then she used to bidi</transcript>
+</cue>
 
-&lt;end&gt;45.0&lt;/end&gt;
-
-&lt;transcript&gt; Poor company with me. She would pour me a glass, one
-sip and it goes right through, you see -&lt;/transcript&gt;
-
-&lt;/cue&gt;
-
-&lt;cue&gt;
-
-&lt;speaker&gt;Interviewer2&lt;/speaker&gt;
-
-&lt;start&gt;46.0&lt;/start&gt;
-
-&lt;end&gt;49.0&lt;/end&gt;
-
-&lt;transcript&gt; \[indiscernible\] on fire. She sounds like great
-fun.&lt;/transcript&gt;
-
-&lt;/cue&gt;
-
-&lt;cue&gt;
-
-&lt;speaker&gt;Dorjee Lhatoo&lt;/speaker&gt;
-
-&lt;start&gt;49.0&lt;/start&gt;
-
-&lt;end&gt;52.0&lt;/end&gt;
-
-&lt;transcript&gt; And then she used to bidi&lt;/transcript&gt;
-
-&lt;/cue&gt;
-
-&lt;cue&gt;
-
-&lt;speaker&gt;Interviewer2&lt;/speaker&gt;
-
-&lt;start&gt;52.0&lt;/start&gt;
-
-&lt;end&gt;53.0&lt;/end&gt;
-
-&lt;transcript&gt; Oh!&lt;/transcript&gt;
-
-&lt;/cue&gt;
-
+<cue>
+<speaker>Interviewer2</speaker>
+<start>52.0</start>
+<end>53.0</end>
+<transcript> Oh!</transcript>
+</cue>
+```
