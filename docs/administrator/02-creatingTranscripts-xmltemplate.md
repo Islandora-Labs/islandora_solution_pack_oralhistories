@@ -140,43 +140,35 @@ follow these steps:
 
 prefix
 
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
-
 <cues>
-
+```
 
 **row template (IMPORTANT: make sure your headers in your transcript
 file match the headers in the row template!)**
 
+```xml
 <cue>
-
 <speaker>{{cells["SPEAKER"].value}}</speaker>
-
 <start>{{cells[“START"].value}}</start>
-
 <end>{{cells[“END"].value}}</end>
-
 <transcript>{{cells["TRANSCRIPT"].value}}</transcript>
-
 </cue>
+```
 
 **Row template (Use this version If your transcript has tiers only)**
 
+```xml
 <cue>
-
 <speaker>{{cells["INTERVIEWER"].value}}</speaker>
-
 <start>{{cells["IN"].value}}</start>
-
 <end>{{cells["OUT"].value}}</end>
-
 <transcript>{{cells["TRANSCRIPT"].value}}</transcript>
-
 <translation>{{cells["TRANSLATION"].value}}</translation>
-
 <annotation>{{cells["ANNOTATION"].value}}</annotation>
-
 </cue>
+```
 
 **row separator**
 
@@ -184,59 +176,43 @@ Make this box empty, remove any characters
 
 **suffix**
 
+```xml
 </cues>
+```
 
 **Final Result**
 
 The resulting file should match this format:
 
+```xml
 <cue>
-
 <speaker>Dorjee Lhatoo</speaker>
-
 <start>36.0</start>
-
 <end>45.0</end>
-
 <transcript> Poor company with me. She would pour me a glass, one sip and it goes right through, you see -</transcript>
-
 </cue>
 
 <cue>
-
 <speaker>Interviewer2</speaker>
-
 <start>46.0</start>
-
 <end>49.0</end>
-
 <transcript> [indiscernible] on fire. She sounds like great fun.</transcript>
-
 </cue>
 
 <cue>
-
 <speaker>Dorjee Lhatoo</speaker>
-
 <start>49.0</start>
-
 <end>52.0</end>
-
 <transcript> And then she used to bidi</transcript>
-
 </cue>
 
 <cue>
-
 <speaker>Interviewer2</speaker>
-
 <start>52.0</start>
-
 <end>53.0</end>
-
 <transcript> Oh!</transcript>
-
 </cue>
+```
 
 ### Converting a Tab Delimited File created in Audacity into XML
 
