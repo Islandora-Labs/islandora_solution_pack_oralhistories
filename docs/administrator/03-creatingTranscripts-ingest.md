@@ -7,8 +7,6 @@ What you need for the Ingest Final Package
 
 -   [*Ingest into Fedora*](#_r8p0qywqgjwh)
 
-###  {#section-6}
-
 ### Create MODS metadata
 
 Create a table containing the metadata using google sheets
@@ -48,153 +46,82 @@ file to be ingested into Islandora:
 
 **Prefix**
 
-&lt;mods
-
-xmlns="http://www.loc.gov/mods/v3"
-
+```xml
+<mods xmlns="http://www.loc.gov/mods/v3" 
 xmlns:mods="http://www.loc.gov/mods/v3"
-
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-
-xmlns:xlink="http://www.w3.org/1999/xlink"&gt;
+xmlns:xlink="http://www.w3.org/1999/xlink">
+```
 
 **Row Template (IMPORTANT: replace sound\_recording with videorecording
 if your oral history is a video)**
 
-&lt;titleInfo&gt;
-
-&lt;title&gt;{{cells\["Title"\].value}}&lt;/title&gt;
-
-&lt;subTitle&gt;{{cells\["Subtitle"\].value}}&lt;/subTitle&gt;
-
-&lt;/titleInfo&gt;
-
-&lt;name type="personal"&gt;
-
-&lt;namePart&gt;{{cells\["Name"\].value}}&lt;/namePart&gt;
-
-&lt;role&gt;
-
-&lt;roleTerm authority="marcrelator" type="text"&gt;{{cells\["Role of
-Name"\].value}}&lt;/roleTerm&gt;
-
-&lt;/role&gt;
-
-&lt;/name&gt;
-
-&lt;name type="personal"&gt;
-
-&lt;namePart&gt;{{cells\["Name2"\].value}}&lt;/namePart&gt;
-
-&lt;role&gt;
-
-&lt;roleTerm authority="marcrelator" type="text"&gt;{{cells\["Role of
-Name 2"\].value}}&lt;/roleTerm&gt;
-
-&lt;/role&gt;
-
-&lt;/name&gt;
-
-&lt;typeOfResource&gt;&lt;/typeOfResource&gt;
-
-&lt;genre/&gt;
-
-&lt;originInfo&gt;
-
-&lt;dateIssued&gt;{{cells\["Date"\].value}}&lt;/dateIssued&gt;
-
-&lt;publisher/&gt;
-
-&lt;place&gt;
-
-&lt;placeTerm authority="marccountry"/&gt;
-
-&lt;/place&gt;
-
-&lt;place&gt;
-
-&lt;placeTerm type="text"/&gt;
-
-&lt;/place&gt;
-
-&lt;/originInfo&gt;
-
-&lt;language&gt;
-
-&lt;languageTerm authority="iso639-2b"
-type="code"&gt;{{cells\["Language1"\].value}}&lt;/languageTerm&gt;
-
-&lt;/language&gt;
-
-&lt;language&gt;
-
-&lt;languageTerm authority="iso639-2b"
-type="code"&gt;{{cells\["Language2"\].value}}&lt;/languageTerm&gt;
-
-&lt;/language&gt;
-
-&lt;language&gt;
-
-&lt;languageTerm authority="iso639-2b"
-type="code"&gt;{{cells\["Language3"\].value}}&lt;/languageTerm&gt;
-
-&lt;/language&gt;
-
-&lt;abstract&gt;{{cells\["Description"\].value}}&lt;/abstract&gt;
-
-&lt;identifier/&gt;
-
-&lt;physicalDescription&gt;
-
-&lt;form authority="marccategory"&gt;**sound\_recording**&lt;/form&gt;
-
-&lt;extent/&gt;
-
-&lt;/physicalDescription&gt;
-
-&lt;note/&gt;
-
-&lt;subject&gt;
-
-&lt;topic&gt;{{cells\["Topic1"\].value}}&lt;/topic&gt;
-
-&lt;topic&gt;{{cells\["Topic2"\].value}}&lt;/topic&gt;
-
-&lt;topic&gt;{{cells\["Topic3"\].value}}&lt;/topic&gt;
-
-&lt;topic&gt;{{cells\["Topic4"\].value}}&lt;/topic&gt;
-
-&lt;geographic/&gt;
-
-&lt;temporal/&gt;
-
-&lt;hierarchicalGeographic&gt;
-
-&lt;continent&gt;{{cells\["Continent"\].value}}&lt;/continent&gt;
-
-&lt;country&gt;{{cells\["Country"\].value}}&lt;/country&gt;
-
-&lt;province&gt;{{cells\["Province"\].value}}&lt;/province&gt;
-
-&lt;region/&gt;
-
-&lt;county/&gt;
-
-&lt;city&gt;{{cells\["City"\].value}}&lt;/city&gt;
-
-&lt;citySection&gt;{{cells\["City Section"\].value}}&lt;/citySection&gt;
-
-&lt;/hierarchicalGeographic&gt;
-
-&lt;cartographics&gt;
-
-&lt;coordinates&gt;{{cells\["Coordinates"\].value}}&lt;/coordinates&gt;
-
-&lt;/cartographics&gt;
-
-&lt;/subject&gt;
-
-&lt;/mods&gt;
+```xml
+<titleInfo>
+	<title>{{cells["Title"].value}}</title>
+	<subTitle>{{cells["Subtitle"].value}}</subTitle>
+</titleInfo>
+<name type="personal">
+	<namePart>{{cells["Name"].value}}</namePart>
+	<role>
+		<roleTerm authority="marcrelator" type="text">{{cells["Role of Name"].value}}</roleTerm>
+	</role>
+</name>
+<name type="personal">
+	<namePart>{{cells["Name2"].value}}</namePart>
+	<role>
+		<roleTerm authority="marcrelator" type="text">{{cells["Role of Name 2"].value}}</roleTerm>
+	</role>
+</name>
+<typeOfResource></typeOfResource>
+<genre/>
+<originInfo>
+	<dateIssued>{{cells["Date"].value}}</dateIssued>
+	<publisher/>
+	<place>
+		<placeTerm authority="marccountry"/>
+	</place>
+	<place>
+		<placeTerm type="text"/>
+	</place>
+</originInfo>
+<language>
+	<languageTerm authority="iso639-2b" type="code">{{cells["Language1"].value}}</languageTerm>
+</language>
+<language>
+	<languageTerm authority="iso639-2b" type="code">{{cells["Language2"].value}}</languageTerm>
+</language>
+<language>
+	<languageTerm authority="iso639-2b" type="code">{{cells["Language3"].value}}</languageTerm>
+</language>
+<abstract>{{cells["Description"].value}}</abstract>
+<identifier/>
+<physicalDescription>
+	<form authority="marccategory">sound_recording</form>
+	<extent/>
+</physicalDescription>
+<note/>
+<subject>
+	<topic>{{cells["Topic1"].value}}</topic>
+	<topic>{{cells["Topic2"].value}}</topic>
+	<topic>{{cells["Topic3"].value}}</topic>
+	<topic>{{cells["Topic4"].value}}</topic>
+	<geographic/>
+	<temporal/>
+	<hierarchicalGeographic>
+		<continent>{{cells["Continent"].value}}</continent>
+		<country>{{cells["Country"].value}}</country>
+		<province>{{cells["Province"].value}}</province>
+		<region/>
+		<county/>
+		<city>{{cells["City"].value}}</city>
+		<citySection>{{cells["City Section"].value}}</citySection>
+	</hierarchicalGeographic>
+	<cartographics>
+		<coordinates>{{cells["Coordinates"].value}}</coordinates>
+	</cartographics>
+</subject>undefined</mods>
+```
 
 **Row Separator**
 
@@ -202,147 +129,81 @@ none
 
 **For Suffix**
 
-&lt;/mods&gt;
+```xml
+</mods>
+```
 
 **Final Result**
 
-&lt;mods
-
-xmlns="http://www.loc.gov/mods/v3"
-
-xmlns:mods="http://www.loc.gov/mods/v3"
-
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-
-xmlns:xlink="http://www.w3.org/1999/xlink"&gt;
-
-&lt;titleInfo&gt;
-
-&lt;title&gt;Title of Oral History&lt;/title&gt;
-
-&lt;subTitle/&gt;
-
-&lt;/titleInfo&gt;
-
-&lt;name type="personal"&gt;
-
-&lt;namePart&gt;Kim Day&lt;/namePart&gt;
-
-&lt;role&gt;
-
-&lt;roleTerm authority="marcrelator"
-type="text"&gt;Speaker&lt;/roleTerm&gt;
-
-&lt;/role&gt;
-
-&lt;/name&gt;
-
-&lt;typeOfResource&gt;moving image&lt;/typeOfResource&gt;
-
-&lt;genre/&gt;
-
-&lt;originInfo&gt;
-
-&lt;dateIssued&gt;2001-05-21&lt;/dateIssued&gt;
-
-&lt;publisher/&gt;
-
-&lt;place&gt;
-
-&lt;placeTerm authority="marccountry"/&gt;
-
-&lt;/place&gt;
-
-&lt;place&gt;
-
-&lt;placeTerm type="text"/&gt;
-
-&lt;/place&gt;
-
-&lt;/originInfo&gt;
-
-&lt;language&gt;
-
-&lt;languageTerm authority="iso639-2b"
-type="code"&gt;fre&lt;/languageTerm&gt;
-
-&lt;/language&gt;
-
-&lt;abstract&gt;A description of the video goes here&lt;/abstract&gt;
-
-&lt;identifier/&gt;
-
-&lt;physicalDescription&gt;
-
-&lt;form authority="marccategory"&gt;sound\_recording&lt;/form&gt;
-
-&lt;extent/&gt;
-
-&lt;/physicalDescription&gt;
-
-&lt;note&gt;&lt;/note&gt;
-
-&lt;subject&gt;
-
-&lt;topic&gt;cold&lt;/topic&gt;
-
-&lt;geographic/&gt;
-
-&lt;temporal/&gt;
-
-&lt;hierarchicalGeographic&gt;
-
-&lt;continent&gt;North America&lt;/continent&gt;
-
-&lt;country&gt;Canada&lt;/country&gt;
-
-&lt;province&gt;Ontario&lt;/province&gt;
-
-&lt;region/&gt;
-
-&lt;county/&gt;
-
-&lt;city&gt;Toronto&lt;/city&gt;
-
-&lt;citySection&gt;Scarborough&lt;/citySection&gt;
-
-&lt;/hierarchicalGeographic&gt;
-
-&lt;cartographics&gt;
-
-&lt;coordinates&gt;43.787098, -79.185808&lt;/coordinates&gt;
-
-&lt;/cartographics&gt;
-
-&lt;topic&gt;winter&lt;/topic&gt;
-
-&lt;topic&gt;city life&lt;/topic&gt;
-
-&lt;/subject&gt;
-
-&lt;language/&gt;
-
-&lt;name type="personal"&gt;
-
-&lt;namePart&gt;Merle Haggard&lt;/namePart&gt;
-
-&lt;role&gt;
-
-&lt;roleTerm authority="marcrelator"
-type="text"&gt;Interviewer&lt;/roleTerm&gt;
-
-&lt;/role&gt;
-
-&lt;/name&gt;
-
-&lt;language&gt;
-
-&lt;languageTerm authority="iso639-2b"
-type="code"&gt;eng&lt;/languageTerm&gt;
-
-&lt;/language&gt;
-
-&lt;/mods&gt;
+```xml
+<mods
+	xmlns="http://www.loc.gov/mods/v3"
+	xmlns:mods="http://www.loc.gov/mods/v3"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	<titleInfo>
+		<title>Title of Oral History</title>
+		<subTitle/>
+	</titleInfo>
+	<name type="personal">
+		<namePart>Kim Day</namePart>
+		<role>
+			<roleTerm authority="marcrelator" type="text">Speaker</roleTerm>
+		</role>
+	</name>
+	<typeOfResource>moving image</typeOfResource>
+	<genre/>
+	<originInfo>
+		<dateIssued>2001-05-21</dateIssued>
+		<publisher/>
+		<place>
+			<placeTerm authority="marccountry"/>
+		</place>
+		<place>
+			<placeTerm type="text"/>
+		</place>
+	</originInfo>
+	<language>
+		<languageTerm authority="iso639-2b" type="code">fre</languageTerm>
+	</language>
+	<abstract>A description of the video goes here</abstract>
+	<identifier/>
+	<physicalDescription>
+		<form authority="marccategory">sound_recording</form>
+		<extent/>
+	</physicalDescription>
+	<note></note>
+	<subject>
+		<topic>cold</topic>
+		<geographic/>
+		<temporal/>
+		<hierarchicalGeographic>
+			<continent>North America</continent>
+			<country>Canada</country>
+			<province>Ontario</province>
+			<region/>
+			<county/>
+			<city>Toronto</city>
+			<citySection>Scarborough</citySection>
+		</hierarchicalGeographic>
+		<cartographics>
+			<coordinates>43.787098, -79.185808</coordinates>
+		</cartographics>
+		<topic>winter</topic>
+		<topic>city life</topic>
+	</subject>
+	<language/>
+	<name type="personal">
+		<namePart>Merle Haggard</namePart>
+		<role>
+			<roleTerm authority="marcrelator" type="text">Interviewer</roleTerm>
+		</role>
+	</name>
+	<language>
+		<languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+	</language>
+</mods>
+```
 
 Ingest into Fedora
 ------------------
