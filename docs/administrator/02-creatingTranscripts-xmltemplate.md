@@ -138,42 +138,45 @@ follow these steps:
 
 **prefix**
 
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+prefix
 
-&lt;cues&gt;
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cues>
+
 
 **row template (IMPORTANT: make sure your headers in your transcript
 file match the headers in the row template!)**
 
-&lt;cue&gt;
+<cue>
 
-&lt;speaker&gt;{{cells\["SPEAKER"\].value}}&lt;/speaker&gt;
+<speaker>{{cells["SPEAKER"].value}}</speaker>
 
-&lt;start&gt;{{cells\[“START"\].value}}&lt;/start&gt;
+<start>{{cells[“START"].value}}</start>
 
-&lt;end&gt;{{cells\[“END"\].value}}&lt;/end&gt;
+<end>{{cells[“END"].value}}</end>
 
-&lt;transcript&gt;{{cells\["TRANSCRIPT"\].value}}&lt;/transcript&gt;
+<transcript>{{cells["TRANSCRIPT"].value}}</transcript>
 
-&lt;/cue&gt;
+</cue>
 
 **Row template (Use this version If your transcript has tiers only)**
 
-&lt;cue&gt;
+<cue>
 
-&lt;speaker&gt;{{cells\["INTERVIEWER"\].value}}&lt;/speaker&gt;
+<speaker>{{cells["INTERVIEWER"].value}}</speaker>
 
-&lt;start&gt;{{cells\["IN"\].value}}&lt;/start&gt;
+<start>{{cells["IN"].value}}</start>
 
-&lt;end&gt;{{cells\["OUT"\].value}}&lt;/end&gt;
+<end>{{cells["OUT"].value}}</end>
 
-&lt;transcript&gt;{{cells\["TRANSCRIPT"\].value}}&lt;/transcript&gt;
+<transcript>{{cells["TRANSCRIPT"].value}}</transcript>
 
-&lt;translation&gt;{{cells\["TRANSLATION"\].value}}&lt;/translation&gt;
+<translation>{{cells["TRANSLATION"].value}}</translation>
 
-&lt;annotation&gt;{{cells\["ANNOTATION"\].value}}&lt;/annotation&gt;
+<annotation>{{cells["ANNOTATION"].value}}</annotation>
 
-&lt;/cue&gt;
+</cue>
 
 **row separator**
 
@@ -181,61 +184,59 @@ Make this box empty, remove any characters
 
 **suffix**
 
-&lt;/cues&gt;
+</cues>
 
 **Final Result**
 
 The resulting file should match this format:
 
-&lt;cue&gt;
+<cue>
 
-&lt;speaker&gt;Dorjee Lhatoo&lt;/speaker&gt;
+<speaker>Dorjee Lhatoo</speaker>
 
-&lt;start&gt;36.0&lt;/start&gt;
+<start>36.0</start>
 
-&lt;end&gt;45.0&lt;/end&gt;
+<end>45.0</end>
 
-&lt;transcript&gt; Poor company with me. She would pour me a glass, one
-sip and it goes right through, you see -&lt;/transcript&gt;
+<transcript> Poor company with me. She would pour me a glass, one sip and it goes right through, you see -</transcript>
 
-&lt;/cue&gt;
+</cue>
 
-&lt;cue&gt;
+<cue>
 
-&lt;speaker&gt;Interviewer2&lt;/speaker&gt;
+<speaker>Interviewer2</speaker>
 
-&lt;start&gt;46.0&lt;/start&gt;
+<start>46.0</start>
 
-&lt;end&gt;49.0&lt;/end&gt;
+<end>49.0</end>
 
-&lt;transcript&gt; \[indiscernible\] on fire. She sounds like great
-fun.&lt;/transcript&gt;
+<transcript> [indiscernible] on fire. She sounds like great fun.</transcript>
 
-&lt;/cue&gt;
+</cue>
 
-&lt;cue&gt;
+<cue>
 
-&lt;speaker&gt;Dorjee Lhatoo&lt;/speaker&gt;
+<speaker>Dorjee Lhatoo</speaker>
 
-&lt;start&gt;49.0&lt;/start&gt;
+<start>49.0</start>
 
-&lt;end&gt;52.0&lt;/end&gt;
+<end>52.0</end>
 
-&lt;transcript&gt; And then she used to bidi&lt;/transcript&gt;
+<transcript> And then she used to bidi</transcript>
 
-&lt;/cue&gt;
+</cue>
 
-&lt;cue&gt;
+<cue>
 
-&lt;speaker&gt;Interviewer2&lt;/speaker&gt;
+<speaker>Interviewer2</speaker>
 
-&lt;start&gt;52.0&lt;/start&gt;
+<start>52.0</start>
 
-&lt;end&gt;53.0&lt;/end&gt;
+<end>53.0</end>
 
-&lt;transcript&gt; Oh!&lt;/transcript&gt;
+<transcript> Oh!</transcript>
 
-&lt;/cue&gt;
+</cue>
 
 ### Converting a Tab Delimited File created in Audacity into XML
 
