@@ -37,10 +37,7 @@ YouTube allows transcripts to be created for uploaded videos. The transcripts ca
 
 #### oTranscribe (BETA)
 
-oTranscribe allows for the transcribing of recorded interviews. There is
-a [*web based*](http://otranscribe.com/) tool and a [*downloadable
-tool*](https://github.com/oTranscribe/oTranscribe). The downloadable
-tool takes some setup.
+oTranscribe allows for the transcribing of recorded interviews. There is a [*web based*](http://otranscribe.com/) tool and a [*downloadable tool*](https://github.com/oTranscribe/oTranscribe). The downloadable tool takes some setup.
 
 **Sample text-based output**
 
@@ -56,23 +53,12 @@ tool takes some setup.
 
 **Sample oTranscribe (json) format**
 
-{"text":" &lt;p data-l10n-id=\\"\\"&gt;&lt;span class=\\"timestamp\\"
-data-timestamp=\\"0:01\\"
-contenteditable=\\"false\\"&gt;0:01&lt;/span&gt;&nbsp;old and in the
-way&lt;br&gt;&lt;/p&gt;&lt;p data-l10n-id=\\"\\"&gt;&lt;span
-class=\\"timestamp\\" data-timestamp=\\"0:24\\"
-contenteditable=\\"false\\"&gt;0:24&lt;/span&gt;&nbsp;they'll never care
-about you&nbsp;&lt;br&gt;&lt;/p&gt;&lt;p data-l10n-id=\\"\\"&gt;&lt;span
-class=\\"timestamp\\" data-timestamp=\\"0:31\\"
-contenteditable=\\"false\\"&gt;0:31&lt;/span&gt;&nbsp;once I hear tell
-he was happy&lt;br&gt;&lt;/p&gt;&lt;p data-l10n-id=\\"\\"&gt;&lt;span
-class=\\"timestamp\\" data-timestamp=\\"0:38\\"
-contenteditable=\\"false\\"&gt;0:38&lt;/span&gt;&nbsp;good
-time&lt;br&gt;&lt;/p&gt;&lt;p data-l10n-id=\\"\\"&gt;&lt;span
-class=\\"timestamp\\" data-timestamp=\\"0:44\\"
-contenteditable=\\"false\\"&gt;0:44&lt;/span&gt;&nbsp;looking back to a
-better day&lt;br&gt;&lt;/p&gt;\\n
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;\\n &lt;/p&gt;","media-source":""}
+```json
+{  
+   "text":" <p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:01\" contenteditable=\"false\">0:01</span> old and in the way<br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:24\" contenteditable=\"false\">0:24</span> they'll never care about you <br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:31\" contenteditable=\"false\">0:31</span> once I hear tell he was happy<br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:38\" contenteditable=\"false\">0:38</span> good time<br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:44\" contenteditable=\"false\">0:44</span> looking back to a better day<br></p>\n <p><br></p><p>\n </p>",
+   "media-source":""
+}
+```
 
 **Supports**
 
