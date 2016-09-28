@@ -57,7 +57,23 @@ Solespeaker and speaker should never appear together in the same
 transcript.
 
 **Example**
- &lt;?xml version="1.0" encoding="UTF-8"?&gt;\ &lt;cues&gt;\  &lt;!-- If the entire transcript has one speaker only, use 'solespeaker' element.\  Then skip 'speaker' element in 'cue' element level. But DO NOT use them in both places.\  If 'solespeaker' element presents in the document, following 'speaker' elements will be ignored. --&gt;\  &lt;solespeaker&gt;One Speaker&lt;/solespeaker&gt;\  &lt;cue&gt;\  &lt;speaker&gt;Different Speaker&lt;/speaker&gt;\  &lt;!-- 'start' and 'end' elements are start time and end time in seconds for the cue. --&gt;\  &lt;start&gt;0.000&lt;/start&gt;\  &lt;end&gt;12.124&lt;/end&gt;\  &lt;!-- 'transcript' and/or 'annotation' are default content tiers of the cue.\  Extra tier(s) can be added as long as they are listed in the configuration page.\  'transcript' element is required if 'Enable captions/subtitles display' is configured to be true. --&gt;\  &lt;transcript&gt;This is the transcript text content.&lt;/transcript&gt;\  &lt;annotation&gt;This is the annotation content.&lt;/annotation&gt;\  &lt;/cue&gt;\ \  &lt;!-- add more cues with above structure.--&gt;\ \ &lt;/cues&gt;
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<cues>
+	<!-- If the entire transcript has one speaker only, use 'solespeaker' element. Then skip 'speaker' element in 'cue' element level. But DO NOT use them in both places. If 'solespeaker' element presents in the document, following 'speaker' elements will be ignored. -->
+	<solespeaker>One Speaker</solespeaker>
+	<cue>
+		<speaker>Different Speaker</speaker>
+		<!-- 'start' and 'end' elements are start time and end time in seconds for the cue. -->
+		<start>0.000</start>
+		<end>12.124</end>
+		<!-- 'transcript' and/or 'annotation' are default content tiers of the cue. Extra tier(s) can be added as long as they are listed in the configuration page. 'transcript' element is required if 'Enable captions/subtitles display' is configured to be true. -->
+		<transcript>This is the transcript text content.</transcript>
+		<annotation>This is the annotation content.</annotation>
+	</cue>
+	<!-- add more cues with above structure.-->
+</cues>
+```
 
 ### Converting a Tab Delimited File created in Inqscibe into XML
 
