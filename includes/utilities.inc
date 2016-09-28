@@ -14,11 +14,14 @@
  * @return string
  *   All cues in vtt file.
  */
-function vtt_transcript_content($url) {
-  $content = file_get_contents($url);
-  $output = parse_vtt($content);
-
-  return $output;
+function vtt_transcript_content($url, $trid) {
+    $options = array(
+        'term' => isset($_GET['term']) ? '"' . $_GET['term'] . '"' : '',
+        'type' => 'VTT',
+        'url' => $url,
+    );
+    $ui = transcripts_ui_ui('islandora_oralhistories', $trid, $options);
+    return theme('islandora_transcript_scroller', transcripts_ui_render($ui));
 }
 
 /**
@@ -38,24 +41,30 @@ function parse_vtt($data = '') {
       $time = explode(' --> ', $parts[0]);
       $start_time = time_seconds($time[0]);
       $end_time = time_seconds($time[1]);
-      $text = preg_replace('/</', '&lt;', $parts[1]);
+
+      // Redmine#6611
+      $text = $parts[1];
+      $regex_vttName = '/^\s*<v\s+(?<name>.*)>/';
+      preg_match($regex_vttName, $text, $matches);
+
+      $name = "";
+      if(array_key_exists('name', $matches)){
+        $name = $matches['name'];
+        $text = preg_replace($regex_vttName, '', $text); 
+      }
+
+      $text = preg_replace('/</', '&lt;', $text);
       $text = preg_replace('/>/', '&gt;', $text);
       $cues[] = array(
         'start_time' => $start_time,
         'end_time' => $end_time,
-        'text' => $text
+        'text' => $text,
+        'name' => $name
       );
     }
   } // end foreach
-  $i = 0;
-  foreach ($cues as $cue) {
-    $output .= '<p><span class="transcript" id="transcript' . $i . '" ';
-    $output .= 'data-start-time="' . $cue['start_time'] . '" ';
-    $output .= 'data-end-time="' . $cue['end_time'] . '">';
-    $output .= $cue['text'] . '</span></p>';
-    $i++;
-  }
-  return $output;
+
+  return $cues;
 }
 
 
@@ -90,6 +99,7 @@ function xml_transcript_content($trid) {
   // how will options get through when function is not called as part of page request?
   $options = array(
     'term' => isset($_GET['term']) ? '"' . $_GET['term'] . '"' : '',
+    'type' => 'XML',
   );
 
   $ui = transcripts_ui_ui('islandora_oralhistories', $trid, $options);
@@ -109,6 +119,16 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
   $tiers = array_keys($ui->tiers);
   $speaker = array_keys($ui->speakernames);
   $options = $ui->options;
+  $transcript_type = $options["type"];
+
+  watchdog('Islandora Oralhistories', 'transcript type ' . $transcript_type);
+
+
+  // If VTT process it using compose_vtt_transcript_as_transcripts_ui function
+  if($transcript_type == "VTT")
+  {
+    return compose_vtt_transcript_as_transcripts_ui($ui);
+  }
 
   // Now we query solr fields to buid $tcus
   $pid = str_replace('-', ':', $ui->shorttrid);
@@ -190,6 +210,41 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
   $highlights = isset($json['highlighting']) ? $json['highlighting'] : NULL;
   return array($tcus, $highlights);
 }
+
+/**
+ * We want to display vtt transcript in similar way to xml transcript
+ * @param $ui
+ * @return array
+ */
+
+function compose_vtt_transcript_as_transcripts_ui($ui)
+{
+    $options = $ui->options;
+    $url = $options["url"];
+
+    // Get congent from VTT file
+    $content = file_get_contents($url);
+    // Parse the VTT for tcues data
+    $cues = parse_vtt($content);
+
+    // Loop and put in a format needed by transcripts_ui
+    $tcus = array();
+    $i = 0;
+    foreach ($cues as $cue) {
+        $tcus[$i] = new stdClass();
+        $tcus[$i]->trid = $i;
+        $tcus[$i]->id = $i;
+        $tcus[$i]->start = (float)$cue['start_time'];
+        $tcus[$i]->end = (float)$cue['end_time'];
+        $tcus[$i]->or_transcript = $cue['text'];
+        $tcus[$i]->or_speaker = $cue['name'];
+        $i++;
+    }
+    // VTT does not have highlights ?
+    $highlights = NULL;
+    return array($tcus, $highlights);
+}
+
 
 /**
  * Retrieve annotation based on the $object->id.

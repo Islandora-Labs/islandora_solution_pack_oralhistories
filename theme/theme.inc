@@ -162,15 +162,15 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
   if (variable_get('islandora_oralhistories_enbable_transcript_display') && !empty($tracks)) {
     foreach ($tracks as $track) {
+      $trid = str_replace(':', '-', $object->id);
       switch ($transcript_mimetype) {
         case 'vtt':
           $viewer_params += array(
-            'transcript_content' => vtt_transcript_content($track['source_url']),
+            'transcript_content' => vtt_transcript_content($track['source_url'], $trid),
           );
           break;
 
         case 'xml':
-          $trid = str_replace(':', '-', $object->id);
           $viewer_params += array(
             'transcript_content' => xml_transcript_content($trid),
           );
