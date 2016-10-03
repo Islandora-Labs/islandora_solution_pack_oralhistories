@@ -20,6 +20,12 @@
             console.log(permissions);
             console.log(user);
 
+            // Don't load Annotation related elements/methods if annotation is disabled
+            var enableAnnotationTabDisplay =  Drupal.settings.islandoraOralhistories.enableAnnotationTabDisplay;
+            if(enableAnnotationTabDisplay !== null && enableAnnotationTabDisplay === 0){
+                return;
+            }            
+
             //AnnotationBox
             var AnnotationBox = React.createClass({
                 displayName: 'AnnotationBox',
