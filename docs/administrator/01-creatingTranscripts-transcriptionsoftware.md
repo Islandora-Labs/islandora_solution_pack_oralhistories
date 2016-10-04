@@ -39,117 +39,8 @@ YouTube allows transcripts to be created for uploaded videos. The transcripts ca
 
 oTranscribe allows for the transcribing of recorded interviews. There is a [*web based*](http://otranscribe.com/) tool and a [*downloadable tool*](https://github.com/oTranscribe/oTranscribe). The downloadable tool takes some setup.
 
-**Sample text-based output**
 
-0:01 old and in the way
-
-0:24 they'll never care about you
-
-0:31 once I hear tell he was happy
-
-0:38 good time
-
-0:44 looking back to a better day
-
-**Sample oTranscribe (json) format**
-
-```json
-{  
-   "text":" <p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:01\" contenteditable=\"false\">0:01</span> old and in the way<br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:24\" contenteditable=\"false\">0:24</span> they'll never care about you <br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:31\" contenteditable=\"false\">0:31</span> once I hear tell he was happy<br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:38\" contenteditable=\"false\">0:38</span> good time<br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:44\" contenteditable=\"false\">0:44</span> looking back to a better day<br></p>\n <p><br></p><p>\n </p>",
-   "media-source":""
-}
-```
-
-**Supports**
-
-Audio (web version)
-
-Video (desktop version)
-
-Youtube (web and desktop version)
-
-#### Recording Actions
-
--   Use your best judgment when you are transcribing videos. If you think the content is worth capturing, then capture it in the transcript.
-
--   If you want to indicate pauses, actions, or side discussions that are happening in the audio or video, create them in a new time block. **For pauses, use "No speaker: (Pause)". For other situations use "No speaker: (Aside)".** Pauses and actions should not be captured unless it is relevant or very, very long (use your judgement here). For now, actions do not need to be captured in time blocks with speech or transcription text.
-
-#### Dealing with Rapid-fire Changes in Speakers
-
--   Sometimes, when there is more than one speaker in the media you will encounter a rapid change between speakers or even overlap between speakers. You should continue with the convention of marking each speaker in sequence, even if there is overlap. So, a transcript with two speakers talking at the same time would look like this (note that the time codes are the same, the time codes need to be slightly off
-
-**Transcription Best Practices**
-
-#### Transcription Formatting
-
--   Start a new line when the speaker naturally takes a pause or takes a break, approximately every 1-5 sentences. Shorter sentences will look better on CC display for video as well and will be easier for the viewer to read
-
--   Note: **It is very important to create transcripts in a well-structured data format for future processing.**
-
--   Don't use:
-
-    -   colons (":") in your transcript, other than when you're using it
-        > to indicate the Speaker or that it's a Translation.
-
-    -   ellipses ("...") they don't work in the transcripts
-
-        -   For a time block of transcription, never start a new line or paragraph by pressing Enter. Just keep writing on the same line and let the text overflow. Separate new sentences using spaces only.
-
--   Do this:
-    > [00:00:00.00] Daku Sherpa: The transcription text goes here on
-    > the same line. Never start a new line or a new paragraph. Always
-    > have a closing time stamp.[00:06:32.12]
-
--   Not this:
-    > [00:00:00.00\] Daku Sherpa: No! Don't do this! The transcription
-    > text goes here on the same line.
-    > Never start a new line or a new paragraph.
-    > Always have a closing time stamp.[00:06:32.12]
-
--   Time blocks must start on new lines. One time block per line. Don't have spaces between lines. In short: Everything should look neat and tidy.
-
--   **Please use UTF-8 encoding compatible characters only in your transcripts**
-
-#### Recording Speakers
-
--   For an interviewer with unknown name, use "Interviewer:". For multiple interviewers, use "Interviewer1:", "Interviewer2:", and so on.
-
--   For unknown speaker(s) with no name, use "Unknown1:", "Unknown2:" and so on.
-
--   **IF ONLY ONE PERSON SPEAKS FOR THE ENTIRE INTERVIEW:** If there is only one speaker in the entire interviewer, you do not have to add the [speaker] stamp. Just indicate the speaker at the beginning:
-
-> Sole Speaker: Phuchung
-> [00:00:00.00] I'm not that kind of person, no.[00:06:32.12]
-> [00:06:32.12] Yes it's very easy to talk about that. [00:09:10.45]
-
--   so each speaker needs to start about one second (or if not possible, do by a few milliseconds) from each other, and the text and speaker label is different:
-
--   [00:01:11.010] Speaker 1: འདི་བོག་ཡིག་རེད་བས། [00:01:13.020]
-
--   [00:01:12.010] Speaker 2: རེད་། [00:01:13.020]
-
- {#section-4}
-
-#### Adding additional tiers to your transcript
-
-Tiers are additional layers of information that can be added to your
-transcript that aren’t transcribed information. This can include
-translations, transliterations, annotations, and so on. Adding tiered
-information can happen at the time of transcription or afterwards once
-your transcript has been exported into a delimited text format.
-
-During transcription:
-
-After transcription:
-
-#### Other rules
-
--   Some of the videos have people speaking in three languages. One in Nepali, then with someone translating the question/response in Hindi or vice versa. Transcribe the original questions from the interviewer and the responses from the interviewee in the interviewee's language.
--   Ignore side discussions and other external conversations unless you think the material is relevant to the interview.
--   Some audio files will have a lot more interview material than what is captured in the video. This leftover audio will need to be transcribed at a later point in time but for now focus on transcribing the videos.
--   In the case of multiple languages, if it’s possible to capture a language in romanized script, please do so
-
-### Transcribing with Inqscribe
+### Creating Transcripts with Inqscribe
 
 Figure (1) shows the example of a good transcript created through
 Inqscribe. Best practices include:
@@ -284,5 +175,117 @@ downloaded from
 
 9.  Export the transcript by going to File&gt; Export Labels. Save the file with same name as the original audio/video, but with the extension .txt.
 
- {#section-5}
+
+### Creating Transcripts with oTranscribe (BETA)
+
+**Sample text-based output**
+
+0:01 old and in the way
+
+0:24 they'll never care about you
+
+0:31 once I hear tell he was happy
+
+0:38 good time
+
+0:44 looking back to a better day
+
+**Sample oTranscribe (json) format**
+
+```json
+{  
+   "text":" <p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:01\" contenteditable=\"false\">0:01</span> old and in the way<br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:24\" contenteditable=\"false\">0:24</span> they'll never care about you <br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:31\" contenteditable=\"false\">0:31</span> once I hear tell he was happy<br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:38\" contenteditable=\"false\">0:38</span> good time<br></p><p data-l10n-id=\"\"><span class=\"timestamp\" data-timestamp=\"0:44\" contenteditable=\"false\">0:44</span> looking back to a better day<br></p>\n <p><br></p><p>\n </p>",
+   "media-source":""
+}
+```
+
+**Supports**
+
+Audio (web version)
+
+Video (desktop version)
+
+Youtube (web and desktop version)
+
+
+## **Transcription Best Practices**
+
+#### Recording Actions
+
+-   Use your best judgment when you are transcribing videos. If you think the content is worth capturing, then capture it in the transcript.
+
+-   If you want to indicate pauses, actions, or side discussions that are happening in the audio or video, create them in a new time block. **For pauses, use "No speaker: (Pause)". For other situations use "No speaker: (Aside)".** Pauses and actions should not be captured unless it is relevant or very, very long (use your judgement here). For now, actions do not need to be captured in time blocks with speech or transcription text.
+
+#### Dealing with Rapid-fire Changes in Speakers
+
+-   Sometimes, when there is more than one speaker in the media you will encounter a rapid change between speakers or even overlap between speakers. You should continue with the convention of marking each speaker in sequence, even if there is overlap. So, a transcript with two speakers talking at the same time would look like this (note that the time codes are the same, the time codes need to be slightly off
+
+#### Transcription Formatting
+
+-   Start a new line when the speaker naturally takes a pause or takes a break, approximately every 1-5 sentences. Shorter sentences will look better on CC display for video as well and will be easier for the viewer to read
+
+-   Note: **It is very important to create transcripts in a well-structured data format for future processing.**
+
+-   Don't use:
+
+    -   colons (":") in your transcript, other than when you're using it
+        > to indicate the Speaker or that it's a Translation.
+
+    -   ellipses ("...") they don't work in the transcripts
+
+        -   For a time block of transcription, never start a new line or paragraph by pressing Enter. Just keep writing on the same line and let the text overflow. Separate new sentences using spaces only.
+
+-   Do this:
+    > [00:00:00.00] Daku Sherpa: The transcription text goes here on
+    > the same line. Never start a new line or a new paragraph. Always
+    > have a closing time stamp.[00:06:32.12]
+
+-   Not this:
+    > [00:00:00.00\] Daku Sherpa: No! Don't do this! The transcription
+    > text goes here on the same line.
+    > Never start a new line or a new paragraph.
+    > Always have a closing time stamp.[00:06:32.12]
+
+-   Time blocks must start on new lines. One time block per line. Don't have spaces between lines. In short: Everything should look neat and tidy.
+
+-   **Please use UTF-8 encoding compatible characters only in your transcripts**
+
+#### Recording Speakers
+
+-   For an interviewer with unknown name, use "Interviewer:". For multiple interviewers, use "Interviewer1:", "Interviewer2:", and so on.
+
+-   For unknown speaker(s) with no name, use "Unknown1:", "Unknown2:" and so on.
+
+-   **IF ONLY ONE PERSON SPEAKS FOR THE ENTIRE INTERVIEW:** If there is only one speaker in the entire interviewer, you do not have to add the [speaker] stamp. Just indicate the speaker at the beginning:
+
+> Sole Speaker: Phuchung
+> [00:00:00.00] I'm not that kind of person, no.[00:06:32.12]
+> [00:06:32.12] Yes it's very easy to talk about that. [00:09:10.45]
+
+-   so each speaker needs to start about one second (or if not possible, do by a few milliseconds) from each other, and the text and speaker label is different:
+
+-   [00:01:11.010] Speaker 1: འདི་བོག་ཡིག་རེད་བས། [00:01:13.020]
+
+-   [00:01:12.010] Speaker 2: རེད་། [00:01:13.020]
+
+ {#section-4}
+
+#### Adding additional tiers to your transcript
+
+Tiers are additional layers of information that can be added to your
+transcript that aren’t transcribed information. This can include
+translations, transliterations, annotations, and so on. Adding tiered
+information can happen at the time of transcription or afterwards once
+your transcript has been exported into a delimited text format.
+
+During transcription:
+
+After transcription:
+
+#### Other rules
+
+-   Some of the videos have people speaking in three languages. One in Nepali, then with someone translating the question/response in Hindi or vice versa. Transcribe the original questions from the interviewer and the responses from the interviewee in the interviewee's language.
+-   Ignore side discussions and other external conversations unless you think the material is relevant to the interview.
+-   Some audio files will have a lot more interview material than what is captured in the video. This leftover audio will need to be transcribed at a later point in time but for now focus on transcribing the videos.
+-   In the case of multiple languages, if it’s possible to capture a language in romanized script, please do so
 
