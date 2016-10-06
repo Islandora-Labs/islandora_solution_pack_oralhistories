@@ -69,7 +69,7 @@ closing time stamp.[00:06:32.12]
 Figure x shows the a sample view of a video and a transcript in the
 Inqscribe window.
 
-![](media/image07.png)
+![alt text](../images/image07.png "Logo Title Text 1")
 
 1.  The video play window
 
