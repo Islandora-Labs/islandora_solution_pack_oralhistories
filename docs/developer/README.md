@@ -1,8 +1,6 @@
 # Documentation for Developers
 
-Installing on Vagrant (for testing)
-
-Installing on Vagrant (for testing)
+## Installing on Vagrant (for testing)
 
 -   Install or start up Islandora
     > Vagrant (https://github.com/Islandora-Labs/islandora\_vagrant)
