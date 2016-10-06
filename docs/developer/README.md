@@ -1,5 +1,8 @@
-Installing on Vagrant (for testing)\
-====================================
+# Documentation for Developers
+
+Installing on Vagrant (for testing)
+
+Installing on Vagrant (for testing)
 
 -   Install or start up Islandora
     > Vagrant (https://github.com/Islandora-Labs/islandora\_vagrant)
@@ -18,8 +21,8 @@ Installing on Vagrant (for testing)\
 
     -   Go to Drupal modules page and enable the oral histories module
 
--   Go to Transcript UI and configure default and any additional
-    > transcript tiers and speakers needed.
+-   Go to Transcript UI (under Configuration) and configure default and
+    > any additional transcript tiers and speakers needed.
 
     -   Tiers
 
@@ -33,7 +36,8 @@ Installing on Vagrant (for testing)\
 
         -   or\_solespeaker|Speaker
 
--   Configure Solr (copy xslt, add field, restart tomcat)
+-   Configure Solr (copy xslt, add field, restart tomcat sudo service
+    > tomcat7 restart)
 
     -   cd
         > /var/lib/tomcat7/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora\_transforms
@@ -83,7 +87,25 @@ Installing on Vagrant (for testing)\
 
     -   Ensure drupal filter at
         > /usr/local/fedora/server/config/filter-drupal.xml is writable
-        > by the server.
+        > by the server (chown www-data:www-data filter-drupal.xml)
 
     -   Scroll down to oral history tests, check them and run the tests
+
+-   Theme
+
+    -   If you are using non bootstrap theme, then include
+        > (in islandora\_oralhistories.info)
+
+    -   stylesheets\[all\]\[\] = bootstrap/css/oh-bootstrap-all.css
+
+    -   scripts\[\] = bootstrap/js/bootstrap.min.js
+
+-   Please make sure to have the following permission set:
+
+-   View repository objects: View objects in the repository. Note:
+    > Fedora XACML security policies may override this permission.
+
+-   remove the @scripts in the Transcript UI
+
+
 
