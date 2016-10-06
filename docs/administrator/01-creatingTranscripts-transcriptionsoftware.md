@@ -69,7 +69,8 @@ closing time stamp.[00:06:32.12]
 Figure x shows the a sample view of a video and a transcript in the
 Inqscribe window.
 
-![Inqscribe Window Image](../images/image07.png "Inqscribe Window")
+![Inqscribe Image](../images/image02.png "Inqscribe")
+
 
 1.  The video play window
 
@@ -95,7 +96,7 @@ To create transcripts in Inqscribe:
 
 7.  Optional: When recording the audio of multiple speakers you can create create snippets that insert the timestamp and speaker's name. This will also be useful to for inserted repeating block of text. To do this go to Edit &gt; Insert Snippet and a box titled “snippets” will appear. To add a new snippet to the list click the “edit…” button. To Insert a snippet into the transcript click the “insert…” button. The image of the snippet editor (figure x) can be seen below. Snippets are entered with the formula: {\$TIME} The text you want in the transcript. An example of a snippet that identifies the speaker is: {\$TIME} Speaker 1
 
-![Inqscribe Image](../images/image02.png "Inqscribe")
+![Inqscribe Snippets Image](../images/image10.png "Inqscribe Snippets")
 
 
 **Inqscribe transcription tips:**
@@ -117,8 +118,7 @@ as a Tab delimited file:
 
 3.  Ensure that the “Export Out Points” and the “Export Speaker Names” boxes are checked. In addition ensure that the Speaker Name Delimiter box has a : )See below for example).
 
-![Inqscribe Snippets Image](../images/image10.png "Inqscribe Snippets")
-
+![Inqscribe Export Image](../images/image04.png "Inqscribe Export")
 
 4.  Input the name of your file the Target box. Use the choose… button to select the appropriate file folder directory. Then click Export.
 
@@ -128,7 +128,7 @@ In the transcript example below there are multiple speakers. The snippet
 feature helps the transciber keep track of all the possible speaker
 names.
 
-![](media/image19.png)
+![Inqscribe Window Image](../images/image07.png "Inqscribe Window")
 
 ### Creating Transcripts with Audacity
 
@@ -141,7 +141,7 @@ downloaded from
 
 #### The Audacity Window
 
-![](media/image01.png)
+![Audacity Window Image](../images/image00.png "Audacity Window")
 
 1.  The playback controls to start and stop the audio.
 
@@ -161,7 +161,7 @@ downloaded from
 
 3.  In Audacity you can select a section of the track to annotate. First zoom in using the magnifying glass (This is an important step as it will allow your labels to fit on the track). Then select part of the tract by clicking the start of where you want to begin your annotation and drag the cursor to the end (see example below).
 
-![](media/image27.png)
+![Audacity Select Image](../images/image13.png "Audacity Select")
 
 4.  Listen to the selected audio by using the playback controls. If necessary you can slow down the audio using the slider.
 
@@ -169,7 +169,7 @@ downloaded from
 
 6.  Input the text into the label. Remember to record the speaker's name using the proper format of Speaker's Name: What they are saying. Please see below for an example.
 
-![](media/image05.png)
+![Audacity Label Image](../images/image01.png "Audacity Label")
 
 7.  When you have finished transcribing the audio you can read the transcript as a whole by going to Tracts&gt; Edit Labels… Here you can correct text. Note you will not be able to listed to the audio while this window is open. It is good practice to review the labels while listening to the audio once the transcript is complete to ensure it is error free.
 
