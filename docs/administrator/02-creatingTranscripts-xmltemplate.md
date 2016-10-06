@@ -108,15 +108,15 @@ follow these steps:
 
 5.  Insert two new columns one following the IN column and one following the OUT column. Call the two new columns IN and OUT. This step can be seen below.
 
-![](media/image23.png)
+![Conversion Excel Image](../images/image11.png "Conversion Excel")
 
 6.  You will now convert the time in the START and END columns into seconds. To do this insert the formula =A2\*86400 into the new IN Column (B2) and the formula =C2\*86400 into the new OUT column (D2). See Figure (x) for example.
 
-![](media/image18.png)
+![Conversion Seconds Image](../images/image06.png "Conversion seconds")
 
 6.  At this stage you will copy down the formula you just inserted. To do this click the cell where you just entered the formula. Then bring your cursor to the bottom right corner of that cell until it turns into a solid black cross and then double click. The format of the IN and OUT columns should match figure (x) seen below.
 
-![](media/image09.png)
+![Conversion column Image](../images/image06.png "Conversion column")
 
 7.  Save the file as a tab delimited file. Go to File&gt; Save As... Ensure that tab delimited file is selected in the format box and click save.
 
@@ -130,7 +130,7 @@ follow these steps:
 
 3.  **Remove** the START column and the END column with the time format 00:00.0. To do this click the down arrow in the header of the column title then click Edit column&gt;Remove this column. See example below.
 
-![](media/image20.png)
+![Conversion openrefine Image](../images/image08.png "Conversion openrefine")
 
 4.  To begin the process of exporting the table to XML click Export&gt; Templating. The Templating Export box will appear.
 
@@ -222,11 +222,11 @@ The resulting file should match this format:
 
 2.  Click the Browse button and select the file you are working with and click Next. Find the box labeled “line(s) as column headers” located at the bottom right of the screen and change 1 to 0. Click the Create Project button located at the top right of the screen. See example below.
 
-![](media/image21.png)
+![Conversion openrefine check Image](../images/image09.png "Conversion openrefine check")
 
 1.  We now need to create a new column for speaker name. The speaker name information will be contained in column 3. To create the new column click the down arrow next to the column 3 header then click Edit column&gt; Split into several columns…. A box titled split Column 3 into several columns. Change the Separator to : and click OK. An example can be seen below.
 
-![](media/image17.png)
+![Conversion openrefine split Image](../images/image05.png "Conversion openrefine split")
 
 1.  You now need to change the column headers. To do this click the down arrow beside the column headers then click Edit column&gt; Rename this column. Enter the new name and click OK. Please see example below. You new column headers should be:
 
@@ -238,7 +238,8 @@ The resulting file should match this format:
 
     -   TRANSCRIPT (Replacing Column 3 2)
 
-![](media/image26.png)
+![Conversion openrefine result Image](../images/image12.png "Conversion openrefine result")
+
 
 4.  To begin the process of exporting the table to XML click Export&gt; Templating. The Templating Export box will appear.
 
