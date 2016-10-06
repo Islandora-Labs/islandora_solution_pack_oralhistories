@@ -1,35 +1,3 @@
-@todo/ tocheck
-
-**Should we make separate documents to the readme.md document and link
-to them from the readme to avoid a crazy long readme? If so, what should
-the split look like?**
-
-**README.md - typical islandora README**
-
-**Includes release notes**
-
-> DATE:
->
-> Shoudl write something about the syncing of the MEDIATRACK and
-> TRANSCRIPT streams if they are uploaded separately and contain
-> separate content. We shoudl also try to do this and document what
-> happens if you try to upload separate content and then edit TRANSCRIPT
-> datastream
->
-> confirmed that you can upload a separate mediatrack not derived from
-> transcript (and that CC will show mediatrack different from
-> transcript)
->
-> confirmed that if you edit the transcript it will overwrite the
-> mediatrack
->
-> Document the support of WEBVTT and limitations
-
-
-
-
-
-
 ### Introduction for Administrators
 
 The Oral History Solution Pack is a set of applications developed by the
@@ -122,25 +90,25 @@ Iv. Thumbnail (Optional. Allowed file types: png, jpg)
 
 **For Video Files**
 
-i\. MOV video stitched original file
+i. MOV video stitched original file
 
-ii\. MP4 (derivative of the original file)
+ii. MP4 (derivative of the original file)
 
-iii\. TRANSCRIPT.xml (optional)
+iii. TRANSCRIPT.xml (optional)
 
-iv\. MODS.xml (metadata)
+iv. MODS.xml (metadata)
 
-vi\. TN.jpg (thumbnail)
+vi. TN.jpg (thumbnail)
 
 **For Audio Files**
 
 I. MP3, AIFF, WAV original file (it cannot be larger 1GB)
 
-ii\. TRANSCRIPT.xml (optional)
+ii. TRANSCRIPT.xml (optional)
 
-iii\. MODS.xml
+iii. MODS.xml
 
-iv\. TN.jpg (thumbnail)
+iv. TN.jpg (thumbnail)
 
 > Notes:
 
@@ -154,8 +122,6 @@ iv\. TN.jpg (thumbnail)
 
 -   If your original video file isn’t an MOV file, transform it into a
     > .mov file
-
-###  {#section-3}
 
 ### File Naming Conventions
 
