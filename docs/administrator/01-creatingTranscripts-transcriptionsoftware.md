@@ -69,7 +69,7 @@ closing time stamp.[00:06:32.12]
 Figure x shows the a sample view of a video and a transcript in the
 Inqscribe window.
 
-![alt text](../images/image07.png "Logo Title Text 1")
+![Inqscribe Window Image](../images/image07.png "Inqscribe Window")
 
 1.  The video play window
 
@@ -95,7 +95,8 @@ To create transcripts in Inqscribe:
 
 7.  Optional: When recording the audio of multiple speakers you can create create snippets that insert the timestamp and speaker's name. This will also be useful to for inserted repeating block of text. To do this go to Edit &gt; Insert Snippet and a box titled “snippets” will appear. To add a new snippet to the list click the “edit…” button. To Insert a snippet into the transcript click the “insert…” button. The image of the snippet editor (figure x) can be seen below. Snippets are entered with the formula: {\$TIME} The text you want in the transcript. An example of a snippet that identifies the speaker is: {\$TIME} Speaker 1
 
-![](media/image22.png)
+![Inqscribe Image](../images/image02.png "Inqscribe")
+
 
 **Inqscribe transcription tips:**
 
@@ -116,7 +117,8 @@ as a Tab delimited file:
 
 3.  Ensure that the “Export Out Points” and the “Export Speaker Names” boxes are checked. In addition ensure that the Speaker Name Delimiter box has a : )See below for example).
 
-![](media/image10.png)
+![Inqscribe Snippets Image](../images/image10.png "Inqscribe Snippets")
+
 
 4.  Input the name of your file the Target box. Use the choose… button to select the appropriate file folder directory. Then click Export.
 
