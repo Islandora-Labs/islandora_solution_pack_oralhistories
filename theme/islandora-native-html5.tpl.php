@@ -10,10 +10,10 @@
       <?php if ($key == 0): ?>
         <?php if ($enable_caption_display): ?>
           <track id="track<?php print $key; ?>" src="<?php print $track['source_url']; ?>" srclang="<?php print $track['lang_code']; ?>"
-             kind="captions" label="<?php print $track['lang_code']; ?>" default>
+             kind="captions" label="<?php print $track['lang_code']; ?>" <?php print $track['default']; ?>>
         <?php else: ?>
           <track id="track<?php print $key; ?>" src="<?php print $track['source_url']; ?>" srclang="<?php print $track['lang_code']; ?>"
-             kind="metadata" label="<?php print $track['lang_code']; ?>" default>
+             kind="metadata" label="<?php print $track['lang_code']; ?>" <?php print $track['default']; ?>>
         <?php endif; ?>
       <?php else: ?>
         <track id="track<?php print $key; ?>" src="<?php print $track['source_url']; ?>" srclang="<?php print $track['lang_code']; ?>"

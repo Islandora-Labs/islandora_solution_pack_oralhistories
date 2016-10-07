@@ -7,7 +7,7 @@
           <?php if (isset($params['tracks']) && $params['enable_transcript_display']): ?>
             <?php foreach ($params['tracks'] as $key => $track): ?>
               <track id="track<?php print $key; ?>" src="<?php print $track['source_url']; ?>" srclang="<?php print $track['lang_code']; ?>"
-                     kind="captions" label="<?php print $track['lang_code']; ?>" default>
+                     kind="captions" label="<?php print $track['lang_code']; ?>" <?php print $track['default']; ?>>
             <?php endforeach; ?>
           <?php endif; ?>
         </video>

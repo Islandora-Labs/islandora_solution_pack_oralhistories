@@ -57,6 +57,13 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#default_value' => variable_get('islandora_oralhistories_annotation_tab_display', FALSE),
   );
 
+  $form['islandora_oralhistories_annotation_vtt_default_language'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Specify VTT default language code(s)'),
+    '#description' => t('Please specifcy the ISO 639-1 language code for default language tracks.  Example: en, fr, es'),
+    '#default_value' => variable_get('islandora_oralhistories_annotation_vtt_default_language', 'en'),
+  );  
+
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['reset'] = array(
     '#type' => 'submit',

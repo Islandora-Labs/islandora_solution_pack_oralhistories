@@ -140,13 +140,31 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
         $source_url = url("islandora/object/{$object->id}/datastream/$datastream->id/view", array('absolute' => TRUE));
 
-        // @todo: how to determine language code? default to 'en'.
-        $lang_code = 'en';
-
         $track['dsid'] = $datastream->id;
-        $track['lang_code'] = $lang_code;
         $track['source_url'] = $source_url;
 
+        // Language Code
+        $lang_code = 'en';
+        $dsidArr = explode("_", $track['dsid']);
+        if (isset($dsidArr[1])) {
+          $track['lang_code'] = strtolower($dsidArr[1]);
+        }
+        else{
+          $track['lang_code'] = $lang_code;
+        }
+
+        // Default Language
+        $trackDefaultsSettingStr = "";
+        if (null !== variable_get('islandora_oralhistories_annotation_vtt_default_language')) {
+          $trackDefaultsSettingStr = variable_get('islandora_oralhistories_annotation_vtt_default_language');
+        }
+        $trackDefaultsSettingStr = str_replace(' ', '', $trackDefaultsSettingStr);
+        $trackDefaultsSettingArr = explode(",", $trackDefaultsSettingStr);
+        
+        $track['default'] = "";        
+        if (in_array($track['lang_code'], $trackDefaultsSettingArr)){
+          $track['default'] = "default";        
+        }     
 
         if (isset($object[$datastream->id]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$datastream->id])) {
             $tracks[] = $track;
