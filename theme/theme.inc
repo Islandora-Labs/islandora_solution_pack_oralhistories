@@ -119,7 +119,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   foreach ($object as $datastream) {
 
     $getTrack = FALSE;
-    if (preg_match('/TRANSCRIPT/', $datastream->id)) {
+    if (preg_match('/^TRANSCRIPT/', $datastream->id)) {
       if (strpos($datastream->mimetype,'xml') !== false) {
         $transcript_mimetype = 'xml';
       }
@@ -129,7 +129,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       $getTrack = TRUE;
     }
 
-    if (preg_match('/MEDIATRACK/', $datastream->id)) {
+    if (preg_match('/^MEDIATRACK/', $datastream->id)) {
         $getTrack = TRUE;
     }
 

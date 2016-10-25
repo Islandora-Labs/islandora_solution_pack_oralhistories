@@ -71,6 +71,51 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
 }
 
 /**
+ * This function will create an xml derivative datastream
+ *
+ * @param AbstractObject $object
+ *   An AbstractObject representing an object within Fedora.
+ * @param bool $force
+ *   Whether derivative generation is being forced or not.
+ *
+ * @return array
+ *   An array describing the outcome of the MP4 creation.
+ *
+ * @see hook_islandora_derivative()
+ */
+function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $object, $force = TRUE, $hook) {
+  module_load_include('inc', 'islandora_oralhistories', 'includes/utilities');
+  try
+  {
+    $destination_dsid = $hook['destination_dsid'];
+    $source_dsid = $hook['source_dsid'];
+
+    $filename = $destination_dsid . '.xml';
+    $dest = file_build_uri($filename);
+    $content = $object[$source_dsid]->content;
+
+    $cues = parse_vtt($content);
+    $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><cues></cues>');
+
+    foreach ($cues as $cue) {
+      $newCue = $xml->addChild('cue');
+      $newCue->addChild('start', (float)$cue['start_time']);
+      $newCue->addChild('end', (float)$cue['end_time']);    
+      $newCue->addChild('speaker', $cue['name']);
+      $newCue->addChild('vtt_text', $cue['text']);
+    }
+
+    $contentXML = $xml->asXML();
+    $file = file_save_data($contentXML, $dest, FILE_EXISTS_REPLACE);  
+    islandora_oralhistories_add_datastream($object, $destination_dsid, $file->uri);  
+    file_delete($file);
+  }
+  catch (exception $e) {
+    watchdog('Islandora Oralhistories', 'Unable to create vtt indexing datastream: ' . $e->getmessage());    
+  }  
+}
+
+/**
  * Adds the given file as a datastream to the given object.
  *
  * @param AbstractObject $object

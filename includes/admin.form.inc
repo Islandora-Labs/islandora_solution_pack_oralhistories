@@ -64,6 +64,13 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#default_value' => variable_get('islandora_oralhistories_annotation_vtt_default_language', 'en'),
   );  
 
+  $form['islandora_oralhistories_annotation_vtt_index_ds_generation'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Generate datastream for WebVTT indexing'),
+    '#description' => t('By default, a datastream for solr indexing will be created when vtt is ingested.'),
+    '#default_value' => variable_get('islandora_oralhistories_annotation_vtt_index_ds_generation', TRUE),
+  );
+  
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['reset'] = array(
     '#type' => 'submit',
