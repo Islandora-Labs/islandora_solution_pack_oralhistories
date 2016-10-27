@@ -336,7 +336,7 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_ingest_
 /**
  * Implements hook_islandora_CMODEL_PID_derivative().
  */
-function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivative() {
+function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivative(AbstractObject $object, $ds_modified_params = array()) {
   $derivatives = array();
 
   if (variable_get('islandora_oralhistories_media_uploaded_type') == 'video') {
@@ -367,6 +367,33 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
       'file' => drupal_get_path('module', 'islandora_oralhistories') . '/includes/derivatives.inc',
     );
   }
+
+  // create a derivative if a text/vtt file is ingested and the config is true  
+  if (variable_get('islandora_oralhistories_annotation_vtt_index_ds_generation', TRUE)) {
+    // we don't know the datastream id, thus need to filter if from the object keys
+    $arrVTTDataStreams = array();
+    foreach( $object as $key => $value ){
+      if ($object[$key]->mimetype == "text/vtt"){
+        array_push($arrVTTDataStreams, $key);
+      }
+    }
+
+    // loop through all MEDIATRACK or TRANSCRIPT text/vtt datastreams to see if derivative needs to be created
+    foreach( $arrVTTDataStreams as $key => $value ){
+      $sourceID = $value;
+      $targetID = "INDEX" . $value;
+  
+      $derivatives[] = array(
+        'source_dsid' => $sourceID, 
+        'destination_dsid' => $targetID,
+        'function' => array(
+          'islandora_oralhistories_create_vtt_indexing_datastream',
+        ),
+        'file' => drupal_get_path('module', 'islandora_oralhistories') . '/includes/derivatives.inc',
+      );
+    }
+  }  
+
   return $derivatives;
 }
 
