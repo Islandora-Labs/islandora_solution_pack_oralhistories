@@ -55,7 +55,7 @@
         > following dynamicfield:
 
         -   &lt;dynamicField name="or\_\*" type="text" indexed="true"
-            > stored="true" multiValued="true"/&gt;
+            stored="true" multiValued="true"/&gt;
 
     -   Restart the tomcat
 
