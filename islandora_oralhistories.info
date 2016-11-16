@@ -12,4 +12,3 @@ core = 7.x
 configure = admin/islandora/solution_pack_config/oralhistories
 stylesheets[all][] = css/islandora_oralhistories.theme.css
 files[] = tests/islandora_oralhistories_ingest_purge.test
-
