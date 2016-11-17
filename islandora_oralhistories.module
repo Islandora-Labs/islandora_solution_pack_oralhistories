@@ -1,16 +1,8 @@
 <?php
-
 /**
  * @file
  * Hooks and callbacks for this module.
  */
-
-define('ISLANDORA_WEB_ANNOTATION_VIEW', 'view web annotations');
-define('ISLANDORA_WEB_ANNOTATION_CREATE', 'create web annotations');
-define('ISLANDORA_WEB_ANNOTATION_EDIT_OWN', 'edit own web annotations');
-define('ISLANDORA_WEB_ANNOTATION_EDIT_ANY', 'edit any web annotations');
-define('ISLANDORA_WEB_ANNOTATION_DELETE_OWN', 'delete own web annotations');
-define('ISLANDORA_WEB_ANNOTATION_DELETE_ANY', 'delete any web annotations');
 
 /**
  * Implements hook_menu().
@@ -30,63 +22,24 @@ function islandora_oralhistories_menu() {
     'title' => 'Oral Histories Transcript Edit form',
     'description' => 'Edit transcript',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('islandora_oralhistories_transcript_edit_form', 2, 4),
+    'page arguments' => array(
+      'islandora_oralhistories_transcript_edit_form',
+      2,
+      4,
+    ),
     'access callback' => 'islandora_datastream_access',
     'access arguments' => array(ISLANDORA_REPLACE_DATASTREAM_CONTENT, 4),
     'file' => 'includes/transcript.edit.form.inc',
     'type' => MENU_CALLBACK,
     'load arguments' => array(2),
   );
-  // try ctools ajax modal form for transcript edit form.
+  // Try ctools ajax modal form for transcript edit form.
   $items['islandora/object/%islandora_object/edit_form/%islandora_datastream/%ctools_js'] = array(
     'page callback' => 'edit_transcript_modal',
     'page arguments' => array(2, 4, 5),
     'access callback' => 'islandora_datastream_access',
     'access arguments' => array(ISLANDORA_REPLACE_DATASTREAM_CONTENT, 4),
     'file' => 'includes/transcript.edit.form.inc',
-    'type' => MENU_CALLBACK,
-  );
-
-  $items['islandora/object/%islandora_object/web_annotation'] = array(
-    'title' => 'Oral Histories Web Annotations',
-    'description' => 'List Web Annotations for a given islandora object',
-    'page callback' => '_retrieve_web_annotations',
-    'page arguments' => array(2),
-    'access callback' => 'islandora_object_access_callback',
-    'access arguments' => array(ISLANDORA_WEB_ANNOTATION_VIEW, 2),
-    'file' => 'includes/annotation.inc',
-    'type' => MENU_CALLBACK,
-  );
-  $items['islandora/object/%islandora_object/web_annotation/create'] = array(
-    'title' => 'Create Oral Histories Web Annotation',
-    'description' => 'Add a new Web Annotation',
-    'page callback' => '_create_web_annotation',
-//    'page arguments' => array(2),
-    'access callback' => 'islandora_object_access_callback',
-    'access arguments' => array(ISLANDORA_WEB_ANNOTATION_CREATE, 2),
-    'file' => 'includes/annotation.inc',
-    'type' => MENU_CALLBACK,
-  );
-  $items['islandora/object/%islandora_object/web_annotation/delete/%'] = array(
-    'title' => 'Remove Oral Histories Web Annotation',
-    'description' => 'Remove an existing Web Annotation',
-    'page callback' => '_remove_web_annotation',
-    'page arguments' => array(2, 5),
-    'access callback' => 'islandora_oralhistories_web_annotation_access',
-    'access arguments' => array(
-      array(ISLANDORA_WEB_ANNOTATION_DELETE_OWN, ISLANDORA_WEB_ANNOTATION_DELETE_ANY), 2),
-    'file' => 'includes/annotation.inc',
-    'type' => MENU_CALLBACK,
-  );
-  $items['islandora/object/%islandora_object/web_annotation/update/%'] = array(
-    'title' => 'Update Oral Histories Web Annotation',
-    'description' => 'Update an existing Web Annotation',
-    'page callback' => '_update_web_annotation',
-    'page arguments' => array(2, 5),
-    'access callback' => 'islandora_oralhistories_web_annotation_access',
-    'access arguments' => array(
-      array(ISLANDORA_WEB_ANNOTATION_EDIT_OWN, ISLANDORA_WEB_ANNOTATION_EDIT_ANY), 2),
-    'file' => 'includes/annotation.inc',
     'type' => MENU_CALLBACK,
   );
 
@@ -98,41 +51,16 @@ function islandora_oralhistories_menu() {
  * Implements hook_permission().
  */
 function islandora_oralhistories_permission() {
-  return array(
-    ISLANDORA_WEB_ANNOTATION_VIEW => array(
-      'title' => t('View web annotations'),
-      'description' => t('view web annotations.'),
-    ),
-    ISLANDORA_WEB_ANNOTATION_CREATE => array(
-      'title' => t('Create web annotations'),
-      'description' => t('create web annotations'),
-    ),
-    ISLANDORA_WEB_ANNOTATION_EDIT_OWN => array(
-      'title' => t('Edit own web annotations'),
-      'description' => t('edit own web annotations'),
-    ),
-    ISLANDORA_WEB_ANNOTATION_EDIT_ANY => array(
-      'title' => t('Edit any web annotations'),
-      'description' => t('edit any web annotations'),
-    ),
-    ISLANDORA_WEB_ANNOTATION_DELETE_OWN => array(
-      'title' => t('Delete own web annotations'),
-      'description' => t('delete own web annotations'),
-    ),
-    ISLANDORA_WEB_ANNOTATION_DELETE_ANY => array(
-      'title' => t('Delete any web annotations'),
-      'description' => t('delete any web annotations'),
-    ),
-  );
+  return array();
 }
 
 /**
  * Checks whether the user can access web annotations for a given object.
  *
  * @param array $perms
- *  Array of user permission to test for.
+ *   Array of user permission to test for.
  * @param \AbstractObject $object
- *  The object to test, if NULL given the object doesn't exist or is
+ *   The object to test, if NULL given the object doesn't exist or is
  *   inaccessible.
  *
  * @return bool
@@ -144,9 +72,11 @@ function islandora_oralhistories_web_annotation_access(array $perms, AbstractObj
   $has_access = FALSE;
   if (!isset($object)) {
     return FALSE;
-  } else if ($user->uid == 1) {
+  }
+  elseif ($user->uid == 1) {
     return TRUE;
-  } else {
+  }
+  else {
     foreach ($perms as $perm) {
       if (user_access($perm) && islandora_object_access($perm, $object)) {
         $has_access = TRUE;
@@ -189,21 +119,11 @@ function islandora_oralhistories_islandora_required_objects(IslandoraTuque $conn
   $datastream->setContentFromFile("$module_path/images/folder.png", FALSE);
   $oralhistories_collection->ingestDatastream($datastream);
 
-  // Web annotation CModel
-  $wa_content_model = $connection->repository->constructObject('islandora:WADMCModel');
-  $wa_content_model->owner = 'fedoraAdmin';
-  $wa_content_model->label = 'Islandora Web Annotation Content Model';
-  $wa_content_model->models = 'fedora-system:ContentModel-3.0';
-  // DS-COMPOSITE-MODEL Datastream.
-  islandora_oralhistories_ingest__ds_composite_datastream($wa_content_model,
-    $module_path . "/xml/webannotation_ds_composite_model.xml");
-
   return array(
     'islandora_oralhistories' => array(
       'title' => 'Islandora Oral Histories',
       'objects' => array(
         $oralhistories_content_model,
-        $wa_content_model,
         $oralhistories_collection,
       ),
     ),
@@ -269,7 +189,7 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
       'file' => 'theme/theme.inc',
       'pattern' => 'islandora_oralhistories__',
       'variables' => array(
-        'object' => NULL
+        'object' => NULL,
       ),
     ),
     'islandora_native_html5' => array(
@@ -277,7 +197,7 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
       'file' => 'theme/theme.inc',
       'variables' => array(
         'object' => NULL,
-        'params' => NULL
+        'params' => NULL,
       ),
     ),
     'islandora_transcript_scroller' => array(
@@ -290,7 +210,7 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
       'pattern' => 'islandora-html5-video-stack__',
       'variables' => array(
         'object' => NULL,
-        'params' => NULL
+        'params' => NULL,
       ),
     ),
     'islandora_html5_video_side' => array(
@@ -299,13 +219,8 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
       'pattern' => 'islandora-html5-video-side__',
       'variables' => array(
         'object' => NULL,
-        'params' => NULL
+        'params' => NULL,
       ),
-    ),
-    'islandora_webannotation' => array(
-      'path' => $module_path . '/theme',
-      'file' => 'theme.inc',
-      'render element' => 'element',
     ),
   );
 }
@@ -342,17 +257,18 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
   if (variable_get('islandora_oralhistories_media_uploaded_type') == 'video') {
     if (module_exists('islandora_video') && function_exists('islandora_video_islandora_sp_videoCModel_islandora_derivative')) {
       $derivatives = islandora_video_islandora_sp_videoCModel_islandora_derivative();
-    } else {
+    }
+    else {
       drupal_set_message(t('Error in creating video derivatives. Cannot find required functions.'), 'error', FALSE);
       drupal_exit();
     }
   }
 
-
   if (variable_get('islandora_oralhistories_media_uploaded_type') == 'audio') {
     if (module_exists('islandora_video') && function_exists('islandora_video_islandora_sp_videoCModel_islandora_derivative')) {
       $derivatives = islandora_audio_islandora_sp_audiocmodel_islandora_derivative();
-    } else {
+    }
+    else {
       drupal_set_message(t('Error in creating audio derivatives. Cannot find required functions.'), 'error', FALSE);
       drupal_exit();
     }
@@ -368,23 +284,23 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
     );
   }
 
-  // create a derivative if a text/vtt file is ingested and the config is true  
+  // create a derivative if a text/vtt file is ingested and the config is true.
   if (variable_get('islandora_oralhistories_annotation_vtt_index_ds_generation', TRUE)) {
-    // we don't know the datastream id, thus need to filter if from the object keys
+    // we don't know the datastream id, thus need to filter if from the object keys.
     $arrVTTDataStreams = array();
-    foreach( $object as $key => $value ){
-      if ($object[$key]->mimetype == "text/vtt"){
+    foreach ($object as $key => $value) {
+      if ($object[$key]->mimetype == "text/vtt") {
         array_push($arrVTTDataStreams, $key);
       }
     }
 
-    // loop through all MEDIATRACK or TRANSCRIPT text/vtt datastreams to see if derivative needs to be created
-    foreach( $arrVTTDataStreams as $key => $value ){
+    // loop through all MEDIATRACK or TRANSCRIPT text/vtt datastreams to see if derivative needs to be created.
+    foreach ($arrVTTDataStreams as $key => $value) {
       $sourceID = $value;
       $targetID = "INDEX" . $value;
-  
+
       $derivatives[] = array(
-        'source_dsid' => $sourceID, 
+        'source_dsid' => $sourceID,
         'destination_dsid' => $targetID,
         'function' => array(
           'islandora_oralhistories_create_vtt_indexing_datastream',
@@ -392,7 +308,7 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
         'file' => drupal_get_path('module', 'islandora_oralhistories') . '/includes/derivatives.inc',
       );
     }
-  }  
+  }
 
   return $derivatives;
 }
@@ -421,6 +337,7 @@ function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
  * Overrides theme_transcripts_ui_transcript_navigation() to have 'edit' button.
  *
  * @param $vars
+ *
  * @return string
  */
 function islandora_transcript_navigation(array &$variables) {
@@ -449,7 +366,7 @@ function islandora_transcript_navigation(array &$variables) {
  * Implements hook_islandora_edit_datastream_registry().
  */
 function islandora_oralhistories_islandora_edit_datastream_registry(AbstractObject $object, AbstractDatastream $datastream) {
-  if (strtoupper($datastream->id)  == 'TRANSCRIPT') {
+  if (strtoupper($datastream->id) == 'TRANSCRIPT') {
     return array(
       array(
         'name' => t('Islandora Oralhistories Edit Transcript'),
@@ -458,5 +375,3 @@ function islandora_oralhistories_islandora_edit_datastream_registry(AbstractObje
     );
   }
 }
-
-
