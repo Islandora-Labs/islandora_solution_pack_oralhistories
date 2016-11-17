@@ -295,14 +295,15 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
       }
     }
 
-    // Loop through all MEDIATRACK or TRANSCRIPT text/vtt datastreams to see if derivative needs to be created.
+    // Loop through all MEDIATRACK or TRANSCRIPT text/vtt datastreams to see
+    // if derivative needs to be created.
     foreach ($arr_vtt_data_streams as $key => $value) {
-      $sourceID = $value;
-      $targetID = "INDEX" . $value;
+      $source_id = $value;
+      $target_id = "INDEX" . $value;
 
       $derivatives[] = array(
-        'source_dsid' => $sourceID,
-        'destination_dsid' => $targetID,
+        'source_dsid' => $source_id,
+        'destination_dsid' => $target_id,
         'function' => array(
           'islandora_oralhistories_create_vtt_indexing_datastream',
         ),
@@ -337,9 +338,11 @@ function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
 /**
  * Overrides theme_transcripts_ui_transcript_navigation() to have 'edit' button.
  *
- * @param $vars
+ * @param array $variables
+ *   Array of variables.
  *
  * @return string
+ *   String of HTML
  */
 function islandora_transcript_navigation(array &$variables) {
   module_load_include('inc', 'islandora_oralhistories', 'includes/transcript.edit.form');
