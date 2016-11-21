@@ -239,17 +239,16 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'edit_own' => islandora_oralhistories_web_annotation_access(array('edit own web annotations'), $object),
     'edit_any' => islandora_oralhistories_web_annotation_access(array('edit any web annotations'), $object),
     'delete_own' => islandora_oralhistories_web_annotation_access(array('delete own web annotations'), $object),
-    'delete_any' => islandora_oralhistories_web_annotation_access(array('delete any web annotations'), $object)
+    'delete_any' => islandora_oralhistories_web_annotation_access(array('delete any web annotations'), $object),
   );
   $js_settings['user'] = array(
     'uid' => $user->uid,
-    'name' => ($user->uid == 0) ? 'anonymous' : $user->name
+    'name' => ($user->uid == 0) ? 'anonymous' : $user->name,
   );
 
-  if ($object->models[0] == 'islandora:oralhistoriesCModel' ) {
+  if ($object->models[0] == 'islandora:oralhistoriesCModel') {
     drupal_add_js(array('islandoraOralhistories' => $js_settings), 'setting');
     drupal_add_js($module_path . '/js/oralhistories.js');
-    drupal_add_js($module_path . '/js/annotationApp.js');
   }
   return array('' => $viewer);
 }
@@ -272,7 +271,8 @@ function islandora_oralhistories_preprocess_islandora_native_html5(array &$varia
  * Implements hook_process_HOOK().
  */
 function islandora_oralhistories_process_islandora_html5_video_side(&$variables) {
-  $variables['params']['trid'] ='trid-' . str_replace(':', '-', $variables['params']['pid']); // trid-PID with : being replaced by -
+  // The trid-PID with : being replaced by -
+  $variables['params']['trid'] = 'trid-' . str_replace(':', '-', $variables['params']['pid']);
 }
 
 
@@ -280,7 +280,8 @@ function islandora_oralhistories_process_islandora_html5_video_side(&$variables)
  * Implements hook_process_HOOK().
  */
 function islandora_oralhistories_process_islandora_html5_video_stack(&$variables) {
-  $variables['params']['trid'] ='trid-' . str_replace(':', '-', $variables['params']['pid']); // trid-PID with : being replaced by -
+  // The trid-PID with : being replaced by -
+  $variables['params']['trid'] = 'trid-' . str_replace(':', '-', $variables['params']['pid']);
 }
 
 
