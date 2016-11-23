@@ -193,14 +193,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
   }
 
-  // Retrieve/display annotations.
-  if (variable_get('islandora_oralhistories_annotation_tab_display', FALSE)) {
-    $viewer_params += array(
-      // @todo: we may need change this to function _retrieve_web_annotations().
-      'annotation_content' => islandora_oralhistories_get_annotation($object->id),
-    );
-  }
-
   $viewer_params += array(
     'enable_caption_display' => variable_get('islandora_oralhistories_enable_caption_display'),
     'enable_transcript_display' => variable_get('islandora_oralhistories_enbable_transcript_display'),
@@ -220,7 +212,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'objectId' => $object->id,
     'enableTranscriptDisplay' => variable_get('islandora_oralhistories_enable_transcript_display'),
     'enableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
-    'enableAnnotationTabDisplay' => variable_get('islandora_oralhistories_annotation_tab_display'),
     'tracks' => $tracks,
   );
 
