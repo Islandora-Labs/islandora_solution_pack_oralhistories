@@ -50,18 +50,18 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#default_value' => variable_get('islandora_oralhistories_transcript_layout_side', FALSE),
   );
 
-  $form['islandora_oralhistories_annotation_vtt_default_language'] = array(
+  $form['islandora_oralhistories_vtt_default_language'] = array(
     '#type' => 'textfield',
     '#title' => t('Specify VTT default language code(s)'),
     '#description' => t('Please specifcy the ISO 639-1 language code for default language tracks.  Example: en, fr, es'),
-    '#default_value' => variable_get('islandora_oralhistories_annotation_vtt_default_language', 'en'),
+    '#default_value' => variable_get('islandora_oralhistories_vtt_default_language', 'en'),
   );
 
-  $form['islandora_oralhistories_annotation_vtt_index_ds_generation'] = array(
+  $form['islandora_oralhistories_vtt_index_ds_generation'] = array(
     '#type' => 'checkbox',
     '#title' => t('Generate datastream for WebVTT indexing'),
     '#description' => t('By default, a datastream for solr indexing will be created when vtt is ingested.'),
-    '#default_value' => variable_get('islandora_oralhistories_annotation_vtt_index_ds_generation', TRUE),
+    '#default_value' => variable_get('islandora_oralhistories_vtt_index_ds_generation', TRUE),
   );
 
   $form['actions'] = array('#type' => 'actions');

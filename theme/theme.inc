@@ -150,8 +150,8 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
       // Default Language.
       $track_defaults_setting_str = "";
-      if (NULL !== variable_get('islandora_oralhistories_annotation_vtt_default_language')) {
-        $track_defaults_setting_str = variable_get('islandora_oralhistories_annotation_vtt_default_language');
+      if (NULL !== variable_get('islandora_oralhistories_vtt_default_language')) {
+        $track_defaults_setting_str = variable_get('islandora_oralhistories_vtt_default_language');
       }
       $track_defaults_setting_str = str_replace(' ', '', $track_defaults_setting_str);
       $track_defaults_setting_str = explode(",", $track_defaults_setting_str);

@@ -67,6 +67,7 @@ function islandora_oralhistories_permission() {
  *   TRUE if user access granted
  *   FALSE if user access denied
  */
+/*
 function islandora_oralhistories_web_annotation_access(array $perms, AbstractObject $object = NULL) {
   global $user;
   $has_access = FALSE;
@@ -85,6 +86,7 @@ function islandora_oralhistories_web_annotation_access(array $perms, AbstractObj
     return $has_access;
   }
 }
+*/
 
 /**
  * Implements hook_islandora_required_objects().
@@ -285,7 +287,7 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
   }
 
   // Create a derivative if a text/vtt file is ingested and the config is true.
-  if (variable_get('islandora_oralhistories_annotation_vtt_index_ds_generation', TRUE)) {
+  if (variable_get('islandora_oralhistories_vtt_index_ds_generation', TRUE)) {
     // We don't know the datastream id,
     // thus need to filter if from the object keys.
     $arr_vtt_data_streams = array();
