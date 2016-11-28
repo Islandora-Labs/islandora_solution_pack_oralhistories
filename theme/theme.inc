@@ -27,13 +27,8 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   drupal_add_css($module_path . '/lib/videojs/video-js.css');
   drupal_add_js($module_path . '/lib/videojs/videojs.js');
 
-
   // Use jquery.ui tabs.
   drupal_add_library('system', 'ui.tabs');
-
-  // reactJS library. This library is used for 'Annotation' tab.
-  drupal_add_js($module_path . '/lib/reactjs/react.js');
-  drupal_add_js($module_path . '/lib/reactjs/react-dom.js');
 
   $object = $variables['object'];
   $repository = $object->repository;
@@ -56,11 +51,10 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   $variables['metadata'] = islandora_retrieve_metadata_markup($object);
   $variables['description'] = islandora_retrieve_description_markup($object);
 
-  // construct $variables['islandora_content'] dynamically.
+  // Construct $variables['islandora_content'] dynamically.
   $variables['islandora_content'] = array();
 
-  // prepare viewer params for media file.
-  $viewer_params = array();
+  // Prepare viewer params for media file.
   $viewer_params = array(
     'pid' => $object->id,
   );
@@ -71,8 +65,9 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     );
     if (isset($object['MP4'])) {
       $media_dsid = 'MP4';
-    } else {
-      if (variable_get('islandora_video_play_obj', true)) {
+    }
+    else {
+      if (variable_get('islandora_video_play_obj', TRUE)) {
         if ($object['OBJ'] && $object['OBJ']->mimetype == 'video/mp4') {
           $max_file_size = ((int) variable_get('islandora_video_max_obj_size', 500)) * 1024 * 1024;
           if ($object['OBJ']->size < $max_file_size) {
@@ -105,7 +100,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     drupal_set_message(t('Error retrieving datastream %s %t', array('%s' => $media_dsid, '%t' => $e->getMessage())), 'error', FALSE);
   }
 
-
   // Thumbnail.
   if (isset($object['TN']) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['TN'])) {
     $viewer_params += array(
@@ -113,62 +107,63 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     );
   }
 
-  // get all transcript datastreams if more than one?
-  $tracks= array();
+  // Get all transcript datastreams if more than one?
+  $tracks = array();
   $transcript_mimetype = '';
   foreach ($object as $datastream) {
 
-    $getTrack = FALSE;
+    $get_track = FALSE;
     if (preg_match('/^TRANSCRIPT/', $datastream->id)) {
-      if (strpos($datastream->mimetype,'xml') !== false) {
+      if (strpos($datastream->mimetype, 'xml') !== FALSE) {
         $transcript_mimetype = 'xml';
       }
       else {
         $transcript_mimetype = 'vtt';
       }
-      $getTrack = TRUE;
+      $get_track = TRUE;
     }
 
     if (preg_match('/^MEDIATRACK/', $datastream->id)) {
-        $getTrack = TRUE;
+      $get_track = TRUE;
     }
 
     // Ensure that even if MEDIATRACK is not present, show TRANSCRIPT
-    // This works, but need to get more clarity as to how the TRANSCRIPT and MEDIATRACK content are handled at the front end
-    if($getTrack == TRUE) {
-        $track = array();
+    // This works, but need to get more clarity as to how the TRANSCRIPT
+    // and MEDIATRACK content are handled at the front end.
+    if ($get_track == TRUE) {
+      $track = array();
 
-        $source_url = url("islandora/object/{$object->id}/datastream/$datastream->id/view", array('absolute' => TRUE));
+      $source_url = url("islandora/object/{$object->id}/datastream/$datastream->id/view", array('absolute' => TRUE));
 
-        $track['dsid'] = $datastream->id;
-        $track['source_url'] = $source_url;
+      $track['dsid'] = $datastream->id;
+      $track['source_url'] = $source_url;
 
-        // Language Code
-        $lang_code = 'en';
-        $dsidArr = explode("_", $track['dsid']);
-        if (isset($dsidArr[1])) {
-          $track['lang_code'] = strtolower($dsidArr[1]);
-        }
-        else{
-          $track['lang_code'] = $lang_code;
-        }
+      // Language Code.
+      $lang_code = 'en';
+      $dsid_arr = explode("_", $track['dsid']);
+      if (isset($dsid_arr[1])) {
+        $track['lang_code'] = strtolower($dsid_arr[1]);
+      }
+      else {
+        $track['lang_code'] = $lang_code;
+      }
 
-        // Default Language
-        $trackDefaultsSettingStr = "";
-        if (null !== variable_get('islandora_oralhistories_annotation_vtt_default_language')) {
-          $trackDefaultsSettingStr = variable_get('islandora_oralhistories_annotation_vtt_default_language');
-        }
-        $trackDefaultsSettingStr = str_replace(' ', '', $trackDefaultsSettingStr);
-        $trackDefaultsSettingArr = explode(",", $trackDefaultsSettingStr);
-        
-        $track['default'] = "";        
-        if (in_array($track['lang_code'], $trackDefaultsSettingArr)){
-          $track['default'] = "default";        
-        }     
+      // Default Language.
+      $track_defaults_setting_str = "";
+      if (NULL !== variable_get('islandora_oralhistories_vtt_default_language')) {
+        $track_defaults_setting_str = variable_get('islandora_oralhistories_vtt_default_language');
+      }
+      $track_defaults_setting_str = str_replace(' ', '', $track_defaults_setting_str);
+      $track_defaults_setting_str = explode(",", $track_defaults_setting_str);
 
-        if (isset($object[$datastream->id]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$datastream->id])) {
-            $tracks[] = $track;
-        }
+      $track['default'] = "";
+      if (in_array($track['lang_code'], $track_defaults_setting_str)) {
+        $track['default'] = "default";
+      }
+
+      if (isset($object[$datastream->id]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$datastream->id])) {
+        $tracks[] = $track;
+      }
     }
 
   }
@@ -198,20 +193,10 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
   }
 
-  // Retrieve/display annotations.
-  if (variable_get('islandora_oralhistories_annotation_tab_display', FALSE)) {
-    $viewer_params += array(
-      //@todo: we may need change this to function _retrieve_web_annotations().
-      'annotation_content' => islandora_oralhistories_get_annotation($object->id),
-    );
-  }
-
   $viewer_params += array(
     'enable_caption_display' => variable_get('islandora_oralhistories_enable_caption_display'),
     'enable_transcript_display' => variable_get('islandora_oralhistories_enbable_transcript_display'),
   );
-
-//  $viewer = theme('islandora_native_html5', array('params' => $viewer_params));
 
   if (variable_get('islandora_oralhistories_transcript_layout_side')) {
     $viewer = theme('islandora_html5_video_side', array('params' => $viewer_params));
@@ -227,29 +212,12 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'objectId' => $object->id,
     'enableTranscriptDisplay' => variable_get('islandora_oralhistories_enable_transcript_display'),
     'enableCaptionDisplay' => variable_get('islandora_oralhistories_enable_caption_display'),
-    'enableAnnotationTabDisplay' => variable_get('islandora_oralhistories_annotation_tab_display'),
-    'tracks' => $tracks
+    'tracks' => $tracks,
   );
 
-  // Add more settings for annotation.
-  global $user;
-  $js_settings['permissions'] = array(
-    'view' => islandora_oralhistories_web_annotation_access(array('view web annotations'), $object),
-    'create' => islandora_oralhistories_web_annotation_access(array('create web annotations'), $object),
-    'edit_own' => islandora_oralhistories_web_annotation_access(array('edit own web annotations'), $object),
-    'edit_any' => islandora_oralhistories_web_annotation_access(array('edit any web annotations'), $object),
-    'delete_own' => islandora_oralhistories_web_annotation_access(array('delete own web annotations'), $object),
-    'delete_any' => islandora_oralhistories_web_annotation_access(array('delete any web annotations'), $object)
-  );
-  $js_settings['user'] = array(
-    'uid' => $user->uid,
-    'name' => ($user->uid == 0) ? 'anonymous' : $user->name
-  );
-
-  if ($object->models[0] == 'islandora:oralhistoriesCModel' ) {
+  if ($object->models[0] == 'islandora:oralhistoriesCModel') {
     drupal_add_js(array('islandoraOralhistories' => $js_settings), 'setting');
     drupal_add_js($module_path . '/js/oralhistories.js');
-    drupal_add_js($module_path . '/js/annotationApp.js');
   }
   return array('' => $viewer);
 }
@@ -272,7 +240,8 @@ function islandora_oralhistories_preprocess_islandora_native_html5(array &$varia
  * Implements hook_process_HOOK().
  */
 function islandora_oralhistories_process_islandora_html5_video_side(&$variables) {
-  $variables['params']['trid'] ='trid-' . str_replace(':', '-', $variables['params']['pid']); // trid-PID with : being replaced by -
+  // The trid-PID with : being replaced by -
+  $variables['params']['trid'] = 'trid-' . str_replace(':', '-', $variables['params']['pid']);
 }
 
 
@@ -280,7 +249,8 @@ function islandora_oralhistories_process_islandora_html5_video_side(&$variables)
  * Implements hook_process_HOOK().
  */
 function islandora_oralhistories_process_islandora_html5_video_stack(&$variables) {
-  $variables['params']['trid'] ='trid-' . str_replace(':', '-', $variables['params']['pid']); // trid-PID with : being replaced by -
+  // The trid-PID with : being replaced by -
+  $variables['params']['trid'] = 'trid-' . str_replace(':', '-', $variables['params']['pid']);
 }
 
 

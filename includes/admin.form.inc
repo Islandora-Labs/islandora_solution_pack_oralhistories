@@ -20,9 +20,9 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   $form = array();
   // Get viewer table.
-//  $viewer_table = islandora_viewers_form('islandora_oralhistories_viewers', 'video/mp4');
-//  $form += $viewer_table;
-
+  // $viewer_table =
+  // islandora_viewers_form('islandora_oralhistories_viewers', 'video/mp4');
+  // $form += $viewer_table;
   $form['islandora_oralhistories_make_vtt'] = array(
     '#type' => 'checkbox',
     '#title' => t('Create WEBVTT file for captions or subtitles.'),
@@ -50,27 +50,20 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#default_value' => variable_get('islandora_oralhistories_transcript_layout_side', FALSE),
   );
 
-  $form['islandora_oralhistories_annotation_tab_display'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Display annotation tab'),
-    '#description' => t('By default, the annotation tab will not be displayed.'),
-    '#default_value' => variable_get('islandora_oralhistories_annotation_tab_display', FALSE),
-  );
-
-  $form['islandora_oralhistories_annotation_vtt_default_language'] = array(
+  $form['islandora_oralhistories_vtt_default_language'] = array(
     '#type' => 'textfield',
     '#title' => t('Specify VTT default language code(s)'),
     '#description' => t('Please specifcy the ISO 639-1 language code for default language tracks.  Example: en, fr, es'),
-    '#default_value' => variable_get('islandora_oralhistories_annotation_vtt_default_language', 'en'),
-  );  
+    '#default_value' => variable_get('islandora_oralhistories_vtt_default_language', 'en'),
+  );
 
-  $form['islandora_oralhistories_annotation_vtt_index_ds_generation'] = array(
+  $form['islandora_oralhistories_vtt_index_ds_generation'] = array(
     '#type' => 'checkbox',
     '#title' => t('Generate datastream for WebVTT indexing'),
     '#description' => t('By default, a datastream for solr indexing will be created when vtt is ingested.'),
-    '#default_value' => variable_get('islandora_oralhistories_annotation_vtt_index_ds_generation', TRUE),
+    '#default_value' => variable_get('islandora_oralhistories_vtt_index_ds_generation', TRUE),
   );
-  
+
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['reset'] = array(
     '#type' => 'submit',
