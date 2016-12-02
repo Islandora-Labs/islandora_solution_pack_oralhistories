@@ -120,7 +120,7 @@ Current maintainers:
 * [Marcus Barnes](https://github.com/MarcusBarnes)
 * [Nat Kanthan](https://github.com/Natkeeran)
 
-## Contributors
+Contributors:
 * [Lingling Jiang](https://github.com/sprklinginfo)
 * Edward Garrett
 
