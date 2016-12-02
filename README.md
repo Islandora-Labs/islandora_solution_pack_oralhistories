@@ -122,7 +122,7 @@ Current maintainers:
 
 ## Contributors
 * [Lingling Jiang](https://github.com/sprklinginfo)
-* [Edward Garrett]
+* Edward Garrett
 
 ## Development
 
