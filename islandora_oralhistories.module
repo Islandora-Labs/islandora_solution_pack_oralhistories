@@ -42,6 +42,13 @@ function islandora_oralhistories_menu() {
     'file' => 'includes/transcript.edit.form.inc',
     'type' => MENU_CALLBACK,
   );
+  // Adds a tab in the admininterface when submodules (e.g., Transcripts UI)
+  // are added.
+  $items['admin/islandora/solution_pack_config/oralhistories/config'] = array(
+    'title' => 'Settings',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -60,
+  );
 
   return $items;
 }
@@ -69,24 +76,24 @@ function islandora_oralhistories_permission() {
  */
 /*
 function islandora_oralhistories_web_annotation_access(array $perms, AbstractObject $object = NULL) {
-  global $user;
-  $has_access = FALSE;
-  if (!isset($object)) {
-    return FALSE;
-  }
-  elseif ($user->uid == 1) {
-    return TRUE;
-  }
-  else {
-    foreach ($perms as $perm) {
-      if (user_access($perm) && islandora_object_access($perm, $object)) {
-        $has_access = TRUE;
-      }
-    }
-    return $has_access;
-  }
+global $user;
+$has_access = FALSE;
+if (!isset($object)) {
+return FALSE;
 }
-*/
+elseif ($user->uid == 1) {
+return TRUE;
+}
+else {
+foreach ($perms as $perm) {
+if (user_access($perm) && islandora_object_access($perm, $object)) {
+$has_access = TRUE;
+}
+}
+return $has_access;
+}
+}
+ */
 
 /**
  * Implements hook_islandora_required_objects().
