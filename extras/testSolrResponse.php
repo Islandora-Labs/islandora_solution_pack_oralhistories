@@ -3,7 +3,7 @@
    * The testSolrResponse.php script is a helper script to help determine if
    * the Solr is communicating properly with the Oral Histories Solution Pack.
    *
-   * Place this entire script within a Execute PHP code block in your Islandora
+   * Place this entire script within an Execute PHP code block in your Islandora
    * instance.  For a production site, this block should be configured to be
    * limited to admin users and to specific page.  Typically once does not
    * include PHP tags when added PHP code into Execute PHP code blocks.
