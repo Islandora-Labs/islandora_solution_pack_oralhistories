@@ -36,7 +36,6 @@
   // Now we query solr fields to buid $tcus
   $qualifier = 'PID:' . '"' . $pid . '"';
 
-  
   // solr fields to be returned.
   $fields = array('PID', 'or_cue_id', 'or_start', 'or_end');
 
@@ -44,7 +43,6 @@
   $fields = array_merge($fields, $speaker);
 
   // Build solr query.
-  //$query = "$qualifier AND " . 'RELS_EXT_hasModel_uri_mt:"islandora:oralhistoriesCModel"';
   $query = "$qualifier";
   $query .= "&sort=or_start asc";
 
