@@ -1,11 +1,15 @@
   <?php
 
+  // Replace 'object:pid' with the PID of a oral histories object
   $pid = str_replace('-', ':', 'object:pid');
+  // Replace 'or_transcript' with one of the teirs from your installation.
   $tiers = array("or_transcript");
+  // Replace 'or_solespeaker' with one of the speakers from your installation.
   $speaker = array("or_solespeaker");
+  // Replace 'localhost:8080/solr' with the path to your Solr instance.
   $url = parse_url('localhost:8080/solr');
 
- // Now we query solr fields to buid $tcus
+  // Now we query solr fields to buid $tcus
   $qualifier = 'PID:' . '"' . $pid . '"';
 
   
