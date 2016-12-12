@@ -1,5 +1,29 @@
   <?php
-
+  /**
+   * The testSolrResponse.php script is a helper script to help determine if
+   * the Solr is communicating properly with the Oral Histories Solution Pack.
+   *
+   * Place this entire script within a Execute PHP code block in your Islandora
+   * instance.  For a production site, this block should be configured to be
+   * limited to admin users and to specific page.  Typically once does not
+   * include PHP tags when added PHP code into Execute PHP code blocks.
+   *
+   * To configure the script, update the $pid, $tiers, $speaker and $url
+   * variables as appropriate to your installation.
+   *
+   * Expected return values:
+   *
+   * Success: var_dump of the Solr JSON response that should include details
+   * of the transcript.
+   *
+   * Failure:  Error logged or var_dump of empty JSON response.
+   *
+   * Next steps:
+   *  - Double check that the values of $pid, $tiers, $speaker, and $url are
+   *  valid.
+   *  - Check Solr configuration.  Check islandora_solution_pack_oralhistories
+   *  issues or wiki for trouble shooting tips.
+   */
   // Replace 'object:pid' with the PID of a oral histories object
   $pid = str_replace('-', ':', 'object:pid');
   // Replace 'or_transcript' with one of the teirs from your installation.
