@@ -132,4 +132,4 @@ If you would like to contribute to this module, please check out our helpful [Do
 
 ## License
 
-[GPLv3](http://www.gnu.org/licenses/gpl-3.0.txt)
+[GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.txt) or later.
