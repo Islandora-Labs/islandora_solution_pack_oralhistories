@@ -140,7 +140,6 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
   // $query = "$qualifier AND " .
   // 'RELS_EXT_hasModel_uri_mt:"islandora:oralhistoriesCModel"';
   $query = "$qualifier";
-  $query .= "&sort=or_start asc";
 
   if ($options['term'] == '') {
     $params = array(
