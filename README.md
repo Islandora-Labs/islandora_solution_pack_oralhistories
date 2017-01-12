@@ -17,34 +17,22 @@ This module requires the following modules/libraries:
 * [Islandora Solr Search](https://github.com/Islandora/islandora_solr_search)
 * [Islandora Video Solution Pack](https://github.com/Islandora/islandora_solution_pack_video)
 * [Islandora Audio Solution Pack](https://github.com/Islandora/islandora_solution_pack_audio)
-* [Transcripts UI](https://github.com/sprklinginfo/transcripts_ui)
 
 ## Installation
 
 Install as usual, see [this](https://drupal.org/documentation/install/modules-themes/modules-7) for further information.
 
+A fork of Pinedrop's [Transcripts UI](https://github.com/pinedrop/transcripts_ui) has been included as a submodule.  As part of the installation, you will need to enable this submodule either through Drupal's module administration interface or via drush on the command line.
+
 ## Configuration
 ### Transcripts UI
 
-In Configuration > User Interface > Transcripts UI (admin/config/user-interface/transcripts), "Tiers" and "Speaker names" need be configured based on the transcript xml file. It will look like this: TIER_ID|TIER_NAME.
+Navigate to Islandora > Solution Pack Configuration > Oral Histories Solution Pack and then click the TRANSCRIPTS UI tab. (admin/islandora/solution_pack_config/oralhistories/transcripts). "Tiers" and "Speaker names" need be configured based on the transcript xml file. It will look like this: TIER_ID|TIER_NAME.
 
 For example, in the example transcript xml file below, the TIER_ID will be `or_transcript` (xml tag with 'or_' prefix). TIER_NAME could be any text label that users will see, such as `Transcript`.
 Together they should look something like: `or_transcript|Transcript`.
 
-There are a number of options included by default; you'll want to get rid of most of them. At MSUL, we have:
-#### Transcript Tiers
-| All tiers* | |
-| ----- | ----- |
-| or_transcript | English |
-
-| Hidden tiers | |
-| ----- | ----- |
-| | |
-This tier is empty
-
-| Speaker names* | |
-| ----- | ----- |
-| or_speaker | Speaker |
+There are a number of options included by default; you'll want to get rid of most of them.
 
 * Entering at least one value here is required, or **your transcripts will not display**
 
@@ -59,7 +47,7 @@ There are some configuration options in Administration » Islandora » Oral Hist
   * "Enable captions/subtitles display" -- if you'd like to display the captions
   * "Enable transcript display" -- **this one is the most important** because it's what allows your transcript scroller to display
   * "Display media and transcript side-by-side" -- if you don't like the default display of having the scrolling transcript below the video/audio player, check this to move the scroller to the side
-* The 'Annotation' tab is still in early development stage which should be disabled on a production server.
+
 
 ## Notes
 
@@ -97,7 +85,7 @@ This will ensure sure those child elements are indexed with the correct sequence
 
 An or_transcript_solr.xslt file (xsl/or_transcript_solr.xslt) is included in the module in order to index transcript.xml fields in Solr.
 
-* Please copy this file to 'islandora_transforms' folder. Your institution/the folks running your instance will have made decisions about where this folder lives, so you'll want to follow those best practices for your site.  
+* Please copy this file to 'islandora_transforms' folder. Your institution/the folks running your instance will have made decisions about where this folder lives, so you'll want to follow those best practices for your site.
 * Update the foxmlToSolr.xslt file to include new xslt file.
 * Modify solr schema.xml file to add or.* fields created from transcript.xml file.
 * **Note** On our instance, we use type="text" for those transcript fields (as shown in the example below). You need use a correct field type based on your solr instance.
@@ -127,8 +115,6 @@ Contributors:
 ## Development
 
 If you would like to contribute to this module, please check out our helpful [Documentation for Developers](https://github.com/Islandora/islandora/wiki#wiki-documentation-for-developers) info, as well as our [Developers](http://islandora.ca/developers) section on the Islandora.ca site.
-
-
 
 ## License
 
