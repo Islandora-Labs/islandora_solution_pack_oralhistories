@@ -93,10 +93,6 @@ Contributors:
 * [Lingling Jiang](https://github.com/sprklinginfo)
 * Edward Garrett
 
-## Development
-
-If you would like to contribute to this module, please check out our helpful [Documentation for Developers](https://github.com/Islandora/islandora/wiki#wiki-documentation-for-developers) info, as well as our [Developers](http://islandora.ca/developers) section on the Islandora.ca site.
-
 ## License
 
 [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.txt) or later.
