@@ -24,7 +24,7 @@ A fork of Pinedrop's [Transcripts UI](https://github.com/pinedrop/transcripts_ui
 ## Configuration
 ### Transcripts UI
 
-Navigate to Islandora > Solution Pack Configuration > Oral Histories Solution Pack and then click the TRANSCRIPTS UI tab. (admin/islandora/solution_pack_config/oralhistories/transcripts). "Tiers" and "Speaker names" need be configured based on the transcript xml file. It will look like this: TIER_ID|TIER_NAME.
+Navigate to Islandora » Solution Pack Configuration » Oral Histories Solution Pack and then click the TRANSCRIPTS UI tab. (admin/islandora/solution_pack_config/oralhistories/transcripts). "Tiers" and "Speaker names" need be configured based on the transcript xml file. It will look like this: TIER_ID|TIER_NAME.
 
 For example, in the example transcript xml file below, the TIER_ID will be `or_transcript` (xml tag with 'or_' prefix). TIER_NAME could be any text label that users will see, such as `Transcript`.
 Together they should look something like: `or_transcript|Transcript`.
