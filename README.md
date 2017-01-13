@@ -48,7 +48,7 @@ There are some configuration options in Administration » Islandora » Oral Hist
 
 ## Notes
 
-This module supports transcript files in WebVTT and in an XML format like that below:
+This module supports transcript files in [WebVTT](https://w3c.github.io/webvtt/) and in an XML format like that below:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -79,7 +79,7 @@ This will ensure sure those child elements are indexed with the correct sequence
 
 ## Index transcript fields in Solr
 
-Please see the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for documentation on indexing transcripts in [transcript XML](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki/Configuration:--Basic-Indexing-of-transcript-XML-in-Solr) and [WebVtt](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki/Indexing-WebVTT-files) in Solr.
+Please see the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for documentation on indexing transcripts in [transcript XML](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki/Configuration:--Basic-Indexing-of-transcript-XML-in-Solr) and [WebVTT](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki/Indexing-WebVTT-files) in Solr.
 
 ## Maintainers/Sponsors
 Current maintainers:
