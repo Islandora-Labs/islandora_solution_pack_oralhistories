@@ -1,11 +1,8 @@
 # Oral Histories Solution Pack [![Build Status](https://travis-ci.org/digitalutsc/islandora_solution_pack_oralhistories.svg?branch=master)](https://travis-ci.org/digitalutsc/islandora_solution_pack_oralhistories)
 
-**Still in active development, expecting changes or errors from time to time**
-
 ## Introduction
 
-Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT / MEDIATRACK datastream through the Islandora interface.
-Displays transcript content along with video or audio file.
+Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT / MEDIATRACK datastream through the Islandora interface.  Displays transcript content along with video or audio file.
 
 ## Requirements
 
@@ -51,7 +48,7 @@ There are some configuration options in Administration » Islandora » Oral Hist
 
 ## Notes
 
-**Caution:** This Solution Pack is currently in development stage. It only supports transcript files in a format like this one:
+This module supports transcript files in WebVTT and in an XML format like that below:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -80,28 +77,9 @@ There are some configuration options in Administration » Islandora » Oral Hist
 Once you have chosen xml tags for your use case, please make sure the structure of the child elements in <cue> tag are consistent **in the same transcript xml file**, even if some child elements are empty.
 This will ensure sure those child elements are indexed with the correct sequence numbers so they can be assembled properly when displaying on 'Transcript' tab.
 
-
 ## Index transcript fields in Solr
 
-An or_transcript_solr.xslt file (xsl/or_transcript_solr.xslt) is included in the module in order to index transcript.xml fields in Solr.
-
-* Please copy this file to 'islandora_transforms' folder. Your institution/the folks running your instance will have made decisions about where this folder lives, so you'll want to follow those best practices for your site.
-* Update the foxmlToSolr.xslt file to include new xslt file.
-* Modify solr schema.xml file to add or.* fields created from transcript.xml file.
-* **Note** On our instance, we use type="text" for those transcript fields (as shown in the example below). You need use a correct field type based on your solr instance.
-
-```xml
-<dynamicField name="or_*" type="text" indexed="true" stored="true" multiValued="true"/>
-```
-* Please restart the solr application with new schema.
-
-## Troubleshooting/Issues
-
-Having problems or solved a problem? Check out the Islandora google groups for a solution.
-
-* [Islandora Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/islandora)
-* [Islandora Dev Group](https://groups.google.com/forum/?hl=en&fromgroups#!forum/islandora-dev)
-
+Please see the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for documentation on indexing transcripts in [transcript XML](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki/Configuration:--Basic-Indexing-of-transcript-XML-in-Solr) and [WebVtt](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki/Indexing-WebVTT-files) in Solr.
 
 ## Maintainers/Sponsors
 Current maintainers:
