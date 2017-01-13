@@ -86,6 +86,9 @@ Current maintainers:
 * [Marcus Barnes](https://github.com/MarcusBarnes)
 * [Nat Kanthan](https://github.com/Natkeeran)
 
+Sponsors:
+* The [Digital Scholarship Unit (DSU)](https://www.utsc.utoronto.ca/digitalscholarship/) at the University of Toronto Scarborough Library
+
 Contributors:
 * [Lingling Jiang](https://github.com/sprklinginfo)
 * Edward Garrett
