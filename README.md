@@ -77,6 +77,10 @@ This module supports transcript files in [WebVTT](https://w3c.github.io/webvtt/)
 Once you have chosen xml tags for your use case, please make sure the structure of the child elements in <cue> tag are consistent **in the same transcript xml file**, even if some child elements are empty.
 This will ensure sure those child elements are indexed with the correct sequence numbers so they can be assembled properly when displaying on 'Transcript' tab.
 
+### Permissions
+
+In order to view transcripts in the user-interface, double check that anonymous and authenticated users have the `Islandora - View repository objects` permission enabled.  You can check via the Drupal administration user-interface `People > Permissions`.
+
 ## Index transcript fields in Solr
 
 Please see the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for documentation on indexing transcripts in [transcript XML](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki/Configuration:--Basic-Indexing-of-transcript-XML-in-Solr) and [WebVTT](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki/Indexing-WebVTT-files) in Solr.
