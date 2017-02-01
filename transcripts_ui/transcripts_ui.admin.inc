@@ -10,9 +10,8 @@ function transcripts_ui_admin()
         '#collapsed' => FALSE,
     );
     $default_tiers = array(
-        'ts_content_epo' => 'Esperanto',
-        'ts_content_qya' => 'Quenya',
-        'ts_content_sjn' => 'Sindarin',
+        'or_transcript' => 'Transcript',
+        'or_translation' => 'Translation',
     );
     $form['transcripts_ui_tier_settings']['transcripts_ui_tiers'] = array(
         '#title' => t('Tiers'),
@@ -23,8 +22,8 @@ function transcripts_ui_admin()
         '#required' => TRUE,
     );
     $default_speaker_names = array(
-        '@script' => 'Script',
-        'phonetic' => 'Phonetic',
+        'or_speaker' => 'Speaker',
+        'or_solespeaker' => 'Speaker',
     );
     $form['transcripts_ui_tier_settings']['transcripts_ui_speaker_names'] = array(
         '#title' => t('Speaker names'),
