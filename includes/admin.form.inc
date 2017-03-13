@@ -46,7 +46,7 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
   $form['islandora_oralhistories_transcript_layout_side'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display media and transcript side-by-side'),
-    '#description' => t('By default, the trascript will be displayed beneath the media object.'),
+    '#description' => t('By default, the transcript will be displayed beneath the media object.'),
     '#default_value' => variable_get('islandora_oralhistories_transcript_layout_side', FALSE),
   );
 
