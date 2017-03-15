@@ -24,9 +24,9 @@
    *  - Check Solr configuration.  Check islandora_solution_pack_oralhistories
    *  issues or wiki for trouble shooting tips.
    */
-  // Replace 'object:pid' with the PID of a oral histories object
+  // Replace 'object:pid' with the PID of an oral histories object
   $pid = str_replace('-', ':', 'object:pid');
-  // Replace 'or_transcript' with one of the teirs from your installation.
+  // Replace 'or_transcript' with one of the tiers from your installation.
   $tiers = array("or_transcript");
   // Replace 'or_solespeaker' with one of the speakers from your installation.
   $speaker = array("or_solespeaker");
