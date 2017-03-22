@@ -14,6 +14,7 @@
       </div>
     </div>
   </div>
+  <?php if ($params['enable_transcript_display']): ?>
   <div id="transcript-tabs" class="col-sm-6 col-md-6">
     <ul id="tabs-list">
       <li><a href="#transcript-tab">Transcript</a></li>
@@ -27,4 +28,5 @@
       ?>
     </div>
   </div>
+  <?php endif; ?>
 </div>
