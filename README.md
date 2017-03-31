@@ -49,9 +49,13 @@ There are some configuration options in Administration » Islandora » Oral Hist
   * "Enable captions/subtitles display" -- if you'd like to display the captions
   * "Enable transcript display" -- **this one is the most important** because it's what allows your transcript scroller to display
   * "Display media and transcript side-by-side" -- if you don't like the default display of having the scrolling transcript below the video/audio player, check this to move the scroller to the side
+  
+### Themes
+
+The viewer currently works with any bootstrap theme. For non bootstrap themes, additional files are provided to enable bootstrap elements required by the viewer. View the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for additional details. 
 
 
-### Transcript File Formats
+## Transcript File Formats
 
 This module supports transcript files in [WebVTT](https://w3c.github.io/webvtt/) and in an XML format like that below:
 
