@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Adds all required Fedora objects depending on video or audio file uploaded and TRANSCRIPT / MEDIATRACK datastream through the Islandora interface.  Displays transcript content along with video or audio file.
+Provides a content model for Oral Histories and a viewer for displaying timed text content (XML or WebVTT) alongside video and audio files. 
 
 ## Requirements
 
@@ -22,6 +22,11 @@ Install as usual, see [this](https://drupal.org/documentation/install/modules-th
 A fork of Pinedrop's [Transcripts UI](https://github.com/pinedrop/transcripts_ui) has been included as a submodule.  As part of the installation, you will need to enable this submodule either through Drupal's module administration interface or via drush on the command line.
 
 ## Configuration
+
+### Solr
+
+The module configuration requires a modification to the Gsearch XSLT in order to index XML and WebVTT datastreams. Informaiton for how to do this is provided in the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki).
+
 ### Transcripts UI
 
 Navigate to Islandora » Solution Pack Configuration » Oral Histories Solution Pack and then click the TRANSCRIPTS UI tab. (admin/islandora/solution_pack_config/oralhistories/transcripts). "Tiers" and "Speaker names" need be configured based on the transcript xml file. It will look like this: TIER_ID|TIER_NAME.
@@ -46,7 +51,7 @@ There are some configuration options in Administration » Islandora » Oral Hist
   * "Display media and transcript side-by-side" -- if you don't like the default display of having the scrolling transcript below the video/audio player, check this to move the scroller to the side
 
 
-## Notes
+### Transcript File Formats
 
 This module supports transcript files in [WebVTT](https://w3c.github.io/webvtt/) and in an XML format like that below:
 
@@ -81,11 +86,7 @@ This will ensure sure those child elements are indexed with the correct sequence
 
 In order to view transcripts in the user-interface, double check that anonymous and authenticated users have the `Islandora - View repository objects` permission enabled.  You can check via the Drupal administration user-interface `People > Permissions`.
 
-## Index transcript fields in Solr
-
-Please see the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for documentation on indexing transcripts in [transcript XML](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki/Configuration:--Basic-Indexing-of-transcript-XML-in-Solr) and [WebVTT](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki/Indexing-WebVTT-files) in Solr.
-
-## Maintainers/Sponsors
+### Maintainers/Sponsors
 Current maintainers:
 * [Marcus Barnes](https://github.com/MarcusBarnes)
 * [Nat Kanthan](https://github.com/Natkeeran)
