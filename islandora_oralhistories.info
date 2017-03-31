@@ -11,4 +11,8 @@ version = 7.x-1.x
 core = 7.x
 configure = admin/islandora/solution_pack_config/oralhistories
 stylesheets[all][] = css/islandora_oralhistories.theme.css
+stylesheets[all][] = bootstrap/css/oh-bootstrap-all.css
+
+scripts[] = bootstrap/js/bootstrap.min.js
+
 files[] = tests/islandora_oralhistories_ingest_purge.test
