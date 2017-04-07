@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col-sm-12 col-md-12">
     <div data-transcripts-role="video" data-transcripts-id="<?php print $params['trid']; ?>">
-      <div align="center">
-        <video class="video-js vjs-default-skin embed-responsive-item" controls poster="<?php print $params['tn']; ?>" preload="auto"  width="100%" height="360" data-setup="{}">
+      <div align="center" id="video_container">
+        <video class="video-js vjs-default-skin embed-responsive-item" controls poster="<?php print $params['tn']; ?>" preload="auto"  width="100%" height="360" data-setup="{}" id="video-js-oh">
           <source src="<?php print $params['url']; ?>" type="<?php print $params['mime']; ?>"/>
           <?php if (isset($params['tracks']) && $params['enable_transcript_display']): ?>
             <?php foreach ($params['tracks'] as $key => $track): ?>
