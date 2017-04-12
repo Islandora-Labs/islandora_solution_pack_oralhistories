@@ -102,6 +102,8 @@ Contributors:
 * [Lingling Jiang](https://github.com/sprklinginfo)
 * Edward Garrett
 
+Note: This module would not have been possible without the support of [Chris Berkowitz](http://www.utsc.utoronto.ca/hcs/christine-berkowitz) from the Scarborough Oral Histories Project at the [Department of Historical and Cultural Studies](http://www.utsc.utoronto.ca/hcs/) at UTSC.
+
 ## License
 
 [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.txt) or later.
