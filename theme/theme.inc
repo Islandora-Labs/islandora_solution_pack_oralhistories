@@ -139,6 +139,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       $track['dsid'] = $datastream->id;
       $track['source_url'] = $source_url;
 
+
       if ($isMediatrack) {
         // Language Code.
         $lang_code = 'en';
@@ -162,6 +163,9 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
         if (in_array($track['lang_code'], $track_defaults_setting_str)) {
           $track['default'] = "default";
         }
+      } else {
+        $track['lang_code'] = '';
+        $track['default'] = '';
       }
 
 
