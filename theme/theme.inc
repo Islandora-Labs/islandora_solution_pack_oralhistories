@@ -149,20 +149,21 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
         else {
           $track['lang_code'] = $lang_code;
         }
+
+        // Default Language.
+        $track_defaults_setting_str = "";
+        if (NULL !== variable_get('islandora_oralhistories_vtt_default_language')) {
+          $track_defaults_setting_str = variable_get('islandora_oralhistories_vtt_default_language');
+        }
+        $track_defaults_setting_str = str_replace(' ', '', $track_defaults_setting_str);
+        $track_defaults_setting_str = explode(",", $track_defaults_setting_str);
+
+        $track['default'] = "";
+        if (in_array($track['lang_code'], $track_defaults_setting_str)) {
+          $track['default'] = "default";
+        }
       }
 
-      // Default Language.
-      $track_defaults_setting_str = "";
-      if (NULL !== variable_get('islandora_oralhistories_vtt_default_language')) {
-        $track_defaults_setting_str = variable_get('islandora_oralhistories_vtt_default_language');
-      }
-      $track_defaults_setting_str = str_replace(' ', '', $track_defaults_setting_str);
-      $track_defaults_setting_str = explode(",", $track_defaults_setting_str);
-
-      $track['default'] = "";
-      if (in_array($track['lang_code'], $track_defaults_setting_str)) {
-        $track['default'] = "default";
-      }
 
       if (isset($object[$datastream->id]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$datastream->id])) {
         $tracks[] = $track;
