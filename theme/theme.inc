@@ -111,7 +111,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   $tracks = array();
   $transcript_mimetype = '';
   foreach ($object as $datastream) {
-
+    $isMediatrack = FALSE;
     $get_track = FALSE;
     if (preg_match('/^TRANSCRIPT/', $datastream->id)) {
       if (strpos($datastream->mimetype, 'xml') !== FALSE) {
@@ -125,6 +125,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
 
     if (preg_match('/^MEDIATRACK/', $datastream->id)) {
       $get_track = TRUE;
+      $isMediatrack = TRUE;
     }
 
     // Ensure that even if MEDIATRACK is not present, show TRANSCRIPT
@@ -138,28 +139,35 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       $track['dsid'] = $datastream->id;
       $track['source_url'] = $source_url;
 
-      // Language Code.
-      $lang_code = 'en';
-      $dsid_arr = explode("_", $track['dsid']);
-      if (isset($dsid_arr[1])) {
-        $track['lang_code'] = strtolower($dsid_arr[1]);
-      }
-      else {
-        $track['lang_code'] = $lang_code;
+
+      if ($isMediatrack) {
+        // Language Code.
+        $lang_code = 'en';
+        $dsid_arr = explode("_", $track['dsid']);
+        if (isset($dsid_arr[1])) {
+          $track['lang_code'] = strtolower($dsid_arr[1]);
+        }
+        else {
+          $track['lang_code'] = $lang_code;
+        }
+
+        // Default Language.
+        $track_defaults_setting_str = "";
+        if (NULL !== variable_get('islandora_oralhistories_vtt_default_language')) {
+          $track_defaults_setting_str = variable_get('islandora_oralhistories_vtt_default_language');
+        }
+        $track_defaults_setting_str = str_replace(' ', '', $track_defaults_setting_str);
+        $track_defaults_setting_str = explode(",", $track_defaults_setting_str);
+
+        $track['default'] = "";
+        if (in_array($track['lang_code'], $track_defaults_setting_str)) {
+          $track['default'] = "default";
+        }
+      } else {
+        $track['lang_code'] = '';
+        $track['default'] = '';
       }
 
-      // Default Language.
-      $track_defaults_setting_str = "";
-      if (NULL !== variable_get('islandora_oralhistories_vtt_default_language')) {
-        $track_defaults_setting_str = variable_get('islandora_oralhistories_vtt_default_language');
-      }
-      $track_defaults_setting_str = str_replace(' ', '', $track_defaults_setting_str);
-      $track_defaults_setting_str = explode(",", $track_defaults_setting_str);
-
-      $track['default'] = "";
-      if (in_array($track['lang_code'], $track_defaults_setting_str)) {
-        $track['default'] = "default";
-      }
 
       if (isset($object[$datastream->id]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$datastream->id])) {
         $tracks[] = $track;

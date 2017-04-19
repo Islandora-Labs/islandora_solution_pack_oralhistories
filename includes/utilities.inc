@@ -119,8 +119,6 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
   $options = $ui->options;
   $transcript_type = $options["type"];
 
-  watchdog('Islandora Oralhistories', 'transcript type ' . $transcript_type);
-
   // If VTT process it using compose_vtt_transcript_as_transcripts_ui function.
   if ($transcript_type == "VTT") {
     return compose_vtt_transcript_as_transcripts_ui($ui);
