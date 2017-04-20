@@ -20,7 +20,7 @@ function theme_transcripts_ui_transcript_options($vars)
     $out .= "</optgroup>";
 
     //speaker name selector
-    $out .= "<optgroup label='Speaker names' data-type='speakers'>";
+    $out .= "<optgroup label='Toggle speaker names on/off' data-type='speakers'>";
     foreach ($vars['element']['speaker_names'] as $key => $val) {
         $out .= "<option value='{$key}'>{$val}</option>";
     }
