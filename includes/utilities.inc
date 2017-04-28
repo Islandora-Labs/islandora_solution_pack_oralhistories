@@ -242,3 +242,21 @@ function compose_vtt_transcript_as_transcripts_ui($ui) {
   $highlights = NULL;
   return array($tcus, $highlights);
 }
+
+/**
+ * This will inspect the mimetype of the OBJ datastream of the islandora object.
+ *
+ * @param AbstractObject $object
+ * @return string
+ */
+function islandora_oralhistories_islandora_oralhistories_get_media_uploaded_type($object) {
+  $media_upload_type = '';
+  if (is_object($object) && isset($object['OBJ'])) {
+    if (preg_match('/video/', $object['OBJ']->mimetype)) {
+      $media_upload_type = 'video';
+    } else {
+      $media_upload_type = 'audio';
+    }
+  }
+  return $media_upload_type;
+}
