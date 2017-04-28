@@ -37,12 +37,13 @@ function parse_vtt($data = '') {
     }
     if (!empty($line)) {
       $parts = preg_split('/\n/', $line);
-      $time = explode(' --> ', $parts[0]);
+      // ULS_parse_vtt : $parts has 3 elements -- 0: section, 1: start/end times 2: text
+      $time = explode(' --> ', $parts[1]);
       $start_time = time_seconds($time[0]);
       $end_time = time_seconds($time[1]);
 
       // Redmine#6611
-      $text = $parts[1];
+      $text = $parts[2];
       $regex_vtt_name = '/^\s*<v\s+(?<name>.*)>/';
       preg_match($regex_vtt_name, $text, $matches);
 
