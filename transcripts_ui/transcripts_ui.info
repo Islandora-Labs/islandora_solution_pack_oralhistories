@@ -1,7 +1,0 @@
-;$Id$
-name = Transcripts UI
-description = Drupal UI for display of transcripts in synchronization with media
-package = Pinedrop Transcripts
-core = 7.x
-files[] = transcripts_ui.module
-files[] = TranscriptUI.php
