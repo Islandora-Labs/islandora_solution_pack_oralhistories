@@ -197,6 +197,7 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
     for ($i = 0; $i < $counter; $i++) {
       $tcus[$i] = new stdClass();
       $tcus[$i]->trid = str_replace(':', '-', $doc['PID']);
+      $tcus[$i]->tcuid = $i;
       $tcus[$i]->id = $doc['or_cue_id'][$i];
       $tcus[$i]->start = (float) $doc['or_start'][$i];
       $tcus[$i]->end = (float) $doc['or_end'][$i];
@@ -244,6 +245,7 @@ function compose_vtt_transcript_as_transcripts_ui($ui) {
   foreach ($cues as $cue) {
     $tcus[$i] = new stdClass();
     $tcus[$i]->trid = $i;
+    $tcus[$i]->tcuid = $i;
     $tcus[$i]->id = $i;
     $tcus[$i]->start = (float) $cue['start_time'];
     $tcus[$i]->end = (float) $cue['end_time'];

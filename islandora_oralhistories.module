@@ -1,4 +1,9 @@
 <?php
+
+
+// Permission constants.
+define('ISLANDORA_ORALHISTORIES_EDIT_VTT', 'edit transcript vtt');
+
 /**
  * @file
  * Hooks and callbacks for this module.
@@ -58,7 +63,11 @@ function islandora_oralhistories_menu() {
  * Implements hook_permission().
  */
 function islandora_oralhistories_permission() {
-  return array();
+  return array(ISLANDORA_ORALHISTORIES_EDIT_VTT => array(
+      'title' => t('Edit Transcripts'),
+      'description' => t('Edit Video Transcript VTT files.'),
+    )
+  );
 }
 
 /**
@@ -365,7 +374,8 @@ function islandora_transcript_navigation(array &$variables) {
   $out .= "<button type='button' class='btn btn-default previous' title='Previous line'><span class='glyphicon glyphicon-arrow-left'></span> " . t('Prev') . "</button>";
   $out .= "<button type='button' class='btn btn-default sameagain' title='Same line'><span class='glyphicon glyphicon-repeat'></span> " . t('Same') . "</button>";
   $out .= "<button type='button' class='btn btn-default next' title='Next line'><span class='glyphicon glyphicon-arrow-right'></span> " . t('Next') . "</button>";
-  if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_REPLACE_DATASTREAM_CONTENT, $object['TRANSCRIPT'])) {
+  if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_REPLACE_DATASTREAM_CONTENT, $object['TRANSCRIPT']) &&
+          user_access(ISLANDORA_ORALHISTORIES_EDIT_VTT)) {
     ctools_include('modal');
     ctools_modal_add_js();
     global $base_url;
@@ -381,7 +391,7 @@ function islandora_transcript_navigation(array &$variables) {
  * Implements hook_islandora_edit_datastream_registry().
  */
 function islandora_oralhistories_islandora_edit_datastream_registry(AbstractObject $object, AbstractDatastream $datastream) {
-  if (strtoupper($datastream->id) == 'TRANSCRIPT') {
+  if (strtoupper($datastream->id) == 'TRANSCRIPT' && user_access(ISLANDORA_ORALHISTORIES_EDIT_VTT)) {
     return array(
       array(
         'name' => t('Islandora Oralhistories Edit Transcript'),
