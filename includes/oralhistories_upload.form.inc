@@ -118,14 +118,6 @@ function islandora_oralhistories_upload_form_submit(array $form, array &$form_st
     $fid = $form_state['values']['transcript_file'];
     islandora_oralhistories_create_transcript_ds($fid, $object);
   }
-
-  // record uploaded media file type
-  if (preg_match('/video/', $media_file->filemime)) {
-    $media_upload_type = 'video';
-  } else {
-    $media_upload_type = 'audio';
-  }
-  variable_set('islandora_oralhistories_media_uploaded_type', $media_upload_type);
 }
 
 /**
