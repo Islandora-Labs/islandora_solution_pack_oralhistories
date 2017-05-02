@@ -35,7 +35,7 @@ function islandora_oralhistories_menu() {
   );
   // Try ctools ajax modal form for transcript edit form.
   $items['islandora/object/%islandora_object/edit_form/%islandora_datastream/%ctools_js'] = array(
-    'page callback' => 'edit_transcript_modal',
+    'page callback' => 'islandora_oralhistories_edit_transcript_modal',
     'page arguments' => array(2, 4, 5),
     'access callback' => 'islandora_datastream_access',
     'access arguments' => array(ISLANDORA_REPLACE_DATASTREAM_CONTENT, 4),
@@ -340,7 +340,7 @@ function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
   $module_path = drupal_get_path('module', 'islandora_oralhistories');
   if ($theme_registry['transcripts_ui_transcript_navigation']['function'] == 'theme_transcripts_ui_transcript_navigation') {
     $theme_registry['transcripts_ui_transcript_navigation']['theme path'] = $module_path;
-    $theme_registry['transcripts_ui_transcript_navigation']['function'] = 'islandora_transcript_navigation';
+    $theme_registry['transcripts_ui_transcript_navigation']['function'] = 'islandora_oralhistories_islandora_transcript_navigation';
   }
 }
 
@@ -353,7 +353,7 @@ function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
  * @return string
  *   String of HTML
  */
-function islandora_transcript_navigation(array &$variables) {
+function islandora_oralhistories_islandora_transcript_navigation(array &$variables) {
   module_load_include('inc', 'islandora_oralhistories', 'includes/transcript.edit.form');
   $path = current_path();
   $part_parts = explode('/', $path);

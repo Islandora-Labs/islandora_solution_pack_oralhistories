@@ -14,7 +14,7 @@
  * @return string
  *   All cues in vtt file.
  */
-function vtt_transcript_content($url, $trid) {
+function islandora_oralhistories_vtt_transcript_content($url, $trid) {
   $options = array(
     'term' => isset($_GET['term']) ? '"' . $_GET['term'] . '"' : '',
     'type' => 'VTT',
@@ -27,7 +27,7 @@ function vtt_transcript_content($url, $trid) {
 /**
  * Helper function to parse vtt file.
  */
-function parse_vtt($data = '') {
+function islandora_oralhistories_parse_vtt($data = '') {
   $output = '';
   $cues = array();
   $lines = preg_split('/\n\n/', $data);
@@ -70,7 +70,7 @@ function parse_vtt($data = '') {
 /**
  * Helper function to convert timestamp to seconds.
  */
-function time_seconds($time = '') {
+function islandora_oralhistories_time_seconds($time = '') {
   $t = explode(':', $time);
   $sec = (float) ($t[count($t) - 1]) + (int) ($t[count($t) - 2]) * 60;
   if (count($t) > 2) {
@@ -82,7 +82,7 @@ function time_seconds($time = '') {
 /**
  * Helper function to convert seconds to mm:ss.ttt.
  */
-function time_mm_ss($seconds) {
+function islandora_oralhistories_time_mm_ss($seconds) {
   $t = round((float) $seconds, 3);
   return sprintf('%02d:%02d.%03d', ($t / 60), ($t % 60), (fmod($t, 1.0) * 1000));
 }
@@ -91,7 +91,7 @@ function time_mm_ss($seconds) {
 /**
  * Helper function to prepare transcript content display.
  */
-function xml_transcript_content($trid) {
+function islandora_oralhistories_xml_transcript_content($trid) {
   // How will options get through when function
   // is not called as part of page request?
   $options = array(
@@ -223,7 +223,7 @@ function compose_vtt_transcript_as_transcripts_ui($ui) {
   // Get content from VTT file.
   $content = file_get_contents($url);
   // Parse the VTT for tcues data.
-  $cues = parse_vtt($content);
+  $cues = islandora_oralhistories_parse_vtt($content);
 
   // Loop and put in a format needed by transcripts_ui
   $tcus = array();

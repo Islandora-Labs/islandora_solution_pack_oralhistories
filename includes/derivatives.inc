@@ -54,8 +54,8 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
           $speaker = $solespeaker;
         }        
 
-        $start = time_mm_ss((string)$cue->start);
-        $end = time_mm_ss((string)$cue->end);
+        $start = islandora_oralhistories_time_mm_ss((string)$cue->start);
+        $end = islandora_oralhistories_time_mm_ss((string)$cue->end);
         $vtt .= $start . ' --> ' . $end . PHP_EOL;
         $vtt .= $speaker . (string)$cue->transcript . PHP_EOL;
         $vtt .= PHP_EOL;
@@ -94,7 +94,7 @@ function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $
     $dest = file_build_uri($filename);
     $content = $object[$source_dsid]->content;
 
-    $cues = parse_vtt($content);
+    $cues = islandora_oralhistories_parse_vtt($content);
     $xml = new SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><cues></cues>');
 
     foreach ($cues as $cue) {
