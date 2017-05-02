@@ -38,8 +38,8 @@ function islandora_oralhistories_parse_vtt($data = '') {
     if (!empty($line)) {
       $parts = preg_split('/\n/', $line);
       $time = explode(' --> ', $parts[0]);
-      $start_time = time_seconds($time[0]);
-      $end_time = time_seconds($time[1]);
+      $start_time = islandora_oralhistories_time_seconds($time[0]);
+      $end_time = islandora_oralhistories_time_seconds($time[1]);
 
       // Redmine#6611
       $text = $parts[1];
