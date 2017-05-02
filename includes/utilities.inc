@@ -30,13 +30,25 @@ function vtt_transcript_content($url, $trid) {
 function parse_vtt($data = '') {
   $output = '';
   $cues = array();
-  $lines = preg_split('/\n\n/', $data);
+  // remove UTF byte order marker
+  $bom = chr(239) . chr(187) . chr(191);
+  $data = ltrim($data, $bom);
+  
+  if (strstr($data, "\r\n")) {
+    $data = str_replace("\r", "", $data);
+  }
+  // break on double linefeed -- OR double carriage returns
+  $split_char = (strstr($data, "\n") == '') ?  "\r" : "\n";
+
+  $lines = explode($split_char . $split_char, $data);
+
   foreach ($lines as $line) {
+    $line = trim(rtrim($line, $split_char));
     if ($line == 'WEBVTT') {
       continue;
     }
     if (!empty($line)) {
-      $parts = preg_split('/\n/', $line);
+      $parts = explode($split_char, $line);
       // ULS_parse_vtt : $parts has 3 elements -- 0: section, 1: start/end times 2: text
       $time = explode(' --> ', $parts[1]);
       $start_time = time_seconds($time[0]);
