@@ -148,7 +148,7 @@ function islandora_oralhistories_transcript_edit_form_submit(array $form, array 
  * @param $ajax
  * @return array|mixed
  */
-function edit_transcript_modal(AbstractObject $object, AbstractDatastream $datastream, $ajax) {
+function islandora_oralhistories_edit_transcript_modal(AbstractObject $object, AbstractDatastream $datastream, $ajax) {
   if (!$object) {
     $path = current_path();
     $part_parts = explode('/', $path);
