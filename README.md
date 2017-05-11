@@ -104,6 +104,10 @@ Contributors:
 
 Note: This module would not have been possible without the support of [Chris Berkowitz](http://www.utsc.utoronto.ca/hcs/christine-berkowitz) from the Scarborough Oral Histories Project at the [Department of Historical and Cultural Studies](http://www.utsc.utoronto.ca/hcs/) at UTSC.
 
+## Contributing
+
+We welcome community development partners.  The [CONTRIBUTING.md](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/blob/7.x/CONTRIBUTING.md) file provides guidelines on how you can contribute to the development of the Islandora Oral Histories Solution Pack.
+
 ## License
 
 [GNU General Public License, version 3](http://www.gnu.org/licenses/gpl-3.0.txt) or later.
