@@ -34,7 +34,7 @@ To report a bug you should open an issue that summarizes the bug. Set the Issue 
 In order to help us understand and fix the bug it would be useful if you could provide us with:
 
 1. The steps to reproduce the bug. This includes information about e.g. the Islandora version you were using along with version of stack components.
-2. If applicble, some sample data that triggers the bug.
+2. If applicable, some sample data that triggers the bug.
 3. The expected behavior.
 4. The current, incorrect behavior.
 
@@ -65,7 +65,7 @@ Take a look at [Creating a pull request](https://help.github.com/articles/creati
 
 1. [Fork](https://help.github.com/articles/fork-a-repo) the Islandora Oral Histories Solution Pack repository to your personal GitHub account. See [Fork a repo](https://help.github.com/articles/fork-a-repo) for detailed instructions.
 2. Commit any changes to the issue/topic branch in your fork. Comments can be as terse as "Work on #243.", etc. but you can be more descriptive if you want. However, please refer to the issue you are working on somewhere in the commit comment using Github's '#' shortcut, as in the example.
-3. Send a [pull request](https://help.github.com/articles/creating-a-pull-request) to the Islandora Oral Histories Solution Pack GitHub repository that you forked in step 1 (in other words, https://github.com/MarcusBarnes/mik).
+3. Send a [pull request](https://help.github.com/articles/creating-a-pull-request) to the Islandora Oral Histories Solution Pack GitHub repository that you forked in step 1 (in other words, https://github.com/digitalutsc/islandora_solution_pack_oralhistories).
 
 You may want to read [Syncing a fork](https://help.github.com/articles/syncing-a-fork) for instructions on how to keep your fork up to date with the latest changes of the upstream (official) `Islandora Oral Histories Solution Pack` repository.
 
