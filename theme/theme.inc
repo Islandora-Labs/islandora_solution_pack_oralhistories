@@ -119,6 +119,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       }
       else {
         $transcript_mimetype = 'vtt';
+        $isMediatrack = TRUE;
       }
       $get_track = TRUE;
     }
