@@ -107,7 +107,11 @@ function islandora_oralhistories_transcript_edit_form_submit(array $form, array 
       if (preg_match('/cue/', $key)) {
         $cue = $cues->appendChild($dom->createElement('cue'));
         foreach ($form_state['values'][$key] as $cue_name => $value) {
-          $cue_name = $cue->appendChild($dom->createElement($cue_name, $value));
+          // issue#58
+          $child = $cue->appendChild($dom->createElement($cue_name));
+          $child_node = dom_import_simplexml($child);
+          $child_owner = $child_node->ownerDocument;
+          $child_node->appendChild($child_owner->createCDATASection($value));
         }
 
       }
@@ -126,6 +130,7 @@ function islandora_oralhistories_transcript_edit_form_submit(array $form, array 
   }
 
 }
+
 
 /**
  * Callback for menu 'islandora/object/%islandora_object/edit_form/%islandora_datastream/%ctools_js'.
