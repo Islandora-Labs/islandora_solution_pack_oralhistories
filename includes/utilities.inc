@@ -221,6 +221,22 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
 }
 
 /**
+ * This will use the islandora functions to return the datastream that is specified by the $url.
+ * 
+ * @param type $url
+ */
+function islandora_oralhistories_get_datastream_from_url($url) {
+  // This is a bit of a hacky way to pull the $pid and $dsid from the $url for the datastream view.
+  @list($junk, $keep) = explode("/islandora/object/", $url);
+  @list($pid, $keep) = explode("/datastream/", $keep);
+  $pid = urldecode($pid);
+  $dsid = str_replace("/view", "", $keep);
+
+  $islandora_object = islandora_object_load($pid);
+  return ((is_object($islandora_object) && (isset($islandora_object[$dsid]))) ? $islandora_object[$dsid]->content : '');
+}
+
+/**
  * We want to display vtt transcript in similar way to xml transcript.
  *
  * @param object $ui
@@ -235,7 +251,8 @@ function compose_vtt_transcript_as_transcripts_ui($ui) {
   $url = $options["url"];
 
   // Get content from VTT file.
-  $content = file_get_contents($url);
+  $content = islandora_oralhistories_get_datastream_from_url($url);
+
   // Parse the VTT for tcues data.
   $cues = islandora_oralhistories_parse_vtt($content);
 
