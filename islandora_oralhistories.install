@@ -14,7 +14,6 @@ function islandora_oralhistories_install() {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   islandora_install_solution_pack('islandora_oralhistories');
   // Set variable for media type uploaded.
-  variable_set('islandora_oralhistories_media_uploaded_type', '');
   variable_set('islandora_oralhistories_make_vtt', FALSE);
   variable_set('islandora_oralhistories_enable_caption_display', FALSE);
   variable_set('islandora_oralhistories_enable_transcript_display', FALSE);
@@ -28,7 +27,6 @@ function islandora_oralhistories_uninstall() {
   module_load_include('inc', 'islandora', 'includes/solution_packs');
   $variables = array(
     'islandora_oralhistories_viewers',
-    'islandora_oralhistories_media_uploaded_type',
     'islandora_oralhistories_enable_caption_display',
     'islandora_oralhistories_make_vtt',
     'islandora_oralhistories_enbable_transcript_display',

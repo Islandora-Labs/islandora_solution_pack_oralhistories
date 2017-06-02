@@ -21,6 +21,19 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
     $object = islandora_object_load($part_parts[2]);
     $datastream =  $object['TRANSCRIPT'];
   }
+
+  /** seems like the INDEXTRANSCRIPT should not be edited here and that the TRANSCRIPT
+   * datastream would be an xml file, but it is 100% a text file -- and other parts of
+   * the module work with it as a text file, but there is a handler for it if it was
+   * an xml file all along... I think the TRANSCRIPT needs to be in XML format from the
+   * initial ingest.
+   *
+  if ($datastream && $datastream->mimetype == 'text/vtt' && isset($object['INDEXTRANSCRIPT'])  &&
+    ($object['INDEXTRANSCRIPT']->mimetype == 'application/xml' || $object['INDEXTRANSCRIPT']->mimetype == 'text/xml') ) {
+    $datastream = $object['INDEXTRANSCRIPT'];
+  }
+  */
+ 
   $file_url = islandora_view_datastream_retrieve_file_uri($datastream);
 
   $xml = simplexml_load_file($file_url);
@@ -140,7 +153,7 @@ function islandora_oralhistories_transcript_edit_form_submit(array $form, array 
  * @param $ajax
  * @return array|mixed
  */
-function edit_transcript_modal(AbstractObject $object, AbstractDatastream $datastream, $ajax) {
+function islandora_oralhistories_edit_transcript_modal(AbstractObject $object, AbstractDatastream $datastream, $ajax) {
   if (!$object) {
     $path = current_path();
     $part_parts = explode('/', $path);

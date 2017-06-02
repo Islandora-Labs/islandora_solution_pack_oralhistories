@@ -32,13 +32,15 @@ The module configuration requires a modification to the Gsearch XSLT in order to
 Navigate to Islandora » Solution Pack Configuration » Oral Histories Solution Pack and then click the TRANSCRIPTS UI tab. (admin/islandora/solution_pack_config/oralhistories/transcripts). "Tiers" and "Speaker names" need be configured based on the transcript xml file. It will look like this: TIER_ID|TIER_NAME.
 
 For example, in the example transcript xml file below, the TIER_ID will be `or_transcript` (xml tag with 'or_' prefix). TIER_NAME could be any text label that users will see, such as `Transcript`.
-Together they should look something like: `or_transcript|Transcript`.
+Together they should look something like: `or_transcript|Transcript`.  
 
 There are a number of options included by default; you'll want to get rid of most of them.
 
 * Entering at least one value here is required, or **your transcripts will not display**
 
 You must add all TIER_ID|TIER_NAME pairs relevant to your collection to the configuration, as different transcript files may have different tiers (xml tags) and tier_names.
+
+**Important:  This value of `or_transcript|Transcript` must be configured under "TRANSCRIPT TIERS" on /admin/config/user-interface/transcripts or the transcript text will not be rendered in the transcript viewer.**
 
 ### Oral Histories Module
 

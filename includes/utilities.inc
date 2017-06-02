@@ -14,7 +14,7 @@
  * @return string
  *   All cues in vtt file.
  */
-function vtt_transcript_content($url, $trid) {
+function islandora_oralhistories_vtt_transcript_content($url, $trid) {
   $options = array(
     'term' => isset($_GET['term']) ? '"' . $_GET['term'] . '"' : '',
     'type' => 'VTT',
@@ -27,22 +27,35 @@ function vtt_transcript_content($url, $trid) {
 /**
  * Helper function to parse vtt file.
  */
-function parse_vtt($data = '') {
+function islandora_oralhistories_parse_vtt($data = '') {
   $output = '';
   $cues = array();
-  $lines = preg_split('/\n\n/', $data);
+  // remove UTF byte order marker
+  $bom = chr(239) . chr(187) . chr(191);
+  $data = ltrim($data, $bom);
+  
+  if (strstr($data, "\r\n")) {
+    $data = str_replace("\r", "", $data);
+  }
+  // break on double linefeed -- OR double carriage returns
+  $split_char = (strstr($data, "\n") == '') ?  "\r" : "\n";
+
+  $lines = explode($split_char . $split_char, $data);
+
   foreach ($lines as $line) {
+    $line = trim(rtrim($line, $split_char));
     if ($line == 'WEBVTT') {
       continue;
     }
     if (!empty($line)) {
-      $parts = preg_split('/\n/', $line);
-      $time = explode(' --> ', $parts[0]);
-      $start_time = time_seconds($time[0]);
-      $end_time = time_seconds($time[1]);
+      $parts = explode($split_char, $line);
+      // ULS_parse_vtt : $parts has 3 elements -- 0: section, 1: start/end times 2: text
+      $time = explode(' --> ', $parts[1]);
+      $start_time = islandora_oralhistories_time_seconds($time[0]);
+      $end_time = islandora_oralhistories_time_seconds($time[1]);
 
       // Redmine#6611
-      $text = $parts[1];
+      $text = $parts[2];
       $regex_vtt_name = '/^\s*<v\s+(?<name>.*)>/';
       preg_match($regex_vtt_name, $text, $matches);
 
@@ -70,7 +83,7 @@ function parse_vtt($data = '') {
 /**
  * Helper function to convert timestamp to seconds.
  */
-function time_seconds($time = '') {
+function islandora_oralhistories_time_seconds($time = '') {
   $t = explode(':', $time);
   $sec = (float) ($t[count($t) - 1]) + (int) ($t[count($t) - 2]) * 60;
   if (count($t) > 2) {
@@ -82,7 +95,7 @@ function time_seconds($time = '') {
 /**
  * Helper function to convert seconds to mm:ss.ttt.
  */
-function time_mm_ss($seconds) {
+function islandora_oralhistories_time_mm_ss($seconds) {
   $t = round((float) $seconds, 3);
   return sprintf('%02d:%02d.%03d', ($t / 60), ($t % 60), (fmod($t, 1.0) * 1000));
 }
@@ -91,7 +104,7 @@ function time_mm_ss($seconds) {
 /**
  * Helper function to prepare transcript content display.
  */
-function xml_transcript_content($trid) {
+function islandora_oralhistories_xml_transcript_content($trid) {
   // How will options get through when function
   // is not called as part of page request?
   $options = array(
@@ -184,6 +197,7 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
     for ($i = 0; $i < $counter; $i++) {
       $tcus[$i] = new stdClass();
       $tcus[$i]->trid = str_replace(':', '-', $doc['PID']);
+      $tcus[$i]->tcuid = $i;
       $tcus[$i]->id = $doc['or_cue_id'][$i];
       $tcus[$i]->start = (float) $doc['or_start'][$i];
       $tcus[$i]->end = (float) $doc['or_end'][$i];
@@ -240,7 +254,7 @@ function compose_vtt_transcript_as_transcripts_ui($ui) {
   $content = islandora_oralhistories_get_datastream_from_url($url);
 
   // Parse the VTT for tcues data.
-  $cues = parse_vtt($content);
+  $cues = islandora_oralhistories_parse_vtt($content);
 
   // Loop and put in a format needed by transcripts_ui
   $tcus = array();
@@ -248,6 +262,7 @@ function compose_vtt_transcript_as_transcripts_ui($ui) {
   foreach ($cues as $cue) {
     $tcus[$i] = new stdClass();
     $tcus[$i]->trid = $i;
+    $tcus[$i]->tcuid = $i;
     $tcus[$i]->id = $i;
     $tcus[$i]->start = (float) $cue['start_time'];
     $tcus[$i]->end = (float) $cue['end_time'];
@@ -258,4 +273,22 @@ function compose_vtt_transcript_as_transcripts_ui($ui) {
   // VTT does not have highlights ?
   $highlights = NULL;
   return array($tcus, $highlights);
+}
+
+/**
+ * This will inspect the mimetype of the OBJ datastream of the islandora object.
+ *
+ * @param AbstractObject $object
+ * @return string
+ */
+function islandora_oralhistories_islandora_oralhistories_get_media_uploaded_type($object) {
+  $media_upload_type = '';
+  if (is_object($object) && isset($object['OBJ'])) {
+    if (preg_match('/video/', $object['OBJ']->mimetype)) {
+      $media_upload_type = 'video';
+    } else {
+      $media_upload_type = 'audio';
+    }
+  }
+  return $media_upload_type;
 }

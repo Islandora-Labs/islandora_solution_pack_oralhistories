@@ -188,13 +188,13 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       switch ($transcript_mimetype) {
         case 'vtt':
           $viewer_params += array(
-            'transcript_content' => vtt_transcript_content($track['source_url'], $trid),
+            'transcript_content' => islandora_oralhistories_vtt_transcript_content($track['source_url'], $trid),
           );
           break;
 
         case 'xml':
           $viewer_params += array(
-            'transcript_content' => xml_transcript_content($trid),
+            'transcript_content' => islandora_oralhistories_xml_transcript_content($trid),
           );
           break;
       }

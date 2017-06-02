@@ -1,4 +1,9 @@
 <?php
+
+
+// Permission constants.
+define('ISLANDORA_ORALHISTORIES_EDIT_VTT', 'edit transcript vtt');
+
 /**
  * @file
  * Hooks and callbacks for this module.
@@ -35,7 +40,7 @@ function islandora_oralhistories_menu() {
   );
   // Try ctools ajax modal form for transcript edit form.
   $items['islandora/object/%islandora_object/edit_form/%islandora_datastream/%ctools_js'] = array(
-    'page callback' => 'edit_transcript_modal',
+    'page callback' => 'islandora_oralhistories_edit_transcript_modal',
     'page arguments' => array(2, 4, 5),
     'access callback' => 'islandora_datastream_access',
     'access arguments' => array(ISLANDORA_REPLACE_DATASTREAM_CONTENT, 4),
@@ -58,7 +63,11 @@ function islandora_oralhistories_menu() {
  * Implements hook_permission().
  */
 function islandora_oralhistories_permission() {
-  return array();
+  return array(ISLANDORA_ORALHISTORIES_EDIT_VTT => array(
+      'title' => t('Edit Transcripts'),
+      'description' => t('Edit Video Transcript VTT files.'),
+    )
+  );
 }
 
 /**
@@ -261,9 +270,11 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_ingest_
  * Implements hook_islandora_CMODEL_PID_derivative().
  */
 function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivative(AbstractObject $object, $ds_modified_params = array()) {
+  module_load_include('inc', 'islandora_oralhistories', 'includes/utilities');
   $derivatives = array();
+  $media_uploaded_type = islandora_oralhistories_islandora_oralhistories_get_media_uploaded_type($object);
 
-  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'video') {
+  if ($media_uploaded_type == 'video') {
     if (module_exists('islandora_video') && function_exists('islandora_video_islandora_sp_videoCModel_islandora_derivative')) {
       $derivatives = islandora_video_islandora_sp_videoCModel_islandora_derivative();
     }
@@ -274,7 +285,7 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
   }
 
   if (variable_get('islandora_oralhistories_media_uploaded_type') == 'audio') {
-    if (module_exists('islandora_video') && function_exists('islandora_video_islandora_sp_videoCModel_islandora_derivative')) {
+    if (module_exists('islandora_audio') && function_exists('islandora_audio_islandora_sp_audiocmodel_islandora_derivative')) {
       $derivatives = islandora_audio_islandora_sp_audiocmodel_islandora_derivative();
     }
     else {
@@ -340,7 +351,7 @@ function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
   $module_path = drupal_get_path('module', 'islandora_oralhistories');
   if ($theme_registry['transcripts_ui_transcript_navigation']['function'] == 'theme_transcripts_ui_transcript_navigation') {
     $theme_registry['transcripts_ui_transcript_navigation']['theme path'] = $module_path;
-    $theme_registry['transcripts_ui_transcript_navigation']['function'] = 'islandora_transcript_navigation';
+    $theme_registry['transcripts_ui_transcript_navigation']['function'] = 'islandora_oralhistories_islandora_transcript_navigation';
   }
 }
 
@@ -353,7 +364,7 @@ function islandora_oralhistories_theme_registry_alter(&$theme_registry) {
  * @return string
  *   String of HTML
  */
-function islandora_transcript_navigation(array &$variables) {
+function islandora_oralhistories_islandora_transcript_navigation(array &$variables) {
   module_load_include('inc', 'islandora_oralhistories', 'includes/transcript.edit.form');
   $path = current_path();
   $part_parts = explode('/', $path);
@@ -363,7 +374,8 @@ function islandora_transcript_navigation(array &$variables) {
   $out .= "<button type='button' class='btn btn-default previous' title='Previous line'><span class='glyphicon glyphicon-arrow-left'></span> " . t('Prev') . "</button>";
   $out .= "<button type='button' class='btn btn-default sameagain' title='Same line'><span class='glyphicon glyphicon-repeat'></span> " . t('Same') . "</button>";
   $out .= "<button type='button' class='btn btn-default next' title='Next line'><span class='glyphicon glyphicon-arrow-right'></span> " . t('Next') . "</button>";
-  if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_REPLACE_DATASTREAM_CONTENT, $object['TRANSCRIPT'])) {
+  if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_REPLACE_DATASTREAM_CONTENT, $object['TRANSCRIPT']) &&
+          user_access(ISLANDORA_ORALHISTORIES_EDIT_VTT)) {
     ctools_include('modal');
     ctools_modal_add_js();
     global $base_url;
@@ -379,7 +391,7 @@ function islandora_transcript_navigation(array &$variables) {
  * Implements hook_islandora_edit_datastream_registry().
  */
 function islandora_oralhistories_islandora_edit_datastream_registry(AbstractObject $object, AbstractDatastream $datastream) {
-  if (strtoupper($datastream->id) == 'TRANSCRIPT') {
+  if (strtoupper($datastream->id) == 'TRANSCRIPT' && user_access(ISLANDORA_ORALHISTORIES_EDIT_VTT)) {
     return array(
       array(
         'name' => t('Islandora Oralhistories Edit Transcript'),
