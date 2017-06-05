@@ -111,6 +111,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   $tracks = array();
   $transcript_mimetype = '';
   foreach ($object as $datastream) {
+
     $isMediatrack = FALSE;
     $get_track = FALSE;
     if (preg_match('/^TRANSCRIPT/', $datastream->id)) {
@@ -141,7 +142,9 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       $track['source_url'] = $source_url;
 
 
+      $track['MEDIATRACK'] = FALSE;
       if ($isMediatrack) {
+        $track['MEDIATRACK'] = TRUE;
         // Language Code.
         $lang_code = 'en';
         $dsid_arr = explode("_", $track['dsid']);
