@@ -142,6 +142,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       $track['source_url'] = $source_url;
 
 
+      $track['MEDIATRACK'] = FALSE;
       if ($isMediatrack) {
         $track['MEDIATRACK'] = TRUE;
         // Language Code.
