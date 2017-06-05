@@ -101,8 +101,16 @@ function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $
       $newCue = $xml->addChild('cue');
       $newCue->addChild('start', (float)$cue['start_time']);
       $newCue->addChild('end', (float)$cue['end_time']);    
-      $newCue->addChild('speaker', $cue['name']);
-      $newCue->addChild('vtt_text', $cue['text']);
+
+      $child = $newCue->addChild('speaker');
+      $child_node = dom_import_simplexml($child);
+      $child_owner = $child_node->ownerDocument;
+      $child_node->appendChild($child_owner->createCDATASection($cue['name']));
+
+      $child = $newCue->addChild('vtt_text');
+      $child_node = dom_import_simplexml($child);
+      $child_owner = $child_node->ownerDocument;
+      $child_node->appendChild($child_owner->createCDATASection($cue['text']));
     }
 
     $contentXML = $xml->asXML();
