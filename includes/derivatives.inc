@@ -57,7 +57,9 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
         $start = time_mm_ss((string)$cue->start);
         $end = time_mm_ss((string)$cue->end);
         $vtt .= $start . ' --> ' . $end . PHP_EOL;
-        $vtt .= $speaker . (string)$cue->transcript . PHP_EOL;
+        // Remove empty lines.  Not supported in VTT.
+        $transcript_text = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", (string)$cue->transcript);
+        $vtt .= $speaker . $transcript_text . PHP_EOL;
         $vtt .= PHP_EOL;
       }
       $dsid = 'MEDIATRACK';
