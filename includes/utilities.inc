@@ -5,6 +5,8 @@
  * Utility functions.
  */
 
+require_once(__DIR__ . '/lib/VttConverter.php');
+
 /**
  * Helper function to build transcript content.
  *
@@ -28,41 +30,26 @@ function vtt_transcript_content($url, $trid) {
  * Helper function to parse vtt file.
  */
 function parse_vtt($data = '') {
-  $output = '';
+
+  $oConverter = new VttConverter();
+  $oVttData = $oConverter->fileContentToInternalFormat($data);
+
   $cues = array();
-  $lines = preg_split('/\n\n/', $data);
-  foreach ($lines as $line) {
-    if ($line == 'WEBVTT') {
-      continue;
-    }
-    if (!empty($line)) {
-      $parts = preg_split('/\n/', $line);
-      $time = explode(' --> ', $parts[0]);
-      $start_time = time_seconds($time[0]);
-      $end_time = time_seconds($time[1]);
+  foreach ($oVttData as $key => $vttData) {
+    $start_time = $vttData['start'];
+    $end_time = $vttData['end'];
+    $name = $vttData['name'];
+    $lines = $vttData['lines'];
+    $lines= array_map('trim', $lines);
+    $text = implode(" ", $lines);
 
-      // Redmine#6611
-      $text = $parts[1];
-      $regex_vtt_name = '/^\s*<v\s+(?<name>.*)>/';
-      preg_match($regex_vtt_name, $text, $matches);
-
-      $name = "";
-      if (array_key_exists('name', $matches)) {
-        $name = $matches['name'];
-        $text = preg_replace($regex_vtt_name, '', $text);
-      }
-
-      $text = preg_replace('/</', '&lt;', $text);
-      $text = preg_replace('/>/', '&gt;', $text);
-      $cues[] = array(
-        'start_time' => $start_time,
-        'end_time' => $end_time,
-        'text' => $text,
-        'name' => $name,
-      );
-    }
-  } // end foreach
-
+    $cues[] = array(
+      'start_time' => $start_time,
+      'end_time' => $end_time,
+      'text' => $text,
+      'name' => $name,
+    );
+  }
   return $cues;
 }
 
