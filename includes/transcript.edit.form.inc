@@ -122,6 +122,9 @@ function islandora_oralhistories_transcript_edit_form_submit(array $form, array 
     try {
       $datastream->setContentFromString($dom->saveXML());
       drupal_set_message(t('datastream %s is updated.', array('%s' => $datastream->id)), 'status', FALSE);
+      $nodePath = current_path();
+      $nodePath = str_replace("/edit_form/TRANSCRIPT", "", $nodePath);
+      $form_state['redirect'] = $nodePath;
     }
     catch (Exception $e) {
       drupal_set_message(t('Error updating datastream %s %t', array('%s' => $datastream->id, '%t' => $e->getMessage())), 'error', FALSE);
@@ -174,6 +177,9 @@ function edit_transcript_modal(AbstractObject $object, AbstractDatastream $datas
       // Create ajax command array, dismiss the modal window.
       $output = array();
       $output[] = ctools_modal_command_dismiss();
+      $nodePath = current_path();
+      $nodePath = str_replace("/edit_form/TRANSCRIPT/ajax", "", $nodePath);
+      $output[] = ctools_ajax_command_redirect($nodePath);
     }
 
 
