@@ -66,8 +66,9 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
       $filename = $dsid . '.vtt';
       $dest = file_build_uri($filename);
       $file = file_save_data($vtt, $dest, FILE_EXISTS_REPLACE);
-      islandora_oralhistories_add_datastream($object, $dsid, $file->uri);
+      $result = islandora_oralhistories_add_datastream($object, $dsid, $file->uri);
       file_delete($file);
+      return $result;
     }
   }
 }
