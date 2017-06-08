@@ -52,12 +52,12 @@ There are some configuration options in Administration » Islandora » Oral Hist
   
 ### Themes
 
-The viewer currently works with any bootstrap theme. For non bootstrap themes, additional files are provided to enable bootstrap elements required by the viewer. View the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for additional details. 
+The viewer currently works with the [Bootstrap theme](https://www.drupal.org/project/bootstrap). For non Bootstrap themes, including certain Bootstrap-based themes,  additional files are provided to enable bootstrap elements required by the viewer. View the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for additional details. 
 
 
 ## Transcript File Formats
 
-This module supports transcript files in [WebVTT](https://w3c.github.io/webvtt/) and in an XML format like that below:
+This module supports transcript files in [WebVTT](https://w3c.github.io/webvtt/) and in a custom  XML format. For additional information on ingest processes, visit our [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki#ingest-behaviour-for-xml-vs-webvtt-transcripts). The XML format should look similar to the following:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
