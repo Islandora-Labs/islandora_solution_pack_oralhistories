@@ -139,19 +139,25 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       $source_url = url("islandora/object/{$object->id}/datastream/$datastream->id/view", array('absolute' => TRUE));
 
       $track['dsid'] = $datastream->id;
+      $track['dslabel'] = $datastream->label;
       $track['source_url'] = $source_url;
 
 
       $track['MEDIATRACK'] = FALSE;
       if ($isMediatrack) {
         $track['MEDIATRACK'] = TRUE;
+
         // Language Code.
         $lang_code = 'en';
         $dsid_arr = explode("_", $track['dsid']);
+        $dslabel_arr = explode("_", $track['dslabel']);
         if (isset($dsid_arr[1])) {
           $track['lang_code'] = strtolower($dsid_arr[1]);
-        }
-        else {
+        } elseif ($track['dsid'] == "TRANSCRIPT" && isset($dslabel_arr[1])) {
+          $fileName = strtolower($dslabel_arr[1]);
+          $language_code = pathinfo($fileName, PATHINFO_FILENAME);
+          $track['lang_code'] = $language_code;
+        } else {
           $track['lang_code'] = $lang_code;
         }
 
