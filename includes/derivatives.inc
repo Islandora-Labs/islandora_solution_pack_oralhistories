@@ -117,12 +117,15 @@ function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $
 
     $contentXML = $xml->asXML();
     $file = file_save_data($contentXML, $dest, FILE_EXISTS_REPLACE);  
-    islandora_oralhistories_add_datastream($object, $destination_dsid, $file->uri);  
+    $result = islandora_oralhistories_add_datastream($object, $destination_dsid, $file->uri);
     file_delete($file);
+    return $result;
   }
   catch (exception $e) {
-    watchdog('Islandora Oralhistories', 'Unable to create vtt indexing datastream: ' . $e->getmessage());    
-  }  
+    watchdog('Islandora Oralhistories', 'Unable to create vtt indexing datastream: ' . $e->getmessage());
+    $message = $e->getMessage();
+    return $message;
+  }
 }
 
 /**
@@ -150,7 +153,13 @@ function islandora_oralhistories_add_datastream(AbstractObject $object, $datastr
     else {
       $ds = $object[$datastream_id];
     }
-    $ds->mimetype = $mime_detector->getMimetype($file_uri);
+    // Ensure to set mimetype if necessary, otherwise an additional version gets created.
+    // https://groups.google.com/forum/#!searchin/islandora-dev/hook_islandora_derivative_alter%7Csort:relevance/islandora-dev/GOhw6GhF_9Q/WOT5tUeuBwAJ.
+    $ds_mimetype = $mime_detector->getMimetype($file_uri);
+    if ($ds->mimeType != $ds_mimetype) {
+      $ds->mimeType = $ds_mimetype;
+    }
+
     $ds->setContentFromFile(drupal_realpath($file_uri));
     if ($ingest) {
       $object->ingestDatastream($ds);
