@@ -52,7 +52,7 @@ There are some configuration options in Administration » Islandora » Oral Hist
   
 ### Themes
 
-The viewer currently works with the [Bootstrap theme](https://www.drupal.org/project/bootstrap). For non Bootstrap themes, including certain Bootstrap-based themes,  additional files are provided to enable bootstrap elements required by the viewer. View the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for additional details. 
+The viewer currently works with the [Bootstrap theme](https://www.drupal.org/project/bootstrap). For non-Bootstrap themes, including certain Bootstrap-based themes,  additional files are provided to enable bootstrap elements required by the viewer. View the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for additional details. 
 
 
 ## Transcript File Formats
