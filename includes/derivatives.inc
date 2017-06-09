@@ -18,9 +18,7 @@
  * @see hook_islandora_derivative()
  */
 function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRUE) {
-
-
-
+  
   module_load_include('inc', 'islandora_oralhistories', 'includes/utilities');
   if ($force || !isset($object['MEDIATRACK'])) {
     if ($object['TRANSCRIPT']->mimetype == 'text/vtt') {
@@ -164,7 +162,7 @@ function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $
  *   An array describing the outcome of the datastream addition.
  */
 function islandora_oralhistories_add_datastream(AbstractObject $object, $datastream_id, $file_uri) {
-  watchdog('oh', '1111111111111111111111111111');
+
   try {
     $ingest = !isset($object[$datastream_id]);
     $mime_detector = new MimeDetect();
@@ -182,7 +180,6 @@ function islandora_oralhistories_add_datastream(AbstractObject $object, $datastr
     if ($ds->mimeType != $ds_mimetype) {
       $ds->mimeType = $ds_mimetype;
     }
-
 
     $ds->setContentFromFile(drupal_realpath($file_uri));
     if ($ingest) {
