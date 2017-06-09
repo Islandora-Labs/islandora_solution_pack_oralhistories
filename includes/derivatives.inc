@@ -18,6 +18,7 @@
  * @see hook_islandora_derivative()
  */
 function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRUE) {
+  
   module_load_include('inc', 'islandora_oralhistories', 'includes/utilities');
   if ($force || !isset($object['MEDIATRACK'])) {
     if ($object['TRANSCRIPT']->mimetype == 'text/vtt') {
@@ -34,7 +35,7 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
         $solespeaker = "<v " . (string)$cues->solespeaker . ">";
       }
 
-      $vtt = "WEBVTT" . PHP_EOL;      
+      $vtt = "WEBVTT" . PHP_EOL;
       // A blank line, which is equivalent to two consecutive newlines.
       $vtt .= PHP_EOL;
       foreach ($cues as $key => $cue) {
@@ -52,7 +53,7 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
         }
         if($solespeaker != ""){
           $speaker = $solespeaker;
-        }        
+        }
 
         $start = time_mm_ss((string)$cue->start);
         $end = time_mm_ss((string)$cue->end);
@@ -62,7 +63,11 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
         $vtt .= $speaker . $transcript_text . PHP_EOL;
         $vtt .= PHP_EOL;
       }
-      $dsid = 'MEDIATRACK';
+
+      $transcript_fileName = $object['TRANSCRIPT']->label;
+      $dsid_suffix = get_dsid_suffix($transcript_fileName);
+
+      $dsid = 'MEDIATRACK' . $dsid_suffix;
       $filename = $dsid . '.vtt';
       $dest = file_build_uri($filename);
       $file = file_save_data($vtt, $dest, FILE_EXISTS_REPLACE);
@@ -71,6 +76,23 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
       return $result;
     }
   }
+}
+
+/**
+ * Gets the language suffix from transcript xml file if there is any.
+ */
+
+function get_dsid_suffix($transcript_fileName) {
+  $pathInfo = pathinfo($transcript_fileName);
+  $transcript_fileName = $pathInfo['filename'];
+
+  $dsid_suffix = "";
+  $dsid_arr = explode("_", $transcript_fileName);
+  if (isset($dsid_arr[1])) {
+    $dsid_suffix = strtolower($dsid_arr[1]);
+    $dsid_suffix = "_" . $dsid_suffix;
+  }
+  return $dsid_suffix;
 }
 
 /**
@@ -103,7 +125,7 @@ function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $
     foreach ($cues as $cue) {
       $newCue = $xml->addChild('cue');
       $newCue->addChild('start', (float)$cue['start_time']);
-      $newCue->addChild('end', (float)$cue['end_time']);    
+      $newCue->addChild('end', (float)$cue['end_time']);
 
       $child = $newCue->addChild('speaker');
       $child_node = dom_import_simplexml($child);
@@ -117,15 +139,12 @@ function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $
     }
 
     $contentXML = $xml->asXML();
-    $file = file_save_data($contentXML, $dest, FILE_EXISTS_REPLACE);  
-    $result = islandora_oralhistories_add_datastream($object, $destination_dsid, $file->uri);
+    $file = file_save_data($contentXML, $dest, FILE_EXISTS_REPLACE);
+    islandora_oralhistories_add_datastream($object, $destination_dsid, $file->uri);
     file_delete($file);
-    return $result;
   }
   catch (exception $e) {
     watchdog('Islandora Oralhistories', 'Unable to create vtt indexing datastream: ' . $e->getmessage());
-    $message = $e->getMessage();
-    return $message;
   }
 }
 
@@ -143,20 +162,21 @@ function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $
  *   An array describing the outcome of the datastream addition.
  */
 function islandora_oralhistories_add_datastream(AbstractObject $object, $datastream_id, $file_uri) {
+
   try {
     $ingest = !isset($object[$datastream_id]);
     $mime_detector = new MimeDetect();
 
     if ($ingest) {
+
       $ds = $object->constructDatastream($datastream_id, "M");
       $ds->label = $datastream_id;
     }
     else {
       $ds = $object[$datastream_id];
     }
-    // Ensure to set mimetype if necessary, otherwise an additional version gets created.
-    // https://groups.google.com/forum/#!searchin/islandora-dev/hook_islandora_derivative_alter%7Csort:relevance/islandora-dev/GOhw6GhF_9Q/WOT5tUeuBwAJ.
     $ds_mimetype = $mime_detector->getMimetype($file_uri);
+
     if ($ds->mimeType != $ds_mimetype) {
       $ds->mimeType = $ds_mimetype;
     }
