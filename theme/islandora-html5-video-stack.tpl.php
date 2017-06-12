@@ -20,6 +20,7 @@
   <div id="transcript-tabs" class="col-sm-12 col-md-12">
     <ul id="tabs-list">
       <li><a href="#transcript-tab">Transcript</a></li>
+      <li><a href="#annotation-tab">Annotations</a></li>
     </ul>
     <div id="transcript-tab">
       <?php if (array_key_exists('transcript_content', $params)) {
@@ -29,6 +30,23 @@
       }
       ?>
     </div>
+    <div id="annotation-tab">
+      <?php
+
+      $name = 'islandora_web_annotations';
+      $display_id = 'block_1';
+      $view = views_get_view($name);
+
+      if (!$view || !$view->access($display_id)) {
+        return;
+      }
+      $view_content = $view->preview($display_id);
+      print $view_content;
+
+      ?>
+
+    </div>
   </div>
   <?php endif; ?>
 </div>
+
