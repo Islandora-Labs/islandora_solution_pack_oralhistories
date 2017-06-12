@@ -18,7 +18,7 @@
  * @see hook_islandora_derivative()
  */
 function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRUE) {
-  
+
   module_load_include('inc', 'islandora_oralhistories', 'includes/utilities');
   if ($force || !isset($object['MEDIATRACK'])) {
     if ($object['TRANSCRIPT']->mimetype == 'text/vtt') {
@@ -132,7 +132,13 @@ function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $
       $child_owner = $child_node->ownerDocument;
       $child_node->appendChild($child_owner->createCDATASection($cue['name']));
 
-      $child = $newCue->addChild('vtt_text');
+      $lang_code = "";
+      $dsid_arr = explode("_", $destination_dsid);
+      if (isset($dsid_arr[1])) {
+        $lang_code = "_" . strtolower($dsid_arr[1]);
+      }
+
+      $child = $newCue->addChild('vtt_text' . $lang_code);
       $child_node = dom_import_simplexml($child);
       $child_owner = $child_node->ownerDocument;
       $child_node->appendChild($child_owner->createCDATASection($cue['text']));
