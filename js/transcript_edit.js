@@ -37,13 +37,12 @@ var g_Collapse = true;
                         if(isVisible === false) {
                             $(this).click();
                         }
-                        // Collapse
+                    // Collapse
                     } else {
                         if(isVisible === true) {
                             $(this).click();
                         }
                     }
-
                 });
 
                 // Reposition the window to the top.
