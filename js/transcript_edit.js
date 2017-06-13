@@ -49,7 +49,7 @@ var g_Collapse = true;
                 if (g_Collapse == false) {
                     setTimeout(function() {
                         document.body.scrollTop = document.documentElement.scrollTop = originalTopPosition;
-                    }, 45);
+                    }, 275);
                 }
             });
         } // end attach function
