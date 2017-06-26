@@ -27,6 +27,13 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
   $form = array();
   $form['#tree'] = TRUE;
 
+  // Button to toggle cues.
+  $form['toggle-cues'] = array(
+    '#type' => 'button',
+    '#value' => 'Toggle Cues',
+    '#attributes' => array('onclick' => 'return (false);'),
+  );
+
   if ($xml) {
     if ($xml->solespeaker) {
       $form['solespeaker'] = array(
@@ -82,6 +89,12 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
     '#type' => 'submit',
     '#value' => t('Submit'),
   );
+
+  // Handles toggle behavior.
+  $form['#attached']['js'] = array(
+    drupal_get_path('module', 'islandora_oralhistories') . '/js/transcript_edit.js',
+  );
+
   return $form;
 }
 
