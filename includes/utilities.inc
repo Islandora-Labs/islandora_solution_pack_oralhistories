@@ -187,6 +187,8 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
         }
       }
     }
+  } else {
+    drupal_set_message("Solr query for '$query' in " . __FUNCTION__ . " (file " . __FILE__ . ") returned no results. ", 'warning');
   }
 
   $highlights = isset($json['highlighting']) ? $json['highlighting'] : NULL;
