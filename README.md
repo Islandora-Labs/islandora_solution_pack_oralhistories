@@ -4,6 +4,8 @@
 
 Provides a content model for Oral Histories and a viewer for displaying timed text content (XML or WebVTT) alongside video and audio files. 
 
+The software leverages the existing Video and Audio solution packs to create derivatives from source files, and provides the ability to append a transcript and closed captioning file that is then exposed in a video.js based player. Transcripts can contain multiple tiers corresponding to different languages and speakers. The module is designed to acommodate any time-encoded description of a video or audio file. 
+
 ## Requirements
 
 This module requires the following modules/libraries:
