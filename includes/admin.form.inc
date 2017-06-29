@@ -53,7 +53,7 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
   $form['islandora_oralhistories_vtt_default_language'] = array(
     '#type' => 'textfield',
     '#title' => t('Specify VTT default language code(s)'),
-    '#description' => t('Please specify the ISO 639-1 language code for default language tracks.  Example: en, fr, es'),
+    '#description' => t('Please specify the exact suffix added to your webVTT files on ingest. For example, if you added MEDIATRACK_IT, you would need to specify "IT" here in order to have this appear as an option for closed captioning. Whatever you specify will be capitalized in the interface. Using ISO 639-1 language codes is recommended. Example: EN, FR, ES').
     '#default_value' => variable_get('islandora_oralhistories_vtt_default_language', 'en'),
   );
 
