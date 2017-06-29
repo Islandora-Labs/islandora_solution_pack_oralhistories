@@ -151,3 +151,9 @@ body.two-sidebars .islandora-oralhistories-sidebar {
 .ctools-modal-dialog #modal-content {
     overflow-x: auto;
 }
+
+/* Apply greater precedence over videojs CSS for CC language list items. */
+li.vjs-menu-item {
+    font-size: 1em !important;
+    text-transform: uppercase !important;
+}
