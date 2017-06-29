@@ -53,7 +53,7 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
   $form['islandora_oralhistories_vtt_default_language'] = array(
     '#type' => 'textfield',
     '#title' => t('Specify VTT default language code(s)'),
-    '#description' => t('Please specifcy the ISO 639-1 language code for default language tracks.  Example: en, fr, es'),
+    '#description' => t('Please specify the ISO 639-1 language code for default language tracks.  Example: en, fr, es'),
     '#default_value' => variable_get('islandora_oralhistories_vtt_default_language', 'en'),
   );
 
