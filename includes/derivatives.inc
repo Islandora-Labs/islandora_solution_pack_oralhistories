@@ -18,6 +18,7 @@
  * @see hook_islandora_derivative()
  */
 function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRUE) {
+
   module_load_include('inc', 'islandora_oralhistories', 'includes/utilities');
   if ($force || !isset($object['MEDIATRACK'])) {
     if ($object['TRANSCRIPT']->mimetype == 'text/vtt') {
@@ -34,7 +35,7 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
         $solespeaker = "<v " . (string)$cues->solespeaker . ">";
       }
 
-      $vtt = "WEBVTT" . PHP_EOL;      
+      $vtt = "WEBVTT" . PHP_EOL;
       // A blank line, which is equivalent to two consecutive newlines.
       $vtt .= PHP_EOL;
       foreach ($cues as $key => $cue) {
@@ -52,7 +53,7 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
         }
         if($solespeaker != ""){
           $speaker = $solespeaker;
-        }        
+        }
 
         $start = time_mm_ss((string)$cue->start);
         $end = time_mm_ss((string)$cue->end);
@@ -62,14 +63,36 @@ function islandora_oralhistories_create_vtt(AbstractObject $object, $force = TRU
         $vtt .= $speaker . $transcript_text . PHP_EOL;
         $vtt .= PHP_EOL;
       }
-      $dsid = 'MEDIATRACK';
+
+      $transcript_fileName = $object['TRANSCRIPT']->label;
+      $dsid_suffix = get_dsid_suffix($transcript_fileName);
+
+      $dsid = 'MEDIATRACK' . $dsid_suffix;
       $filename = $dsid . '.vtt';
       $dest = file_build_uri($filename);
       $file = file_save_data($vtt, $dest, FILE_EXISTS_REPLACE);
-      islandora_oralhistories_add_datastream($object, $dsid, $file->uri);
+      $result = islandora_oralhistories_add_datastream($object, $dsid, $file->uri);
       file_delete($file);
+      return $result;
     }
   }
+}
+
+/**
+ * Gets the language suffix from transcript xml file if there is any.
+ */
+
+function get_dsid_suffix($transcript_fileName) {
+  $pathInfo = pathinfo($transcript_fileName);
+  $transcript_fileName = $pathInfo['filename'];
+
+  $dsid_suffix = "";
+  $dsid_arr = explode("_", $transcript_fileName);
+  if (isset($dsid_arr[1])) {
+    $dsid_suffix = strtolower($dsid_arr[1]);
+    $dsid_suffix = "_" . $dsid_suffix;
+  }
+  return $dsid_suffix;
 }
 
 /**
@@ -102,27 +125,33 @@ function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $
     foreach ($cues as $cue) {
       $newCue = $xml->addChild('cue');
       $newCue->addChild('start', (float)$cue['start_time']);
-      $newCue->addChild('end', (float)$cue['end_time']);    
+      $newCue->addChild('end', (float)$cue['end_time']);
 
       $child = $newCue->addChild('speaker');
       $child_node = dom_import_simplexml($child);
       $child_owner = $child_node->ownerDocument;
       $child_node->appendChild($child_owner->createCDATASection($cue['name']));
 
-      $child = $newCue->addChild('vtt_text');
+      $lang_code = "";
+      $dsid_arr = explode("_", $destination_dsid);
+      if (isset($dsid_arr[1])) {
+        $lang_code = "_" . strtolower($dsid_arr[1]);
+      }
+
+      $child = $newCue->addChild('vtt_text' . $lang_code);
       $child_node = dom_import_simplexml($child);
       $child_owner = $child_node->ownerDocument;
       $child_node->appendChild($child_owner->createCDATASection($cue['text']));
     }
 
     $contentXML = $xml->asXML();
-    $file = file_save_data($contentXML, $dest, FILE_EXISTS_REPLACE);  
-    islandora_oralhistories_add_datastream($object, $destination_dsid, $file->uri);  
+    $file = file_save_data($contentXML, $dest, FILE_EXISTS_REPLACE);
+    islandora_oralhistories_add_datastream($object, $destination_dsid, $file->uri);
     file_delete($file);
   }
   catch (exception $e) {
-    watchdog('Islandora Oralhistories', 'Unable to create vtt indexing datastream: ' . $e->getmessage());    
-  }  
+    watchdog('Islandora Oralhistories', 'Unable to create vtt indexing datastream: ' . $e->getmessage());
+  }
 }
 
 /**
@@ -139,18 +168,25 @@ function islandora_oralhistories_create_vtt_indexing_datastream(AbstractObject $
  *   An array describing the outcome of the datastream addition.
  */
 function islandora_oralhistories_add_datastream(AbstractObject $object, $datastream_id, $file_uri) {
+
   try {
     $ingest = !isset($object[$datastream_id]);
     $mime_detector = new MimeDetect();
 
     if ($ingest) {
+
       $ds = $object->constructDatastream($datastream_id, "M");
       $ds->label = $datastream_id;
     }
     else {
       $ds = $object[$datastream_id];
     }
-    $ds->mimetype = $mime_detector->getMimetype($file_uri);
+    $ds_mimetype = $mime_detector->getMimetype($file_uri);
+
+    if ($ds->mimeType != $ds_mimetype) {
+      $ds->mimeType = $ds_mimetype;
+    }
+
     $ds->setContentFromFile(drupal_realpath($file_uri));
     if ($ingest) {
       $object->ingestDatastream($ds);

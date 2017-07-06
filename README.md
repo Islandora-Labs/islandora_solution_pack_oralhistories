@@ -4,6 +4,8 @@
 
 Provides a content model for Oral Histories and a viewer for displaying timed text content (XML or WebVTT) alongside video and audio files. 
 
+The software leverages the existing Video and Audio solution packs to create derivatives from source files, and provides the ability to append a transcript and closed captioning file that is then exposed in a video.js based player. Transcripts can contain multiple tiers corresponding to different languages and speakers. The module is designed to acommodate any time-encoded description of a video or audio file. 
+
 ## Requirements
 
 This module requires the following modules/libraries:
@@ -52,7 +54,7 @@ There are some configuration options in Administration » Islandora » Oral Hist
   
 ### Themes
 
-The viewer currently works with the [Bootstrap theme](https://www.drupal.org/project/bootstrap). For non Bootstrap themes, including certain Bootstrap-based themes,  additional files are provided to enable bootstrap elements required by the viewer. View the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for additional details. 
+The viewer currently works with the [Bootstrap theme](https://www.drupal.org/project/bootstrap). For non-Bootstrap themes, including certain Bootstrap-based themes,  additional files are provided to enable bootstrap elements required by the viewer. View the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for additional details. 
 
 
 ## Transcript File Formats
