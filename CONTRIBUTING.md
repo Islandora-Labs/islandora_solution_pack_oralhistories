@@ -1,8 +1,37 @@
 # Contributing to Islandora Oral Histories Solution Pack
 
+This Islandora project, including Islandora Labs, operates under the Islandora [code of conduct].
+By participating in this project, you agree to abide by its terms.
+Please report inappropriate behaviour to community@islandora.ca.
+
+[code of conduct]: http://islandora.ca/codeofconduct
+
+## Communication
+
+Islandora, and Islandora Labs, invites community discussion on the following channels. If you are not sure you want to create an issue or pull request yet, feel free to discuss this project with us here:
+* the IRC channel, #islandora, on freenode.net
+* our [Google Group/mailing list],
+* our bi-weekly committers' calls, on Skype and open to everybody (contact community@islandora.ca to join)
+* our various [Interest Groups]
+
+[Google Group/mailing list]: https://groups.google.com/forum/#!forum/islandora
+[Interest Groups]: https://github.com/islandora-interest-groups
+
+## Contributions
+
 All contributions to Islandora Oral Histories Solution Pack are welcome: use-cases, documentation, code, bug reports, feature requests, etc. You do not need to be a programmer to contribute!
 
 Regardless of how you want to contribute to Islandora Oral Histories Solution Pack, start by opening a Github issue. Someone (probably one of the maintainers) will respond and keep the discussion going.
+
+### Constraints on merging
+
+As with all projects in Islandora Labs, all contributors to a pull request must have an Islandora
+CLA ([Contributor License Agreement]) on file before it can be merged.
+Here, a contributor is defined as the author of a git commit.
+
+In Islandora Labs, the policies for merging may be different from the standard [Islandora Committer's Workflow].
+These worfflow policies are set at the discretion of the Current Maintainer, as defined below in the sections below:
+
 
 ### Write some documentation
 
@@ -71,8 +100,9 @@ You may want to read [Syncing a fork](https://help.github.com/articles/syncing-a
 
 ## License Agreements
 
-Islandora Oral Histories Solution Pack is licensed under GPL version 3 or higher. By opening a pull request or otherwise contributing code to the Islandora Oral Histories Solution Pack codebase, you transfer non-exclusive ownership of that code (you retain ownership of your code for other purposes) to the Islandora Oral Histories Solution Pack maintainers for the sole purpose of redistributing your contribution within the Islandora Oral Histories Solution Pack codebase under the conditions of the GPLv3 license or higher. You also warrant that you have the legal authority to make such a transfer.
+Islandora Oral Histories Solution Pack is licensed under GPL version 3 or higher. By opening a pull request or otherwise contributing code to the Islandora Oral Histories Solution Pack codebase, you transfer non-exclusive ownership of that code (you retain ownership of your code for other purposes) to the Islandora Oral Histories Solution Pack maintainers for the sole purpose of redistributing your contribution within the Islandora Oral Histories Solution Pack codebase under the conditions of the GPLv3 license or higher and subject to the Islandora CLA ([Contributor License Agreement]). You also warrant that you have the legal authority to make such a transfer.
 
 ## Thanks
 
-This CONTRIBUTING.md file is based heavily on the CONTRIBUTING.md file included with [Islandora Foundation modules](https://github.com/Islandora) and the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik).
+This CONTRIBUTING.md file is based heavily on the CONTRIBUTING.md file included with [Islandora Foundation modules](https://github.com/Islandora) and the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik), as well as Rosemary Le Faive's [Islandora Labs CONTRIBUTING.md template]
+(https://github.com/rosiel/Contributing-Templates/blob/master/CONTRIBUTING.md).
