@@ -1,4 +1,5 @@
-# Oral Histories Solution Pack [![Build Status](https://travis-ci.org/Islandora-Labs/islandora_solution_pack_oralhistories.svg?branch=master)](https://travis-ci.org/Islandora-Labs/islandora_solution_pack_oralhistories)
+# Oral Histories Solution Pack 
+[![DOI](https://zenodo.org/badge/23933503.svg)](https://zenodo.org/badge/latestdoi/23933503) [![Build Status](https://travis-ci.org/Islandora-Labs/islandora_solution_pack_oralhistories.svg?branch=master)](https://travis-ci.org/Islandora-Labs/islandora_solution_pack_oralhistories) 
 
 ## Introduction
 
