@@ -1,4 +1,4 @@
-# Oral Histories Solution Pack [![Build Status](https://travis-ci.org/digitalutsc/islandora_solution_pack_oralhistories.svg?branch=master)](https://travis-ci.org/digitalutsc/islandora_solution_pack_oralhistories)
+# Oral Histories Solution Pack [![Build Status](https://travis-ci.org/Islandora-Labs/islandora_solution_pack_oralhistories.svg?branch=master)](https://github.com/Islandora-Labs/islandora_solution_pack_oralhistories)
 
 ## Introduction
 
