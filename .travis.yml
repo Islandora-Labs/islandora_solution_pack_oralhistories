@@ -5,9 +5,23 @@ sudo: true
 language: php
 
 php:
-  - 5.3.3
   - 5.4
   - 5.5
+
+matrix:
+  include:
+    - php: "5.3.3"
+      dist: precise
+      env: FEDORA_VERSION="3.5"
+    - php: "5.3.3"
+      dist: precise
+      env: FEDORA_VERSION="3.6.2"
+    - php: "5.3.3"
+      dist: precise
+      env: FEDORA_VERSION="3.7.0"
+    - php: "5.3.3"
+      dist: precise
+      env: FEDORA_VERSION="3.8.1"
 
 branches:
   only:
@@ -58,5 +72,5 @@ script:
   - phpcpd --names *.module,*.inc,*.test sites/all/modules/islandora_solution_pack_oralhistories
   - drush test-run --uri=http://localhost:8081 "Islandora Oralhistories"
 
-notifications:
-  irc: "irc.freenode.org#islandora"
+#notifications:
+#  irc: "irc.freenode.org#islandora"
