@@ -21,7 +21,7 @@ matrix:
       env: FEDORA_VERSION="3.7.0"
     - php: "5.3.3"
       dist: precise
-    env: FEDORA_VERSION="3.8.1"
+      env: FEDORA_VERSION="3.8.1"
 
 branches:
   only:
