@@ -1,7 +1,7 @@
 #islandora_solution_pack_oralhistories
 
 sudo: true
-
+dist: trusty
 language: php
 
 php:
@@ -56,7 +56,7 @@ before_install:
   - ln -s $HOME/ctools sites/all/modules/ctools
 
   - sudo sh $HOME/islandora_solution_pack_video/tests/scripts/ffmpeg-install.sh
-  
+
   - drush en --user=1 --yes islandora_oralhistories
   - drush en --user=1 --yes islandora_basic_collection
   - drush en --user=1 --yes islandora_video
