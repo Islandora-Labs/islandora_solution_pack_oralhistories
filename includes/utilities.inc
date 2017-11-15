@@ -187,6 +187,8 @@ function islandora_oralhistories_transcripts_ui_transcript($ui) {
         }
       }
     }
+  } else {
+    watchdog('Islandora Oralhistories', "Solr query for '$query' in " . __FUNCTION__ . " (file " . __FILE__ . ") returned no results. ", $variables = array(), $severity = WATCHDOG_WARNING, $link = NULL);
   }
 
   $highlights = isset($json['highlighting']) ? $json['highlighting'] : NULL;
