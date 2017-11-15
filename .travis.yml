@@ -70,7 +70,7 @@ script:
   - $ISLANDORA_DIR/tests/scripts/line_endings.sh sites/all/modules/islandora_solution_pack_oralhistories
   - drush coder-review --reviews=production,security,style,i18n,potx,sniffer islandora_basic_oralhistories
   - phpcpd --names *.module,*.inc,*.test sites/all/modules/islandora_solution_pack_oralhistories
-  - drush test-run --uri=http://localhost:8081 "Islandora Oralhistories"
+  # - drush test-run --uri=http://localhost:8081 "Islandora Oralhistories"
 
 #notifications:
 #  irc: "irc.freenode.org#islandora"
