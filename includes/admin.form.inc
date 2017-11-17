@@ -43,13 +43,6 @@ function islandora_oralhistories_admin(array $form, array &$form_state) {
     '#default_value' => variable_get('islandora_oralhistories_enbable_transcript_display', FALSE),
   );
 
-  $form['islandora_oralhistories_transcript_layout_side'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Display media and transcript side-by-side'),
-    '#description' => t('By default, the transcript will be displayed beneath the media object.'),
-    '#default_value' => variable_get('islandora_oralhistories_transcript_layout_side', FALSE),
-  );
-
   $form['islandora_oralhistories_vtt_default_language'] = array(
     '#type' => 'textfield',
     '#title' => t('Specify VTT default language code(s)'),
