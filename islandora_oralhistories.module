@@ -222,15 +222,6 @@ function islandora_oralhistories_theme($existing, $type, $theme, $path) {
         'params' => NULL,
       ),
     ),
-    'islandora_html5_video_side' => array(
-      'template' => 'theme/islandora-html5-video-side',
-      'file' => 'theme/theme.inc',
-      'pattern' => 'islandora-html5-video-side__',
-      'variables' => array(
-        'object' => NULL,
-        'params' => NULL,
-      ),
-    ),
   );
 }
 
