@@ -51,7 +51,6 @@ There are some configuration options in Administration » Islandora » Oral Hist
   * "Create WEBVTT file for captions or subtitles" -- if you'd like the module to automatically create a caption file
   * "Enable captions/subtitles display" -- if you'd like to display the captions
   * "Enable transcript display" -- **this one is the most important** because it's what allows your transcript scroller to display
-  * "Display media and transcript side-by-side" -- if you don't like the default display of having the scrolling transcript below the video/audio player, check this to move the scroller to the side
   
 ### Themes
 
