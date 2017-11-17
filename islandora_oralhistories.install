@@ -18,7 +18,6 @@ function islandora_oralhistories_install() {
   variable_set('islandora_oralhistories_make_vtt', FALSE);
   variable_set('islandora_oralhistories_enable_caption_display', FALSE);
   variable_set('islandora_oralhistories_enable_transcript_display', FALSE);
-  variable_set('islandora_oralhistories_transcript_layout_side', FALSE);
 }
 
 /**
@@ -32,7 +31,6 @@ function islandora_oralhistories_uninstall() {
     'islandora_oralhistories_enable_caption_display',
     'islandora_oralhistories_make_vtt',
     'islandora_oralhistories_enbable_transcript_display',
-    'islandora_oralhistories_transcript_layout_side',
   );
   array_map('variable_del', $variables);
   islandora_install_solution_pack('islandora_oralhistories', 'uninstall');
@@ -46,5 +44,16 @@ function islandora_oralhistories_update_7100() {
   if (variable_get('islandora_oralhistories_annotation_tab_display') !== NULL) {
     // Delete variable.
     variable_del('islandora_oralhistories_annotation_tab_display');
+  };
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function islandora_oralhistories_update_7001() {
+  // Delete previously installed variables as needed.
+  if (variable_get('islandora_oralhistories_transcript_layout_side') !== NULL) {
+    // Delete variable.
+    variable_del('islandora_oralhistories_transcript_layout_side');
   };
 }
