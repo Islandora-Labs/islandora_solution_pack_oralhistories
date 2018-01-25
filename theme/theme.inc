@@ -142,7 +142,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
       $track['dslabel'] = $datastream->label;
       $track['source_url'] = $source_url;
 
-
       $track['MEDIATRACK'] = FALSE;
       if ($isMediatrack) {
         $track['MEDIATRACK'] = TRUE;
@@ -177,7 +176,6 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
         $track['lang_code'] = '';
         $track['default'] = '';
       }
-
 
       if (isset($object[$datastream->id]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$datastream->id])) {
         $tracks[] = $track;
@@ -216,12 +214,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'enable_transcript_display' => variable_get('islandora_oralhistories_enbable_transcript_display'),
   );
 
-  if (variable_get('islandora_oralhistories_transcript_layout_side')) {
-    $viewer = theme('islandora_html5_video_side', array('params' => $viewer_params));
-  }
-  else {
-    $viewer = theme('islandora_html5_video_stack', array('params' => $viewer_params));
-  }
+  $viewer = theme('islandora_html5_video_stack', array('params' => $viewer_params));
 
   $variables['islandora_content']['viewer'] = $viewer;
 
@@ -257,20 +250,10 @@ function islandora_oralhistories_preprocess_islandora_native_html5(array &$varia
 /**
  * Implements hook_process_HOOK().
  */
-function islandora_oralhistories_process_islandora_html5_video_side(&$variables) {
-  // The trid-PID with : being replaced by -
-  $variables['params']['trid'] = 'trid-' . str_replace(':', '-', $variables['params']['pid']);
-}
-
-
-/**
- * Implements hook_process_HOOK().
- */
 function islandora_oralhistories_process_islandora_html5_video_stack(&$variables) {
   // The trid-PID with : being replaced by -
   $variables['params']['trid'] = 'trid-' . str_replace(':', '-', $variables['params']['pid']);
 }
-
 
 /**
  * Implements theme_islandora_oralhistories_transcript_edit_form().
