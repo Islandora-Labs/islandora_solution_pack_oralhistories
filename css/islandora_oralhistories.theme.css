@@ -157,3 +157,19 @@ li.vjs-menu-item {
     font-size: 1em !important;
     text-transform: uppercase !important;
 }
+
+/*
+ Provides em width for tier selector button in the transcript viewer so that
+ "Transcript, Translation, Speaker" text is not wider than the button width.
+ Adjustment of this value may be necessary depending on the given theme.
+*/
+.bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+    width: 15.5em !important;
+}
+/*
+ Provides 1em of padding around the speaker name in the transcript viewer
+ so that it does not overlap with the transcript content.
+*/
+div.speaker-name {
+    padding-right: 1em;
+}
