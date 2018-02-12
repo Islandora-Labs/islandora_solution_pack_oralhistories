@@ -12,8 +12,4 @@ Thumbs.db
 ######################
 .idea/
 
-# Test files #
-######################
-tests/
-
 js/node_modules/
