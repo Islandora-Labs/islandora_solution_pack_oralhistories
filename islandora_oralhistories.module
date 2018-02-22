@@ -254,7 +254,19 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_ingest_
 function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivative(AbstractObject $object, $ds_modified_params = array()) {
   $derivatives = array();
 
-  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'video') {
+  // Determine type of OBJ.
+  $type = NULL;
+  if (isset($object['OBJ'])) {
+    if (preg_match('/video/', $object['OBJ']->mimetype)) {
+      $type = 'video';
+    }
+    else {
+      $type = 'audio';
+    }
+  }
+
+  // Determine derivatives based on OBJ.
+  if ($type == 'video') {
     if (module_exists('islandora_video') && function_exists('islandora_video_islandora_sp_videoCModel_islandora_derivative')) {
       $derivatives = islandora_video_islandora_sp_videoCModel_islandora_derivative();
     }
@@ -263,9 +275,8 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
       drupal_exit();
     }
   }
-
-  if (variable_get('islandora_oralhistories_media_uploaded_type') == 'audio') {
-    if (module_exists('islandora_video') && function_exists('islandora_video_islandora_sp_videoCModel_islandora_derivative')) {
+  elseif ($type == 'audio') {
+    if (module_exists('islandora_audio') && function_exists('islandora_audio_islandora_sp_audiocmodel_islandora_derivative')) {
       $derivatives = islandora_audio_islandora_sp_audiocmodel_islandora_derivative();
     }
     else {
@@ -273,6 +284,7 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivat
       drupal_exit();
     }
   }
+
   if (variable_get('islandora_oralhistories_make_vtt', TRUE)) {
     $derivatives[] = array(
       'source_dsid' => 'TRANSCRIPT',
