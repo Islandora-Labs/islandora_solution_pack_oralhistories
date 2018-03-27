@@ -59,6 +59,9 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
     'pid' => $object->id,
   );
 
+  // Deferred derivative generation makes it possible that there won't be a
+  // media dsid immediately.
+  $media_dsid = FALSE;
   if (preg_match('/^video/i', $object['OBJ']->mimetype)) {
     $viewer_params += array(
       'media_tag' => 'video',
