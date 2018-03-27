@@ -91,7 +91,7 @@ function islandora_oralhistories_preprocess_islandora_oralhistories(array &$vari
   }
 
   try {
-    if (isset($object[$media_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$media_dsid])) {
+    if ($media_dsid && isset($object[$media_dsid]) && islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object[$media_dsid])) {
       $media_url = url("islandora/object/{$object->id}/datastream/$media_dsid/view", array('absolute' => TRUE));
       $viewer_params += array(
         'mime' => $object[$media_dsid]->mimetype,
