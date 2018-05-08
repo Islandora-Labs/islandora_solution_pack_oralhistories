@@ -251,7 +251,7 @@ function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_ingest_
 /**
  * Implements hook_islandora_CMODEL_PID_derivative().
  */
-function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivative(AbstractObject $object, $ds_modified_params = array()) {
+function islandora_oralhistories_islandora_oralhistoriesCModel_islandora_derivative(AbstractObject $object) {
   $derivatives = array();
 
   // Determine type of OBJ.
