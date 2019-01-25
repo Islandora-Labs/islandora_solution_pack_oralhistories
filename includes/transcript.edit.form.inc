@@ -1,150 +1,140 @@
 <?php
 /**
  * @file
- *
- * Provides functions to process transcript edit form.
+ * The edit form for editing xml-based TRANSCRIPT datastreams.
  */
 
 /**
- * Builds transcript_edit_form.
+ * Builds the TRANSCRIPT edit form.
  *
  * @param array $form
+ *   The Drupal form definition.
  * @param array $form_state
- * @return array $form
+ *   The Drupal form state.
+ * @param AbstractObject $object.
+ *   An AbstractObject representing a Fedora object.
+ *
+ * @return array
+ *   The Drupal form definition.
  */
-function islandora_oralhistories_transcript_edit_form(array $form, array &$form_state, AbstractObject $object, AbstractDatastream $datastream) {
-  module_load_include('inc', 'islandora', 'includes/solution_packs');
-  module_load_include('inc', 'islandora', 'includes/datastream');
-  if (!$object || !$datastream) {
-    $path = current_path();
-    $part_parts = explode('/', $path);
-    $object = islandora_object_load($part_parts[2]);
-    $datastream =  $object['TRANSCRIPT'];
-  }
-  $file_url = islandora_view_datastream_retrieve_file_uri($datastream);
+function islandora_oralhistories_transcript_edit_form(array $form, array &$form_state, AbstractObject $object) {
 
-  $xml = simplexml_load_file($file_url);
-  $form = array();
-  $form['#tree'] = TRUE;
+  if (isset($object['TRANSCRIPT'])) {
+    $transcript = $object['TRANSCRIPT'];
 
-  // Button to toggle cues.
-  $form['toggle-cues'] = array(
-    '#type' => 'button',
-    '#value' => 'Toggle Cues',
-    '#attributes' => array('onclick' => 'return (false);'),
-  );
+    if ($transcript->mimetype == 'application/xml' || $transcript->mimetype == 'text/xml') {
+      $xml = simplexml_load_string($transcript->content);
 
-  if ($xml) {
-    if ($xml->solespeaker) {
-      $form['solespeaker'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Sole Speaker'),
-        '#description' => t('The sole speaker\'s name'),
-        '#required' => FALSE,
-        '#default_value' => $xml->solespeaker,
-        '#size' => 25,
-      );
-    }
-    // Loop through xml elements.
-    for ($i = 0; $i < $xml->count(); $i++) {
-      $fieldset = 'cue' . $i;
-      $is_textarea = TRUE;
-      $form[$fieldset] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Cue-@count', array('@count' => $i)),
-        '#collapsible' => TRUE,
-        '#collapsed' => ($i == 0) ? FALSE : TRUE,
-      );
-      if (is_array($xml->cue[$i]) || is_object($xml->cue[$i])) {
-        foreach ($xml->cue[$i] as $child) {
-          $node_name = (string) $child->getName();
-          if (preg_match('/speaker/i', $node_name) || preg_match(
-              '/start/i',
-              $node_name
-            ) || preg_match('/end/i', $node_name)
-          ) {
-            $is_textarea = FALSE;
-          }
-          else {
-            $is_textarea = TRUE;
-          }
-          $css_class = ($is_textarea) ? 'or-transcript-textarea' : 'or-transcript-textfield';
-          $form[$fieldset][$node_name] = array(
-            '#type' => $is_textarea ? 'textarea' : 'textfield',
-            '#title' => $node_name,
-            '#description' => $node_name,
-            '#required' => FALSE,
-            '#default_value' => (string) $child,
+      if ($xml) {
+        $form = array();
+        $form['#tree'] = TRUE;
+        $form_state['object'] = $object;
+        $form_state['transcript'] = $transcript;
+
+        // Toggle cue expansion.
+        $form['toggle-cues'] = array(
+          '#type' => 'button',
+          '#value' => t('Toggle Cues'),
+          '#attributes' => array('onclick' => 'return (false);'),
+        );
+
+        // Handle the solespeaker.
+        if ($xml->solespeaker) {
+          $form['solespeaker'] = array(
+            '#type' => 'textfield',
+            '#title' => t('Sole Speaker'),
+            '#description' => t("The sole speaker's name"),
+            '#default_value' => t($xml->solespeaker),
+            '#size' => 25,
           );
         }
+
+        // Handle the cue data, expand the first cue.
+        for ($i = 0; $i < ($xml->count() - 1); $i++) {
+          $fieldset = 'cue_' . $i;
+          $form['cues'][$fieldset] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Cue @count', array('@count' => ($i + 1))),
+            '#collapsible' => TRUE,
+            '#collapsed' => ($i == 0) ? FALSE : TRUE,
+          );
+
+          if (is_object($xml->cue[$i])) {
+            foreach ($xml->cue[$i] as $child) {
+              $node_name = $child->getName();
+              $is_textarea = FALSE;
+
+              if ($node_name == 'transcript') {
+                $is_textarea = TRUE;
+              }
+
+              $form['cues'][$fieldset][$node_name] = array(
+                '#type' => $is_textarea ? 'textarea' : 'textfield',
+                '#title' => t(ucfirst($node_name)),
+                '#default_value' => t((string) $child),
+              );
+            }
+          }
+        }
+
+        $form['actions'] = array('#type' => 'actions');
+        $form['actions']['submit'] = array(
+          '#type' => 'submit',
+          '#value' => t('Submit'),
+        );
+        $form['#attached']['js'] = array(drupal_get_path('module', 'islandora_oralhistories') . '/js/transcript_edit.js');
+        $form['#theme'] = 'islandora_oralhistories_transcript_edit_form';
+        return $form;
       }
-    } // End for loop
-  } else {
-    drupal_set_message(t('%ds does not have a valid xml content', array('%ds' => $datastream->id)), 'status');
+      else {
+        drupal_set_message(t('Error loading @dsid datastream XML content', array('@dsid' => $transcript->id)), 'error');
+      }
+    }
+    else {
+      drupal_set_message(t('The @dsid datastream must contain XML content', array('@dsid' => $transcript->id)), 'error');
+    }
   }
-  $form['#theme'] = 'islandora_oralhistories_transcript_edit_form';
-  // buttons.
-  $form['actions'] = array('#type' => 'actions');
-  $form['actions']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Submit'),
-  );
-
-  // Handles toggle behavior.
-  $form['#attached']['js'] = array(
-    drupal_get_path('module', 'islandora_oralhistories') . '/js/transcript_edit.js',
-  );
-
-  return $form;
 }
 
 /**
  * Submit handler for islandora_oralhistories_transcript_edit_form.
- * @param array $form
- * @param array $form_state
  */
 function islandora_oralhistories_transcript_edit_form_submit(array $form, array &$form_state) {
-  module_load_include('inc', 'islandora', 'includes/solution_packs');
-  module_load_include('inc', 'islandora', 'includes/datastream');
-  $object = $form_state['build_info']['args'][0];
-  $datastream = $form_state['build_info']['args'][1];
-  if (isset($object['TRANSCRIPT']) && islandora_datastream_access(ISLANDORA_REPLACE_DATASTREAM_CONTENT, $object['TRANSCRIPT'])) {
+  $object = $form_state['object'];
+  $transcript = $form_state['transcript'];
 
-    $dom = new DOMDocument('1.0', 'utf-8');
-    $cues = $dom->appendChild($dom->createElement('cues'));
-    $keys = array_keys($form_state['values']);
-    foreach ($keys as $key) {
-      if (preg_match('/solespeaker/', $key)) {
-        $solespeaker = $cues->appendChild($dom->createElement('solespeaker', $form_state['values'][$key]));
-      }
-      if (preg_match('/cue/', $key)) {
-        $cue = $cues->appendChild($dom->createElement('cue'));
-        foreach ($form_state['values'][$key] as $cue_name => $value) {
-          // issue#58
-          $child = $cue->appendChild($dom->createElement($cue_name));
-          $child_node = dom_import_simplexml($child);
-          $child_owner = $child_node->ownerDocument;
-          $child_node->appendChild($child_owner->createCDATASection($value));
-        }
+  $dom = new DOMDocument('1.0', 'utf-8');
+  $dom->preserveWhiteSpace = FALSE;
+  $dom->formatOutput = TRUE;
 
-      }
-    }
+  $cues = $dom->appendChild($dom->createElement('cues'));
 
-    $dom->preserveWhiteSpace = FALSE;
-    $dom->formatOutput = TRUE;
-    try {
-      $datastream->setContentFromString($dom->saveXML());
-      drupal_set_message(t('datastream %s is updated.', array('%s' => $datastream->id)), 'status', FALSE);
-      $nodePath = current_path();
-      $nodePath = str_replace("/edit_form/TRANSCRIPT", "", $nodePath);
-      $form_state['redirect'] = $nodePath;
-    }
-    catch (Exception $e) {
-      drupal_set_message(t('Error updating datastream %s %t', array('%s' => $datastream->id, '%t' => $e->getMessage())), 'error', FALSE);
-    }
-
+  // Insert solespeaker.
+  if (isset($form_state['values']['solespeaker'])) {
+    $cues->appendChild($dom->createElement('solespeaker', $form_state['values']['solespeaker']));
   }
 
+  // Insert cue data.
+  if (isset($form_state['values']['cues'])) {
+    foreach ($form_state['values']['cues'] as $cue) {
+      $dom_cue = $cues->appendChild($dom->createElement('cue'));
+
+      foreach ($cue as $cue_data => $value) {
+        $child = $dom_cue->appendChild($dom->createElement($cue_data));
+        $child_owner = $child->ownerDocument;
+        $child->appendChild($child_owner->createCDATASection($value));
+      }
+    }
+  }
+
+  try {
+    $transcript->setContentFromString($dom->saveXML());
+    drupal_set_message(t('The @dsid datastream has been updated', array('@dsid' => $transcript->id)), 'status');
+    $form_state['redirect'] = "islandora/object/$object->id";
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('Error updating datastream @dsid: @msg', array('@dsid' => $transcript->id, '@msg' => $e->getMessage())), 'error');
+  }
 }
 
 
@@ -163,6 +153,7 @@ function edit_transcript_modal(AbstractObject $object, AbstractDatastream $datas
     $object = islandora_object_load($part_parts[2]);
     $datastream =  $object['TRANSCRIPT'];
   }
+
   if ($ajax) {
     ctools_include('ajax');
     ctools_include('modal');
@@ -183,10 +174,8 @@ function edit_transcript_modal(AbstractObject $object, AbstractDatastream $datas
     );
 
     if (!empty($form_state['executed'])) {
-
       // Add the responder javascript, required by ctools
       ctools_add_js('ajax-responder');
-
       // Create ajax command array, dismiss the modal window.
       $output = array();
       $output[] = ctools_modal_command_dismiss();
@@ -194,8 +183,6 @@ function edit_transcript_modal(AbstractObject $object, AbstractDatastream $datas
       $nodePath = str_replace("/edit_form/TRANSCRIPT/ajax", "", $nodePath);
       $output[] = ctools_ajax_command_redirect($nodePath);
     }
-
-
     // Return the ajax instructions to the browser via ajax_render().
     print ajax_render($output);
     drupal_exit();
