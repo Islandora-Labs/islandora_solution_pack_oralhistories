@@ -28,7 +28,7 @@ A fork of Pinedrop's [Transcripts UI](https://github.com/pinedrop/transcripts_ui
 
 ### Solr
 
-The module configuration requires a modification to the Gsearch XSLT in order to index XML and WebVTT datastreams. Informaiton for how to do this is provided in the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki).
+The module configuration requires a modification to the Gsearch XSLT in order to index XML and WebVTT datastreams. Information for how to do this is provided in the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki).
 
 ### Transcripts UI
 
