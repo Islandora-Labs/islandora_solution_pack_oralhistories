@@ -18,7 +18,6 @@
  *   The Drupal form definition.
  */
 function islandora_oralhistories_transcript_edit_form(array $form, array &$form_state, AbstractObject $object) {
-
   if (isset($object['TRANSCRIPT'])) {
     $transcript = $object['TRANSCRIPT'];
 
@@ -60,12 +59,15 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
           );
 
           if (is_object($xml->cue[$i])) {
+            $textfield_node_names = array('solespeaker', 'speaker', 'start', 'end');
+
             foreach ($xml->cue[$i] as $child) {
               $node_name = $child->getName();
-              $is_textarea = FALSE;
+              $is_textarea = TRUE;
 
-              if ($node_name == 'transcript') {
-                $is_textarea = TRUE;
+              // Check to see if cue data should be in textfield.
+              if (in_array($node_name, $textfield_node_names)) {
+                $is_textarea = FALSE;
               }
 
               $form['cues'][$fieldset][$node_name] = array(
@@ -98,6 +100,11 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
 
 /**
  * Submit handler for islandora_oralhistories_transcript_edit_form.
+ *
+ * @param array $form
+ *   The Drupal form.
+ * @param array $form_state
+ *   The Drupal form state.
  */
 function islandora_oralhistories_transcript_edit_form_submit(array $form, array &$form_state) {
   $object = $form_state['object'];
