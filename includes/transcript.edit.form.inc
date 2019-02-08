@@ -49,7 +49,7 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
         }
 
         // Handle the cue data, expand the first cue.
-        for ($i = 0; $i < ($xml->count() - 1); $i++) {
+        for ($i = 0; $i < ($xml->count()); $i++) {
           $fieldset = 'cue_' . $i;
           $form['cues'][$fieldset] = array(
             '#type' => 'fieldset',
