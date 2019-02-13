@@ -47,9 +47,11 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
             '#size' => 25,
           );
         }
-
+        
         // Handle the cue data, expand the first cue.
-        for ($i = 0; $i < ($xml->count()); $i++) {
+        $i = 0;
+        
+        foreach ($xml->cue as $cue) {
           $fieldset = 'cue_' . $i;
           $form['cues'][$fieldset] = array(
             '#type' => 'fieldset',
@@ -58,10 +60,10 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
             '#collapsed' => ($i == 0) ? FALSE : TRUE,
           );
 
-          if (is_object($xml->cue[$i])) {
+          if (is_object($cue)) {
             $textfield_node_names = array('solespeaker', 'speaker', 'start', 'end');
 
-            foreach ($xml->cue[$i] as $child) {
+            foreach ($cue as $child) {
               $node_name = $child->getName();
               $is_textarea = TRUE;
 
@@ -77,6 +79,8 @@ function islandora_oralhistories_transcript_edit_form(array $form, array &$form_
               );
             }
           }
+          
+          $i++;
         }
 
         $form['actions'] = array('#type' => 'actions');
