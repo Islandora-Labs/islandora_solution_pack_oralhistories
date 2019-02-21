@@ -10,7 +10,7 @@ class VttConverter  {
 
   public function fileContentToInternalFormat($file_content)
   {
-    $internal_format = []; // array - where file content will be stored
+    $internal_format = array(); // array - where file content will be stored
 
     $blocks = explode("\n\n", trim($file_content)); // each block contains: start and end times + text
 
