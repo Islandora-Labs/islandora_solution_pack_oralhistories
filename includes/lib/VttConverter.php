@@ -35,12 +35,14 @@ class VttConverter  {
 
       $name = static::getName($lines[1]);
 
-      $internal_format[] = [
+      $internal_format_cue = [
         'start' => static::vttTimeToInternal($times[0]),
         'end' => static::vttTimeToInternal($times[1]),
         'name' => $name,
         'lines' => $lines_array,
       ];
+
+      array_push($internal_format, $internal_format_cue);
     }
 
     return $internal_format;
