@@ -27,7 +27,12 @@ class VttConverter  {
       }
 
       $times = explode(' --> ', $lines[0]);
-      $name = static::getName($lines[1]);
+
+      if (isset($lines[1])) {
+        $name = static::getName($lines[1]);
+      } else {
+        $name = "";
+      }
 
       $lines_array = array_map(static::fixLine(), array_slice($lines, 1)); // get all the remaining lines from block (if multiple lines of text)
       if (count($lines_array) === 0) {
@@ -110,7 +115,6 @@ class VttConverter  {
 
   protected static function getName($line)
   {
-    // print($line . "\n");
 
     $regex_vtt_name = '/^\s*<v\s+(?<name>.*)>/';
     preg_match($regex_vtt_name, $line, $matches);
