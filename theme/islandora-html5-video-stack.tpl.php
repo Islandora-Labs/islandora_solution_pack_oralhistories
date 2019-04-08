@@ -17,7 +17,7 @@
     </div>
   </div>
   <?php if ($params['enable_transcript_display'] && isset($params['tracks'])): ?>
-  <div class="islandora-oralhistories-transcript" id="transcript-tabs" class="col-sm-12 col-md-12">
+  <div id="transcript-tabs" class="col-sm-12 col-md-12 islandora-oralhistories-transcript">
     <ul id="tabs-list">
       <li><a href="#transcript-tab">Transcript</a></li>
     </ul>
