@@ -73,6 +73,7 @@ class TranscriptUI
                         } else {
                             $tier_list[] = array(
                                 '#theme' => 'transcripts_ui_tcu_tier',
+                                '#classes' => array(),
                                 '#tier_name' => $tier,
                                 '#tier_text' => $sentence->$tier,
                             );
@@ -80,6 +81,7 @@ class TranscriptUI
                     } else {
                         $tier_list[] = array(
                             '#theme' => 'transcripts_ui_tcu_tier',
+                            '#classes' => array(),
                             '#tier_name' => $tier,
                             '#tier_text' => $sentence->$tier,
                         );
@@ -102,6 +104,7 @@ class TranscriptUI
                     ),
                     'speaker_name' => array(
                         '#theme' => 'transcripts_ui_speaker_name',
+                        '#classes' => array(),
                         '#sid' => $sid,
                         '#speaker_name' => $speaker_tiers,
                         '#speaker_turn' => $speaker_tiers == $last_speaker_tiers ? 'same-speaker' : 'new-speaker',
