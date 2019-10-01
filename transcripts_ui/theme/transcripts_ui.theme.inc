@@ -9,7 +9,7 @@ function theme_transcripts_ui_transcript_controls($vars)
 function theme_transcripts_ui_transcript_options($vars)
 {
 
-    $out  = "<select multiple class='selectpicker tier-selector' data-header='Select languages'>";
+    $out  = "<select multiple class='selectpicker tier-selector' data-header='Select languages' aria-label='Transcript language and speaker selector'>";
 
     //language selector
     $out .= "<optgroup label='Transcript' data-type='languages'>";
