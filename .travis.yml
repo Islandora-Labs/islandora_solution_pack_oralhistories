@@ -89,7 +89,7 @@ before_install:
   - drush en --user=1 --yes ctools
 
 script:
-  #- $ISLANDORA_DIR/tests/scripts/travis_scripts.sh
+  - $ISLANDORA_DIR/tests/scripts/travis_scripts.sh
   #- ant -buildfile sites/all/modules/islandora_solution_pack_oralhistories/build.xml lint
   - $ISLANDORA_DIR/tests/scripts/line_endings.sh sites/all/modules/islandora_solution_pack_oralhistories
   #- drush coder-review --reviews=production,security,style,i18n,potx,sniffer islandora_basic_oralhistories
