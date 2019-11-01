@@ -56,6 +56,19 @@ There are some configuration options in Administration » Islandora » Oral Hist
 
 The viewer currently works with the [Bootstrap theme](https://www.drupal.org/project/bootstrap). For non-Bootstrap themes, including certain Bootstrap-based themes,  additional files are provided to enable bootstrap elements required by the viewer. View the [project wiki](https://github.com/digitalutsc/islandora_solution_pack_oralhistories/wiki) for additional details. 
 
+## Transcript languages
+This module uses the transcript filename to determine the language when an underscore (`"_"`) character is present otherwise will use the defult language code specified in the oral history configuration page (admin/islandora/solution_pack_config/oralhistories). Using ISO 639-1 language codes is recommended. Example: EN, FR, ES
+
+Filename examples: example.vtt, example\___en__.vtt, example\___fr__.vtt, example\___es__.vtt
+
+
+![Screen Shot of language dropdown](https://user-images.githubusercontent.com/2738244/68030170-3a4a9500-fc8f-11e9-918e-24822523604c.png)
+
+__Avoid using underscore in the filename unless using it to specify a language.__
+
+Example of a __BAD__ filename is 0012\___004308__\_000000_0002.vtt resulting in the language selection to be __004308__.
+
+![Screen Shot of bad vtt file naming](https://user-images.githubusercontent.com/2738244/68030706-79c5b100-fc90-11e9-9fbe-3184343e4540.png)
 
 ## Transcript File Formats
 
