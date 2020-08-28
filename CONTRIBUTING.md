@@ -105,4 +105,4 @@ Islandora Oral Histories Solution Pack is licensed under GPL version 3 or higher
 ## Thanks
 
 This CONTRIBUTING.md file is based heavily on the CONTRIBUTING.md file included with [Islandora Foundation modules](https://github.com/Islandora) and the [Move to Islandora Kit](https://github.com/MarcusBarnes/mik), as well as Rosemary Le Faive's [Islandora Labs CONTRIBUTING.md template]
-(https://github.com/rosiel/Contributing-Templates/blob/master/CONTRIBUTING.md).
+(https://github.com/rosiel/Contributing-Templates/blob/main/CONTRIBUTING.md).
