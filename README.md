@@ -107,7 +107,7 @@ In order to view transcripts in the user-interface, double check that anonymous 
 
 ### Maintainers/Sponsors
 Current maintainers:
-* [Marcus Barnes](https://github.com/MarcusBarnes)
+
 * [Nat Kanthan](https://github.com/Natkeeran)
 * [Megan Kudzia](https://github.com/mkudzia)
 
@@ -117,6 +117,7 @@ Sponsors:
 Contributors:
 * [Lingling Jiang](https://github.com/sprklinginfo)
 * Edward Garrett
+* [Marcus Barnes](https://github.com/MarcusBarnes)
 
 Note: This module would not have been possible without the support of [Chris Berkowitz](http://www.utsc.utoronto.ca/hcs/christine-berkowitz) from the Scarborough Oral Histories Project at the [Department of Historical and Cultural Studies](http://www.utsc.utoronto.ca/hcs/) at UTSC.
 
